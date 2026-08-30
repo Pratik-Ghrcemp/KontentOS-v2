@@ -39,4 +39,4 @@ CREATE POLICY "Users can delete own text overlays"
 
 -- Trigger for updated_at
 CREATE TRIGGER handle_text_overlays_updated_at BEFORE UPDATE ON public.text_overlays
-    FOR EACH ROW EXECUTE PROCEDURE moddatetime (updated_at);
+    FOR EACH ROW EXECUTE PROCEDURE update_modified_column();

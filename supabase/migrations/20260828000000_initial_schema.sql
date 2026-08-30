@@ -2,8 +2,8 @@
 -- KontentOS V3: Initial PostgreSQL Schema
 -- ==========================================
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Enable UUID generation
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- 1. CREATOR PROFILES (Extends Supabase auth.users)
 CREATE TABLE public.profiles (
@@ -25,7 +25,7 @@ CREATE POLICY "Users can update own profile." ON public.profiles FOR UPDATE USIN
 
 -- 2. SOCIAL CONNECTIONS (For Omni-Channel Sync)
 CREATE TABLE public.social_connections (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   platform text NOT NULL, -- e.g., 'instagram', 'youtube', 'linkedin'
   platform_account_id text,
@@ -37,7 +37,7 @@ CREATE POLICY "Users can manage their social connections" ON public.social_conne
 
 -- 3. PROJECTS / POSTS (Content Calendar & Studio Hub)
 CREATE TABLE public.projects (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   title text NOT NULL,
   status text DEFAULT 'draft', -- 'draft', 'queued', 'published'
@@ -51,7 +51,7 @@ CREATE POLICY "Users can manage their projects" ON public.projects FOR ALL USING
 
 -- 4. MEDIA ASSETS (Raw Studio Videos, Exports, Audio)
 CREATE TABLE public.media_assets (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   project_id uuid REFERENCES public.projects(id) ON DELETE CASCADE,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   asset_type text NOT NULL, -- 'raw_video', 'exported_video', 'thumbnail', 'audio'
@@ -64,7 +64,7 @@ CREATE POLICY "Users can manage their media assets" ON public.media_assets FOR A
 
 -- 5. AUDIT REPORTS & ANALYTICS (Growth Hub)
 CREATE TABLE public.audit_reports (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   project_id uuid REFERENCES public.projects(id) ON DELETE CASCADE,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   diagnostic_score integer,
@@ -79,7 +79,7 @@ CREATE POLICY "Users can view their audit reports" ON public.audit_reports FOR A
 
 -- 6. BRAND DEALS (Monetization Hub)
 CREATE TABLE public.brand_deals (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   brand_name text NOT NULL,
   deal_amount numeric NOT NULL,

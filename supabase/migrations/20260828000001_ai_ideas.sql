@@ -1,6 +1,6 @@
 -- 7. AI IDEAS (Idea Studio)
 CREATE TABLE public.ai_ideas (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   category text,
   badge text,

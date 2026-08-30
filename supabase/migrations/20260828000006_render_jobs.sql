@@ -43,4 +43,4 @@ create policy "Users can update own render jobs"
 
 -- Trigger for updated_at
 create trigger handle_updated_at before update on public.render_jobs
-    for each row execute procedure moddatetime (updated_at);
+    for each row execute procedure update_modified_column();

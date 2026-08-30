@@ -3,7 +3,7 @@
 -- ==========================================
 
 CREATE TABLE IF NOT EXISTS public.caption_segments (
-  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id uuid REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
   project_id uuid REFERENCES public.projects(id) ON DELETE CASCADE NOT NULL,
   media_asset_id uuid REFERENCES public.media_assets(id) ON DELETE CASCADE NOT NULL,
