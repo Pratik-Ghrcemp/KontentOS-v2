@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS - Image Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary-container": "#818cf8",
+                "on-secondary": "#ffffff",
+                "on-tertiary-fixed-variant": "#5b21b6",
+                "primary-fixed": "#e0e2ff",
+                "surface-bright": "#ffffff",
+                "error": "#dc2626",
+                "inverse-primary": "#a5b4fc",
+                "surface-container-high": "#dcdee4",
+                "secondary": "#6c6e7e",
+                "on-tertiary-container": "#3b1f63",
+                "surface": "#ffffff",
+                "on-error-container": "#991b1b",
+                "inverse-on-surface": "#e8eaf0",
+                "on-secondary-fixed-variant": "#404252",
+                "tertiary-fixed-dim": "#c4b5fd",
+                "on-tertiary-fixed": "#2e1065",
+                "on-secondary-fixed": "#1a1b26",
+                "tertiary": "#7c3aed",
+                "on-error": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "outline-variant": "#d0d2dc",
+                "on-primary-fixed": "#1e1b4b",
+                "surface-container": "#f8f9fa",
+                "error-container": "#fee2e2",
+                "outline": "#8a8c9a",
+                "surface-tint": "#6366f1",
+                "on-surface-variant": "#585a68",
+                "surface-variant": "#f0f2f8",
+                "surface-container-highest": "#e5e7ed",
+                "on-surface": "#2e3040",
+                "on-secondary-container": "#585a68",
+                "inverse-surface": "#2e3040",
+                "on-primary-container": "#ffffff",
+                "primary-fixed-dim": "#a5b4fc",
+                "primary": "#6366f1",
+                "on-background": "#2e3040",
+                "secondary-fixed-dim": "#b8baca",
+                "tertiary-container": "#a78bfa",
+                "surface-dim": "#d4d6dc",
+                "surface-container-low": "#ffffff",
+                "secondary-fixed": "#d8dae6",
+                "on-primary-fixed-variant": "#4338ca",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#ede9fe",
+                "secondary-container": "#d8dae6",
+                "on-primary": "#ffffff",
+                "background": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem",
+                "xl": "1.5rem",
+                "full": "9999px"
+        },
+        "spacing": {
+            "unit": "4px",
+            "gutter": "24px",
+            "margin": "40px",
+            "panel-padding": "16px"
+        },
+        "fontFamily": {
+                "headline": [
+                        "Plus Jakarta Sans"
+                ],
+                "display": [
+                        "Plus Jakarta Sans"
+                ],
+                "body": [
+                        "Plus Jakarta Sans"
+                ],
+                "label": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "label-caps": ["Inter"],
+                "headline-md": ["\"Source Serif 4\""],
+                "data-mono": ["JetBrains Mono"],
+                "display-lg": ["\"Source Serif 4\""],
+                "display-lg-mobile": ["\"Source Serif 4\""]
+        },
+        "fontSize": {
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+            "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+            "data-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+        }
+},
+    },
+  }
+</script>
+<style>
+        /* Base styles for ultra-fine borders */
+        .border-ultra-fine {
+            border-color: rgba(0, 0, 0, 0.1);
+            border-width: 0.5px;
+        }
+        .border-t-ultra-fine { border-top-width: 0.5px; border-top-color: rgba(0, 0, 0, 0.1); }
+        .border-r-ultra-fine { border-right-width: 0.5px; border-right-color: rgba(0, 0, 0, 0.1); }
+        .border-b-ultra-fine { border-bottom-width: 0.5px; border-bottom-color: rgba(0, 0, 0, 0.1); }
+        .border-l-ultra-fine { border-left-width: 0.5px; border-left-color: rgba(0, 0, 0, 0.1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+        :hover::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Grid background pattern */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low text-primary font-label-caps text-label-caps h-screen w-16 flex flex-col justify-between border-r border-outline-variant flat no shadows fixed left-0 top-0 z-50 py-panel-padding hidden md:flex">
+<div class="flex flex-col items-center gap-8">
+<div class="font-display-lg text-display-lg text-primary text-center w-full relative group cursor-pointer">
+<span class="text-sm font-bold tracking-tighter">K-OS</span>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity rounded"></div>
+</div>
+<div class="w-full h-px bg-outline-variant/30 my-2"></div>
+<button class="w-10 h-10 rounded-none bg-surface-variant flex items-center justify-center hover:bg-surface-container-high transition-all text-on-surface-variant group relative" title="New Project">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="add">add</span>
+</button>
+<div class="flex flex-col gap-2 w-full mt-4">
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:text-primary" data-icon="movie_edit">movie_edit</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:text-primary" data-icon="closed_caption">closed_caption</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:text-primary" data-icon="magic_button">magic_button</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:text-primary" data-icon="graphic_eq">graphic_eq</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center bg-primary-container text-on-primary-container border-l-2 border-primary cursor-pointer duration-150 relative" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="photo_camera_back" style="font-variation-settings: 'FILL' 1;">photo_camera_back</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-2 w-full">
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary" data-icon="help_outline">help_outline</span>
+</a>
+<a class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 group relative" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary" data-icon="archive">archive</span>
+</a>
+<div class="w-full flex justify-center mt-4">
+<img class="w-8 h-8 rounded-none border-ultra-fine grayscale" data-alt="A highly professional and stark monochrome user avatar representing a precision AI tool user, sharp focus, technical aesthetic, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADIUTq92MusJ3Yg7T2tRrEpsK-vZDBKeUlmWE9NdBslsXGA06-4HYf3q0nFXL4w277EjrUJl7EoNzz8a9ORvqDRMKHCnEA8xR72jm_XybU6HoWRKsFyC9M6eEicrSj9KOSgNT4nOG2X8TrsyKBhyiNaor6Z6gZcMxnk3R8zR8yTgvUG7Hc36lje84CWYqHYTRsnKwgL4iy945fHqJza4sqxD7rE_FQebzvVC3Q8NdBQefgGNgNi2PB"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col ml-0 md:ml-16 h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface text-primary font-body-md text-body-md w-full h-14 border-b border-outline-variant flat no shadows flex justify-between items-center px-gutter w-full shrink-0 z-40 relative">
+<div class="flex items-center gap-8 h-full">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">KontentOS</span>
+<nav class="hidden md:flex h-full items-end gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 pb-4" href="#">Timeline</a>
+<a class="text-primary border-b border-primary pb-4 cursor-pointer active:opacity-80" href="#">Assets</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 pb-4" href="#">Drafts</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-lowest border-b-ultra-fine px-3 py-1 group focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-data-mono font-data-mono text-on-surface placeholder:text-on-surface-variant focus:ring-0 w-48 text-sm outline-none" placeholder="Search assets..." type="text"/>
+</div>
+<div class="flex items-center gap-2 border-r-ultra-fine pr-4 mr-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+</button>
+</div>
+<button class="px-4 py-1.5 border-ultra-fine text-on-surface font-label-caps text-label-caps hover:bg-surface-container transition-colors">Export</button>
+<button class="px-4 py-1.5 bg-primary-container text-on-primary-container font-label-caps text-label-caps hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="publish">publish</span>
+                    Publish
+                </button>
+</div>
+</header>
+<!-- Studio Workspace -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left: Live Graphic Card Canvas -->
+<div class="flex-1 bg-surface-container-lowest bg-grid-pattern relative overflow-y-auto flex flex-col p-8">
+<!-- Toolbar overlay -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 bg-surface border-ultra-fine px-4 py-2 flex items-center gap-4 shadow-sm rounded z-10">
+<div class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant">
+<span class="w-2 h-2 bg-primary"></span>
+                        LIVE PREVIEW
+                    </div>
+<div class="w-px h-4 bg-outline-variant/30"></div>
+<div class="flex gap-1">
+<button class="px-2 py-1 bg-surface-variant text-primary text-xs font-data-mono border-ultra-fine rounded">1:1</button>
+<button class="px-2 py-1 text-on-surface-variant hover:bg-surface-variant text-xs font-data-mono rounded">4:5</button>
+<button class="px-2 py-1 text-on-surface-variant hover:bg-surface-variant text-xs font-data-mono rounded">16:9</button>
+</div>
+<div class="w-px h-4 bg-outline-variant/30"></div>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="zoom_in">zoom_in</span>
+<span class="font-data-mono text-data-mono">100%</span>
+</button>
+</div>
+<!-- Canvas Area -->
+<div class="flex-1 flex items-center justify-center min-h-[600px]">
+<!-- Main Preview Card (1:1 Active) -->
+<div class="w-[500px] h-[500px] bg-surface border-ultra-fine flex flex-col relative group shadow-md rounded overflow-hidden">
+<!-- Card Header -->
+<div class="h-12 border-b-ultra-fine flex items-center px-4 justify-between bg-surface-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 bg-surface-variant rounded-full border-ultra-fine flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sharp, minimalist geometric logo representing a highly technical AI operating system brand. Monochromatic with a striking cyber cyan accent. Professional, stark." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjwbZlpKsEOrUSVhQP-TfGbcGSDytZsuf5x-XizjFXk-vJzsgA1vJxtVbH5Ffv6fiAWBGdPSqlUEMmQFDbnZydTdIxLgFlXoDDvH-9g7vknjBKjUv64DzCoejVdVu1W9Rx0jfGVmjgXJxyIionRKSkucukgmYbSXJn6lcjZ-Dxsct_XL1h3PGF-zRFvZ_7FS4LYp1fFKDNJRZqR2vxAfXhPPQ3VcCmdJnSdT8SHy5dsCldoDdGLasV"/>
+</div>
+<div class="flex flex-col">
+<span class="font-data-mono text-data-mono text-on-surface">@sys_admin</span>
+<span class="text-[10px] text-on-surface-variant">Just now</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="more_horiz">more_horiz</span>
+</div>
+<!-- Card Media -->
+<div class="flex-1 relative overflow-hidden bg-background">
+<div class="absolute inset-0 bg-cover bg-center grayscale mix-blend-luminosity opacity-80" data-alt="A stark, minimalist executive workspace featuring a matte black desk, an ultra-wide monitor displaying complex data visualizations, a high-end podcast microphone on an articulated arm, and subtle cyan ambient backlighting. Technical, sharp, professional, high-contrast monochrome aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgnCciIUSRn0-AiPWRztGiCufN7U5qPXSBYe6hfjJOuykE8S0gvok7SehHmZ1Ery7B5fP4mFl3QlRckbn-jNDDpNIDNlhnqGRaSwAQba7FlQJhQMrSmkeqCYTyR67I8YpPcCJnN-lAnvTzUvzYREOhT_N82jyvHs4dObUA5537MFMO0tgKbRuoUDLd-B7Q-9a2zrDNh5oCRNVihgfvRAJ-ZME-z9Am0gzi7Bp4FmuTzZ76gRQi8HS4')"></div>
+<!-- Overlay Text Element -->
+<div class="absolute bottom-8 left-8 right-8 p-6 bg-surface/90 border-ultra-fine backdrop-blur-md rounded">
+<span class="font-label-caps text-label-caps text-primary tracking-widest mb-2 block">SYSTEM UPDATE</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Optimizing Workflow Architecture</h2>
+<p class="font-data-mono text-data-mono text-on-surface-variant leading-relaxed">Implementing structural changes to the core rendering pipeline. Expect micro-stutters during assimilation phase.</p>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="h-14 border-t-ultra-fine flex items-center px-4 justify-between bg-surface-variant/30">
+<div class="flex gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="favorite_border">favorite_border</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="send">send</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="bookmark_border">bookmark_border</span>
+</div>
+<!-- Focus outline -->
+<div class="absolute inset-[-1px] border border-primary opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded"></div>
+</div>
+</div>
+</div>
+<!-- Right: Inspector Panel -->
+<aside class="w-80 bg-surface border-l-ultra-fine flex flex-col h-full shrink-0 z-20">
+<!-- Inspector Header -->
+<div class="h-14 border-b-ultra-fine flex items-center justify-between px-panel-padding shrink-0">
+<h3 class="font-label-caps text-label-caps text-on-surface tracking-widest">ASSET INSPECTOR</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="tune">tune</span>
+</div>
+<div class="flex-1 overflow-y-auto p-panel-padding flex flex-col gap-8">
+<!-- Section: Template Type -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-data-mono text-on-surface-variant">TEMPLATE_TYPE</span>
+<span class="text-[10px] text-primary border border-primary/30 px-1 rounded-sm">ACTIVE</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="flex flex-col items-center justify-center p-3 bg-primary/5 border border-primary text-primary gap-2 transition-colors rounded">
+<span class="material-symbols-outlined text-[20px]" data-icon="crop_square">crop_square</span>
+<span class="text-[10px] font-label-caps">IG OVERLAY</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border-ultra-fine text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors gap-2 rounded">
+<span class="material-symbols-outlined text-[20px]" data-icon="slideshow">slideshow</span>
+<span class="text-[10px] font-label-caps">LI SLIDE</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border-ultra-fine text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors gap-2 rounded">
+<span class="material-symbols-outlined text-[20px]" data-icon="view_agenda">view_agenda</span>
+<span class="text-[10px] font-label-caps">X CARD</span>
+</button>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant/30"></div>
+<!-- Section: Photography Catalog -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-data-mono text-on-surface-variant">BKG_SOURCE</span>
+<button class="text-[10px] text-on-surface-variant hover:text-primary flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[12px]" data-icon="refresh">refresh</span>
+                                REFRESH
+                            </button>
+</div>
+<div class="flex flex-col gap-2">
+<div class="p-2 border border-primary bg-primary/5 flex items-center gap-3 cursor-pointer rounded">
+<div class="w-10 h-10 bg-surface-variant overflow-hidden relative rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center grayscale mix-blend-luminosity" data-alt="Close up texture of a matte black metallic surface with precise machined grooves. High contrast, sharp, industrial, minimalist, monochrome." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9CTLxM0X7s2L2CyDgaFSODlTibE16PNyiRNgHB7D9wWob2dUTs8-ds6IquQok51pJuEFkQw7eK8zz6mpnadMQid-8niC8p-EL21TT3N-E8Yoz8TptSr6qDnHgCcoqIrM86BUN1ilf-SPZMGjj2QQEe6wFjZGE6_68libfzS3LDTO9JwZR7DjlTU3JslHf_3Nk-8rynLqW-I6Ml0HEZgM3FQJRnfquO-1xbUBpEQzmpv0pNrVOYF01')"></div>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-data-mono text-data-mono text-primary text-[11px]">Minimal Workspace</span>
+<span class="text-[9px] text-on-surface-variant font-data-mono opacity-70">id: w_space_01.raw</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="check">check</span>
+</div>
+<div class="p-2 border-ultra-fine bg-surface-container-lowest flex items-center gap-3 cursor-pointer hover:border-outline-variant transition-colors group rounded">
+<div class="w-10 h-10 bg-surface-variant overflow-hidden relative rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center grayscale mix-blend-luminosity opacity-50 group-hover:opacity-80 transition-opacity" data-alt="A professional studio condenser microphone against a pitch black background with subtle edge lighting in cold cyan. Technical, high-end audio equipment, precise detail." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAIIv3UuYKs8ADvGSdGUFnogVTD-I2Y5ArwMP9srGTnwAIjNUgO2tSBuNV4GsWwrvFy3VKRV1siXkDwJZTV6M6LR7SBFFZOro4bDUY4N7FHFEq_dBSS4BT39Ev4hh3tf2SQkr4Rcr3ehohyQ3fY3jjNbmpglrKTppjp6bS_Q6XKUZDt82SeQfi50nKdM55HUSSmg0KFKHU0P5rzkMFZf0BofXcI6GjgEUZViwNlskC2nMpIXA9iO2BG')"></div>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-data-mono text-data-mono text-on-surface text-[11px]">Podcast Mic</span>
+<span class="text-[9px] text-on-surface-variant font-data-mono opacity-70">id: audio_rig_04.raw</span>
+</div>
+</div>
+<div class="p-2 border-ultra-fine bg-surface-container-lowest flex items-center gap-3 cursor-pointer hover:border-outline-variant transition-colors group rounded">
+<div class="w-10 h-10 bg-surface-variant overflow-hidden relative rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center grayscale mix-blend-luminosity opacity-50 group-hover:opacity-80 transition-opacity" data-alt="Abstract data visualization consisting of stark white geometric lines intersecting on a deep black background. Architectural blueprint aesthetic, highly technical, analytical." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXbJO5c8SutoR4Y4_8jP7GRxscYlRN9mflpju2dJ-EWAouq6Yr20qQYyafGCjYS68w0ILHcmboCQnqvBYir3qwpIZtz5YwYJf70fvA4MD2vK9v4B66TEn5W0bo6kw9qQhq62dGce-Qw97Fxs7Flr204BF9112XbLOCrjwRA5cHTtJuJhwfwMW1RyoU4ck4_BgnMfr_rViPWJeaowjVsplrxZ2hoQq-EFi4jWQFXL-TcdWwNlItMmeG')"></div>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-data-mono text-data-mono text-on-surface text-[11px]">Data Abstract</span>
+<span class="text-[9px] text-on-surface-variant font-data-mono opacity-70">id: abs_data_99.raw</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant/30"></div>
+<!-- Section: Color Palette -->
+<div class="flex flex-col gap-3">
+<span class="font-data-mono text-data-mono text-on-surface-variant">TINT_MATRIX</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded border border-primary bg-primary flex items-center justify-center relative">
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-background border border-primary rounded-full"></span>
+</button>
+<button class="w-8 h-8 rounded border-ultra-fine bg-[#FFFFFF] hover:border-outline-variant transition-colors shadow-sm"></button>
+<button class="w-8 h-8 rounded border-ultra-fine bg-[#fce442] hover:border-outline-variant transition-colors shadow-sm"></button>
+<button class="w-8 h-8 rounded border-ultra-fine bg-[#ffb4ab] hover:border-outline-variant transition-colors shadow-sm"></button>
+<button class="w-8 h-8 rounded border-ultra-fine bg-surface-variant flex items-center justify-center hover:bg-surface-container-high transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Inspector Footer Actions -->
+<div class="p-4 border-t-ultra-fine bg-surface-container-lowest mt-auto flex flex-col gap-3 shrink-0">
+<button class="w-full py-2 bg-primary-container text-on-primary-container font-label-caps text-label-caps tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2 rounded">
+<span class="material-symbols-outlined text-[18px]" data-icon="rocket_launch">rocket_launch</span>
+                        OMNI-PUBLISH
+                    </button>
+<button class="w-full py-2 border-ultra-fine text-on-surface font-label-caps text-label-caps tracking-widest hover:bg-surface-container transition-colors flex items-center justify-center gap-2 rounded">
+<span class="material-symbols-outlined text-[18px]" data-icon="save">save</span>
+                        SAVE DRAFT
+                    </button>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

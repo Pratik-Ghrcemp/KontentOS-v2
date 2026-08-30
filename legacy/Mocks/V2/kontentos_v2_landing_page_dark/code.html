@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - The Creator's Secret Weapon</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "background": "#111317",
+                      "secondary-fixed-dim": "#2ae500",
+                      "on-secondary-container": "#0f6d00",
+                      "secondary": "#d7ffc5",
+                      "secondary-fixed": "#79ff5b",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "on-tertiary": "#00363a",
+                      "tertiary-container": "#00828b",
+                      "glass-border": "rgba(255, 255, 255, 0.12)",
+                      "on-tertiary-fixed": "#002022",
+                      "secondary-container": "#2ff801",
+                      "on-primary-fixed": "#2e004e",
+                      "primary": "#e0b6ff",
+                      "electric-purple": "#9D4EDD",
+                      "primary-container": "#9d4edd",
+                      "surface-container-highest": "#333539",
+                      "outline": "#998d9e",
+                      "on-secondary": "#053900",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#fffdff",
+                      "charcoal-black": "#0F1115",
+                      "deep-slate": "#1A1D23",
+                      "surface-bright": "#37393e",
+                      "on-surface": "#e2e2e8",
+                      "on-background": "#e2e2e8",
+                      "surface-container-high": "#282a2e",
+                      "primary-fixed": "#f2daff",
+                      "surface-container-low": "#1a1c20",
+                      "outline-variant": "#4d4353",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#e0b6ff",
+                      "tertiary-fixed-dim": "#00dbe9",
+                      "inverse-on-surface": "#2f3035",
+                      "on-tertiary-container": "#f9ffff",
+                      "hyper-cyan": "#00F0FF",
+                      "surface": "#111317",
+                      "on-surface-variant": "#d0c2d5",
+                      "on-primary": "#4c007d",
+                      "surface-container": "#1e2024",
+                      "surface-container-lowest": "#0c0e12",
+                      "inverse-primary": "#8433c4",
+                      "surface-variant": "#333539",
+                      "on-secondary-fixed-variant": "#095300",
+                      "on-secondary-fixed": "#022100",
+                      "tertiary-fixed": "#7df4ff",
+                      "inverse-surface": "#e2e2e8",
+                      "error-container": "#93000a",
+                      "surface-dim": "#111317",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "tertiary": "#00dbe9",
+                      "cyber-neon-green": "#39FF14"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "unit": "8px",
+                      "margin-mobile": "16px",
+                      "max-width": "1440px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "button-text": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "900"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px theme('colors.primary');
+        }
+
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px theme('colors.cyber-neon-green');
+        }
+
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid theme('colors.glass-border');
+        }
+
+        .text-gradient-primary {
+            background: linear-gradient(to right, theme('colors.electric-purple'), theme('colors.hyper-cyan'));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Ambient background glow */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(157, 78, 221, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
+        }
+
+        /* Toggle Animation */
+        .toggle-switch.active {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative overflow-x-hidden selection:bg-electric-purple/30 selection:text-hyper-cyan">
+<div class="ambient-bg"></div>
+<!-- Navigation Overlay / Landing Header -->
+<nav class="fixed top-0 w-full z-50 glass-panel border-t-0 border-x-0 h-20 flex items-center justify-between px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-sm text-primary tracking-tighter">KontentOS V2</span>
+</div>
+<div class="hidden md:flex gap-8">
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-hyper-cyan transition-colors" href="#features">Features</a>
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-hyper-cyan transition-colors" href="#engine">Dual Engine</a>
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-hyper-cyan transition-colors" href="#pricing">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-button-text text-button-text text-on-surface hover:text-primary transition-colors">Login</button>
+<button class="bg-electric-purple text-on-primary-container font-button-text text-button-text px-6 py-3 rounded cyber-glow-primary hover:bg-inverse-primary transition-all duration-300">
+                Get Access
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-24">
+<!-- Hero Section -->
+<section class="max-w-[max-width] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center min-h-[70vh]">
+<div class="col-span-1 lg:col-span-6 space-y-8 z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-neon-green/30 bg-cyber-neon-green/5 text-cyber-neon-green font-label-mono text-label-mono mb-4">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green animate-pulse"></span>
+                    V2 IS LIVE. THE ALGORITHM IS YOURS.
+                </div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                    The All-In-One <br/>
+<span class="text-gradient-primary">AI Creator OS</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Bridge the gap between raw creativity and viral authority. KontentOS V2 is the high-octane environment for modern content entrepreneurs. Speed, efficiency, and data-backed confidence.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="bg-electric-purple text-on-primary-container font-button-text text-button-text px-8 py-4 rounded-lg cyber-glow-primary hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                        Start Creating Now
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</button>
+<button class="glass-panel text-on-surface font-button-text text-button-text px-8 py-4 rounded-lg hover:bg-surface-variant/50 transition-colors flex items-center justify-center gap-2">
+                        View Demo
+                        <span class="material-symbols-outlined">play_circle</span>
+</button>
+</div>
+<div class="flex items-center gap-6 pt-8 border-t border-glass-border">
+<div>
+<div class="font-headline-sm text-headline-sm text-primary">10x</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">Faster Output</div>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-cyber-neon-green">98%</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">Viral Readiness</div>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-hyper-cyan">2.4M</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">Ideas Gen</div>
+</div>
+</div>
+</div>
+<div class="col-span-1 lg:col-span-6 relative mt-12 lg:mt-0">
+<!-- Abstract Dashboard Visual -->
+<div class="relative w-full aspect-square md:aspect-video lg:aspect-square rounded-xl glass-panel p-6 overflow-hidden cyber-glow-primary group">
+<div class="absolute inset-0 bg-gradient-to-br from-electric-purple/10 to-hyper-cyan/10 opacity-50 z-0"></div>
+<!-- Faux UI Elements within the hero image to show "The Secret Weapon" -->
+<div class="relative z-10 flex flex-col h-full gap-4">
+<div class="flex justify-between items-center border-b border-glass-border pb-4">
+<span class="font-label-mono text-label-mono text-hyper-cyan flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">monitoring</span> Live Dashboard
+                            </span>
+<span class="bg-cyber-neon-green/20 text-cyber-neon-green px-2 py-1 rounded font-label-mono text-[12px]">SYNCED</span>
+</div>
+<div class="grid grid-cols-2 gap-4 flex-grow">
+<div class="bg-surface/50 rounded border border-glass-border p-4 flex flex-col justify-center">
+<div class="w-full h-2 bg-surface-variant rounded overflow-hidden mb-2">
+<div class="h-full bg-electric-purple w-[75%]"></div>
+</div>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Idea Velocity</span>
+</div>
+<div class="bg-surface/50 rounded border border-glass-border p-4 flex flex-col justify-center items-center relative overflow-hidden group-hover:border-cyber-neon-green/50 transition-colors">
+<span class="font-display-lg text-headline-sm text-cyber-neon-green mb-1 z-10">99.9%</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase z-10">Tone Match</span>
+<div class="absolute inset-0 bg-cyber-neon-green/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="bg-deep-slate rounded border border-glass-border p-4">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-electric-purple/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-electric-purple text-[16px]">smart_toy</span>
+</div>
+<div class="h-2 w-32 bg-surface-variant rounded"></div>
+</div>
+<div class="space-y-2">
+<div class="h-1.5 w-full bg-surface-variant rounded"></div>
+<div class="h-1.5 w-[80%] bg-surface-variant rounded"></div>
+<div class="h-1.5 w-[90%] bg-surface-variant rounded"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Interactive Toggle Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('engine-toggle-btn');
+            const toggleKnob = document.getElementById('engine-toggle-knob');
+            const viralContent = document.getElementById('engine-viral-content');
+            const proContent = document.getElementById('engine-pro-content');
+            
+            if(toggleBtn) {
+                let isPro = false;
+                toggleBtn.addEventListener('click', () => {
+                    isPro = !isPro;
+                    if(isPro) {
+                        toggleKnob.classList.add('translate-x-full');
+                        
+                        viralContent.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            viralContent.classList.add('hidden');
+                            proContent.classList.remove('hidden');
+                            setTimeout(() => {
+                                proContent.classList.remove('opacity-0', 'scale-95');
+                            }, 50);
+                        }, 300);
+
+                    } else {
+                        toggleKnob.classList.remove('translate-x-full');
+                        
+                        proContent.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            proContent.classList.add('hidden');
+                            viralContent.classList.remove('hidden');
+                            setTimeout(() => {
+                                viralContent.classList.remove('opacity-0', 'scale-95');
+                            }, 50);
+                        }, 300);
+                    }
+                });
+            }
+        });
+    </script>
+</body></html>

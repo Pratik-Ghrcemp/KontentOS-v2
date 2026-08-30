@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f9f9ff",
+                        "surface-tint": "#8433c4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ecedf6",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#004e59",
+                        "secondary-fixed": "#7aff55",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fffdff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#2e004e",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "primary-fixed": "#f2daff",
+                        "outline": "#7e7384",
+                        "electric-purple": "#9d4edd",
+                        "surface-container-highest": "#e1e2ea",
+                        "primary": "#8231c2",
+                        "tertiary": "#006673",
+                        "tertiary-container": "#008191",
+                        "on-background": "#191c22",
+                        "surface-glass": "rgba(255, 255, 255, 0.7)",
+                        "deep-slate": "#1a1d23",
+                        "on-surface": "#191c22",
+                        "on-secondary-fixed": "#032100",
+                        "inverse-primary": "#e0b6ff",
+                        "surface": "#f8f9fa",
+                        "on-primary-fixed-variant": "#6a0baa",
+                        "secondary-container": "#76fc51",
+                        "outline-variant": "#d0c2d5",
+                        "glass-border": "rgba(0, 0, 0, 0.08)",
+                        "tertiary-fixed": "#9eefff",
+                        "on-tertiary-fixed": "#001f24",
+                        "surface-container-high": "#e6e8f0",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#9d4edd",
+                        "on-secondary-container": "#197200",
+                        "inverse-on-surface": "#eff0f9",
+                        "tertiary-fixed-dim": "#55d7ed",
+                        "secondary-fixed-dim": "#5ce139",
+                        "on-secondary-fixed-variant": "#105300",
+                        "on-error-container": "#93000a",
+                        "secondary": "#186e00",
+                        "on-tertiary-container": "#fafeff",
+                        "surface-dim": "#d8dae2",
+                        "surface-variant": "#e1e2ea",
+                        "background": "#f9f9ff",
+                        "cyber-neon-green": "#2eb800",
+                        "on-surface-variant": "#4d4353",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f2f3fc",
+                        "inverse-surface": "#2d3037"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "max-width": "1440px",
+                        "base": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Montserrat"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "button-text": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-mono": ["13px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "button-text": ["15px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "900" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Glassmorphism utilities */
+        .glass-card {
+            @apply bg-surface-glass backdrop-blur-[12px] border border-glass-border shadow-sm rounded-xl transition-all duration-300;
+        }
+        .glass-card:hover {
+            @apply border-electric-purple/30 shadow-md;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-x-hidden selection:bg-electric-purple/20 selection:text-primary">
+<!-- Shared Component: SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] flex flex-col py-8 px-6 gap-y-4 z-50 hidden md:flex text-electric-purple font-body-md text-body-md">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-electric-purple/30 bg-surface-container shrink-0">
+<img class="w-full h-full object-cover" data-alt="A futuristic, hyper-realistic avatar of a digital creator. The portrait is brightly lit with high-key studio lighting, set against a pristine, minimalist white background. Subtle electric purple and cyan light reflections dance on the subject's skin, implying a high-tech studio environment. The style is professional, crisp, and slightly cyber-enhanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPU0F7kAhS_UuL7GvzoVLraiZDkzYt8wXZKByadkWjqKULN5w1EMOauWITUKyqYpsWEF2gFTtUhJpKlKKI5bsB44m_u410EmVoNvJ__2nbkBoXV3mlMNhIkKrLDKnx3X_B1_UM3qyKlo98k99xJsi5Q-t5bvZYjbiBGu58BLBFX_x7iVAMM4h9vVt3a5PuVBoYukIOPJdrH5yMF7GnZiMTtqmScdzYLb0lCN5YWTEh9Ic-ddzaMMe7"/>
+</div>
+<div>
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter leading-none">KontentOS V2</h1>
+<p class="text-on-surface-variant font-label-mono text-label-mono opacity-80 mt-1">Creator Command Center</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2 w-full">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+                Idea Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+                Script Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                Auto-Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+                Publishing Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-[0.98]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                Growth Intelligence
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Monetization
+            </a>
+</nav>
+<div class="mt-auto pt-4 border-t border-glass-border/10">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-lg font-button-text text-button-text flex justify-center items-center gap-2 hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]">
+<span class="material-symbols-outlined text-sm">add</span>
+                Quick Create
+            </button>
+</div>
+</aside>
+<!-- Shared Component: TopAppBar -->
+<header class="fixed top-0 right-0 left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border flex justify-between items-center px-margin-desktop z-40 hidden md:flex font-button-text text-button-text text-primary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-hyper-cyan transition-colors cursor-pointer">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md text-on-background placeholder:text-on-surface-variant/50 w-64" placeholder="Search analytics..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-full border border-glass-border">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green shadow-[0_0_8px_rgba(46,184,0,0.5)]"></span>
+<span class="font-label-mono text-label-mono text-on-surface">Readiness: 98%</span>
+</div>
+<button class="font-button-text text-button-text text-on-background hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+                Create
+            </button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="md:ml-[280px] md:mt-16 p-margin-mobile md:p-margin-desktop min-h-screen">
+<header class="mb-12">
+<h2 class="font-display-lg text-headline-md text-on-background mb-2">Growth Intelligence Center</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Analyze your omni-channel performance, decode viewer retention with AI diagnostics, and instantly replicate your winning formulas.</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Omni-Channel Performance (Bento Wide Card) -->
+<section class="md:col-span-12 glass-card p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[80px] -z-10 translate-x-1/2 -translate-y-1/2"></div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">ssid_chart</span>
+                            Omni-Channel Performance
+                        </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Aggregated across YouTube, TikTok, and Instagram.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-md bg-surface border border-glass-border font-label-mono text-label-mono text-on-surface hover:bg-surface-container transition-colors">7D</button>
+<button class="px-3 py-1.5 rounded-md bg-primary text-on-primary font-label-mono text-label-mono shadow-[inset_0_0_10px_rgba(255,255,255,0.2)]">30D</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+<!-- Metric 1 -->
+<div class="p-5 rounded-lg bg-surface/50 border border-glass-border group-hover:border-primary/20 transition-colors">
+<p class="font-label-mono text-label-mono text-on-surface-variant mb-2">Total Views</p>
+<div class="flex items-baseline gap-3">
+<span class="font-display-lg text-[40px] font-black text-on-background">12.4M</span>
+<span class="font-label-mono text-label-mono text-cyber-neon-green flex items-center"><span class="material-symbols-outlined text-[16px]">arrow_upward</span> 24%</span>
+</div>
+<div class="h-12 w-full mt-4 flex items-end gap-1 opacity-60">
+<!-- Simulated mini chart -->
+<div class="w-full bg-primary/20 rounded-t-sm" style="height: 40%"></div>
+<div class="w-full bg-primary/30 rounded-t-sm" style="height: 60%"></div>
+<div class="w-full bg-primary/40 rounded-t-sm" style="height: 30%"></div>
+<div class="w-full bg-primary/50 rounded-t-sm" style="height: 80%"></div>
+<div class="w-full bg-primary/60 rounded-t-sm" style="height: 50%"></div>
+<div class="w-full bg-primary rounded-t-sm" style="height: 90%"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="p-5 rounded-lg bg-surface/50 border border-glass-border group-hover:border-secondary/20 transition-colors">
+<p class="font-label-mono text-label-mono text-on-surface-variant mb-2">Avg. Engagement Rate</p>
+<div class="flex items-baseline gap-3">
+<span class="font-display-lg text-[40px] font-black text-on-background">8.7%</span>
+<span class="font-label-mono text-label-mono text-cyber-neon-green flex items-center"><span class="material-symbols-outlined text-[16px]">arrow_upward</span> 1.2%</span>
+</div>
+<div class="h-12 w-full mt-4 flex items-end gap-1 opacity-60">
+<div class="w-full bg-secondary/20 rounded-t-sm" style="height: 50%"></div>
+<div class="w-full bg-secondary/30 rounded-t-sm" style="height: 40%"></div>
+<div class="w-full bg-secondary/40 rounded-t-sm" style="height: 60%"></div>
+<div class="w-full bg-secondary/50 rounded-t-sm" style="height: 70%"></div>
+<div class="w-full bg-secondary/60 rounded-t-sm" style="height: 85%"></div>
+<div class="w-full bg-secondary rounded-t-sm" style="height: 95%"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="p-5 rounded-lg bg-surface/50 border border-glass-border group-hover:border-tertiary/20 transition-colors">
+<p class="font-label-mono text-label-mono text-on-surface-variant mb-2">True Retention (60s)</p>
+<div class="flex items-baseline gap-3">
+<span class="font-display-lg text-[40px] font-black text-on-background">64.2%</span>
+<span class="font-label-mono text-label-mono text-error flex items-center"><span class="material-symbols-outlined text-[16px]">arrow_downward</span> 3%</span>
+</div>
+<div class="h-12 w-full mt-4 flex items-end gap-1 opacity-60">
+<div class="w-full bg-tertiary/20 rounded-t-sm" style="height: 80%"></div>
+<div class="w-full bg-tertiary/30 rounded-t-sm" style="height: 75%"></div>
+<div class="w-full bg-tertiary/40 rounded-t-sm" style="height: 70%"></div>
+<div class="w-full bg-tertiary/50 rounded-t-sm" style="height: 65%"></div>
+<div class="w-full bg-tertiary/60 rounded-t-sm" style="height: 60%"></div>
+<div class="w-full bg-tertiary rounded-t-sm" style="height: 64%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Performance Diagnostic -->
+<section class="md:col-span-7 glass-card p-6 md:p-8 flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-glass-border pb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple">psychology</span>
+                        AI Performance Diagnostic
+                    </h3>
+<span class="px-3 py-1 bg-primary/10 text-primary font-label-mono text-label-mono rounded-full">Top Performer Analysis</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Video Item -->
+<div class="flex gap-4 p-4 rounded-lg bg-surface border border-glass-border hover:border-electric-purple/40 transition-colors">
+<div class="w-32 h-20 bg-surface-container rounded-md overflow-hidden shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A cinematic, wide-angle shot of a minimalist, modern desk setup with multiple glowing monitors. The scene is brightly lit, favoring a pristine white and light gray palette. A sleek mechanical keyboard and a high-end camera lens sit on the desk. Soft, diffuse sunlight spills across the surface, creating an airy, professional tech-focused atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6ki3egdXnNP2cWXOIh-NcaUSRhapqLbVVi1kIwpLXE-wYRumnoy22w3yJT-uZmtSQMguDabaDCV5aPSLaoEEfGLzmFROFuo74jzJd1AMzSJ8fJ3YapnRkI-DGBVXijf02-D2O0U0ZJ3i4SfnVh_MO1cpsdDppQT3a3PhtV0Z4dn5v-FgP8iQyv_mqI9A6GRLzA_dSUOBtTtxZyTLGk-9_ctmC8layYZOCKRB4aRT2rrIeEp5tzqdy"/>
+<span class="absolute bottom-1 right-1 bg-deep-slate/80 text-surface-bright font-label-mono text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">12:04</span>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-button-text text-button-text text-on-background line-clamp-1">The Future of AI Workflows in 2024</h4>
+<div class="flex gap-3 mt-1 font-label-mono text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">visibility</span> 4.2M</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">favorite</span> 320K</span>
+</div>
+</div>
+<div class="mt-2 p-2 bg-primary/5 rounded border border-primary/10 flex items-start gap-2">
+<span class="material-symbols-outlined text-electric-purple text-[16px] mt-0.5">auto_awesome</span>
+<p class="font-body-md text-[13px] text-on-background leading-tight"><strong>Why it worked:</strong> The hook introduced a counter-narrative within the first 3 seconds. Pacing increased by 15% during the technical breakdown, maintaining a 78% retention rate past the 1-minute mark.</p>
+</div>
+</div>
+</div>
+<!-- Video Item -->
+<div class="flex gap-4 p-4 rounded-lg bg-surface border border-glass-border hover:border-electric-purple/40 transition-colors">
+<div class="w-32 h-20 bg-surface-container rounded-md overflow-hidden shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-key photograph of a sleek, transparent glass tablet displaying complex, glowing geometric data visualizations. The background is a stark, blurry white studio environment. The light interacts with the glass, creating subtle prismatic dispersion and emphasizing a lightweight, highly advanced technological aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB_NpWYXPdpxFOlBhUaiouwKrHttWN_26fHHUUf36OSVGLdZB9eHPw80yibtK_2Dhif1Uh4ZrTxC_3jmW5FRImXQ-5rRML2yqpHogp4B0It4Rzt7S6Evy3JtG3HpqGKAJaqosVpa-zgQ8BH71omkii5pxFsr1eg1-2ojLY8CKc2_dnJbKjpOY72nW2hR3LAWtVOlAt0fP0Q22sdzkL1tFKzm38T19wfAV_LDxU7mTPQYcHcuscF_qs"/>
+<span class="absolute bottom-1 right-1 bg-deep-slate/80 text-surface-bright font-label-mono text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">08:45</span>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-button-text text-button-text text-on-background line-clamp-1">Stop Using These 5 CSS Patterns</h4>
+<div class="flex gap-3 mt-1 font-label-mono text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">visibility</span> 2.8M</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">favorite</span> 195K</span>
+</div>
+</div>
+<div class="mt-2 p-2 bg-primary/5 rounded border border-primary/10 flex items-start gap-2">
+<span class="material-symbols-outlined text-electric-purple text-[16px] mt-0.5">auto_awesome</span>
+<p class="font-body-md text-[13px] text-on-background leading-tight"><strong>Why it worked:</strong> High-contrast visual examples in the thumbnail drove a 12% CTR. The listicle format structured cognitive load perfectly, resulting in high bookmarking rates.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Make 10 More Like This Engine -->
+<section class="md:col-span-5 glass-card p-6 md:p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group border-2 border-transparent hover:border-cyber-neon-green/30 transition-all duration-500">
+<!-- Atmospheric background -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-bright to-secondary/5 opacity-50 -z-10"></div>
+<div class="absolute -bottom-20 -right-20 w-64 h-64 bg-secondary/10 rounded-full blur-[60px] -z-10 group-hover:bg-secondary/20 transition-colors duration-700"></div>
+<div class="w-20 h-20 rounded-2xl bg-surface border border-glass-border shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-4xl text-cyber-neon-green">bolt</span>
+</div>
+<h3 class="font-display-lg text-[28px] text-on-background mb-3">Replicate Success</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-sm">
+                    Feed the diagnostic data into the Auto-Studio to instantly generate scripts, structures, and assets based on your top performers.
+                </p>
+<div class="w-full flex flex-col gap-3">
+<button class="w-full py-4 px-6 rounded-xl bg-cyber-neon-green text-deep-slate font-button-text text-button-text flex justify-center items-center gap-2 hover:brightness-110 hover:shadow-[0_0_20px_rgba(46,184,0,0.3)] transition-all duration-300 transform group-hover:-translate-y-1">
+<span class="material-symbols-outlined">copy_all</span>
+                        Make 10 More Like This
+                    </button>
+<button class="w-full py-3 px-6 rounded-xl bg-transparent border border-glass-border text-on-surface font-button-text text-button-text flex justify-center items-center gap-2 hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-sm">tune</span>
+                        Adjust Parameters
+                    </button>
+</div>
+<div class="mt-6 flex items-center gap-2 font-label-mono text-[11px] text-on-surface-variant bg-surface/50 px-3 py-1.5 rounded-full border border-glass-border">
+<span class="w-1.5 h-1.5 rounded-full bg-electric-purple animate-pulse"></span>
+                    Auto-Studio is ready
+                </div>
+</section>
+</div>
+</main>
+</body></html>

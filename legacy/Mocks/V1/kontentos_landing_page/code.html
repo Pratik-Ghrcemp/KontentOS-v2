@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - The Creator's Secret Weapon</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2024",
+                        "surface-dim": "#111317",
+                        "tertiary-container": "#00828b",
+                        "tertiary": "#00dbe9",
+                        "primary": "#e0b6ff",
+                        "on-tertiary-container": "#f9ffff",
+                        "deep-slate": "#1A1D23",
+                        "primary-fixed": "#f2daff",
+                        "on-tertiary": "#00363a",
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#7df4ff",
+                        "on-primary-container": "#fffdff",
+                        "secondary-fixed-dim": "#2ae500",
+                        "on-primary-fixed": "#2e004e",
+                        "surface-tint": "#e0b6ff",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                        "on-surface-variant": "#d0c2d5",
+                        "surface": "#111317",
+                        "on-secondary-fixed-variant": "#095300",
+                        "on-primary-fixed-variant": "#6a0baa",
+                        "surface-variant": "#333539",
+                        "inverse-primary": "#8433c4",
+                        "charcoal-black": "#0F1115",
+                        "secondary": "#d7ffc5",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#022100",
+                        "tertiary-fixed-dim": "#00dbe9",
+                        "surface-container-highest": "#333539",
+                        "surface-container-low": "#1a1c20",
+                        "secondary-container": "#2ff801",
+                        "surface-container-high": "#282a2e",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-secondary": "#053900",
+                        "on-primary": "#4c007d",
+                        "background": "#111317",
+                        "primary-container": "#9d4edd",
+                        "on-background": "#e2e2e8",
+                        "electric-purple": "#9D4EDD",
+                        "error-container": "#93000a",
+                        "outline-variant": "#4d4353",
+                        "hyper-cyan": "#00F0FF",
+                        "secondary-fixed": "#79ff5b",
+                        "on-tertiary-fixed": "#002022",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#0f6d00",
+                        "cyber-neon-green": "#39FF14",
+                        "inverse-on-surface": "#2f3035",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "on-surface": "#e2e2e8",
+                        "inverse-surface": "#e2e2e8",
+                        "outline": "#998d9e",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#37393e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "button-text": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "headline-sm": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "900" }],
+                        "button-text": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .cyber-glow-purple {
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
+        }
+        .cyber-glow-green {
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .text-gradient-neon {
+            background: linear-gradient(135deg, #e0b6ff 0%, #39FF14 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-charcoal-black text-on-surface font-body-md min-h-screen overflow-x-hidden selection:bg-electric-purple selection:text-white">
+<!-- Top Navigation (Landing Page Version - Simplified) -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal-black/80 backdrop-blur-md border-b border-glass-border">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-electric-purple text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-display-lg text-headline-sm text-primary tracking-tighter">KontentOS V2</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-primary transition-colors" href="#modes">Modes</a>
+<a class="font-button-text text-button-text text-on-surface-variant hover:text-primary transition-colors" href="#brain">Creator Brain</a>
+</div>
+<div>
+<button class="bg-electric-purple text-on-primary-container font-button-text text-button-text py-3 px-6 rounded-lg cyber-glow-purple hover:bg-primary-container transition-all hover:scale-105">Login</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-32 pb-24 md:pt-48 md:pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
+<!-- Atmospheric Background Elements -->
+<div class="absolute inset-0 pointer-events-none z-0">
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-electric-purple/20 rounded-full blur-[120px] mix-blend-screen"></div>
+<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-hyper-cyan/10 rounded-full blur-[100px] mix-blend-screen"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50 mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_70%)"></div>
+</div>
+<div class="relative z-10 max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop text-center flex flex-col items-center">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel mb-8 border-electric-purple/30 text-electric-purple font-label-mono text-label-mono">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green animate-pulse"></span>
+                V2.0 NOW LIVE
+            </div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg max-w-4xl mb-6 leading-tight">
+                The Creator's <br class="md:hidden"/>
+<span class="text-gradient-neon">Secret Weapon</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10">
+                Bridge the gap between raw creativity and viral authority. A high-octane, performance-driven environment designed to automate growth and scale your content empire.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+<button class="bg-electric-purple text-on-primary-container font-button-text text-button-text py-4 px-10 rounded-lg cyber-glow-purple hover:bg-primary-container transition-all hover:scale-105 flex items-center justify-center gap-2">
+                    Start Your Creator Journey
+                    <span class="material-symbols-outlined text-xl">rocket_launch</span>
+</button>
+<button class="glass-panel text-on-surface font-button-text text-button-text py-4 px-10 rounded-lg hover:bg-surface-variant/50 transition-all hover:border-hyper-cyan/50 flex items-center justify-center gap-2">
+                    Watch Demo
+                    <span class="material-symbols-outlined text-xl">play_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Modes Section -->
+<section class="py-24 relative z-10" id="modes">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md mb-4 text-on-surface">Dual-Natured Engine</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Toggle between pure entertainment focus or high-authority niche building instantly.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Viral Mode Card -->
+<div class="glass-panel rounded-xl p-8 relative overflow-hidden group hover:border-cyber-neon-green/50 transition-colors duration-500">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-cyber-neon-green/10 rounded-full blur-[80px] group-hover:bg-cyber-neon-green/20 transition-all duration-500"></div>
+<div class="relative z-10">
+<div class="w-14 h-14 rounded-lg bg-surface flex items-center justify-center mb-6 border border-glass-border">
+<span class="material-symbols-outlined text-cyber-neon-green text-3xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-surface-tint mb-3">Viral &amp; Entertainment Mode</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Aggressive, high-contrast energy. Optimized for trending formats, rapid hooks, and algorithmic velocity.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-cyber-neon-green text-lg">check_circle</span>
+                                Trending Audio Integration
+                            </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-cyber-neon-green text-lg">check_circle</span>
+                                Hook Analyzer
+                            </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-cyber-neon-green text-lg">check_circle</span>
+                                Viral Action Roulette
+                            </li>
+</ul>
+<button class="w-full bg-cyber-neon-green text-charcoal-black font-button-text text-button-text py-3 rounded-lg cyber-glow-green hover:bg-secondary-container transition-all">Engage Viral Mode</button>
+</div>
+</div>
+<!-- Pro Mode Card -->
+<div class="glass-panel rounded-xl p-8 relative overflow-hidden group hover:border-electric-purple/50 transition-colors duration-500">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-electric-purple/10 rounded-full blur-[80px] group-hover:bg-electric-purple/20 transition-all duration-500"></div>
+<div class="relative z-10">
+<div class="w-14 h-14 rounded-lg bg-surface flex items-center justify-center mb-6 border border-glass-border">
+<span class="material-symbols-outlined text-electric-purple text-3xl" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-3">Pro &amp; Niche Mode</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Precise and reliable. Built for deep dives, long-form content, and establishing unshakeable domain authority.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-electric-purple text-lg">check_circle</span>
+                                Data-Backed Outlines
+                            </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-electric-purple text-lg">check_circle</span>
+                                SEO &amp; Keyword Optimization
+                            </li>
+<li class="flex items-center gap-3 text-on-surface font-body-md">
+<span class="material-symbols-outlined text-electric-purple text-lg">check_circle</span>
+                                Series Continuity Planning
+                            </li>
+</ul>
+<button class="w-full bg-transparent border border-glass-border text-primary font-button-text text-button-text py-3 rounded-lg hover:border-electric-purple hover:bg-electric-purple/10 transition-all">Engage Pro Mode</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Creator Brain Section -->
+<section class="py-24 relative z-10 bg-surface-dim/50 border-y border-glass-border" id="brain">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-hyper-cyan/10 border border-hyper-cyan/30 text-hyper-cyan font-label-mono text-label-mono mb-6">
+<span class="material-symbols-outlined text-sm">memory</span>
+                        INTELLIGENCE CORE
+                    </div>
+<h2 class="font-headline-md text-headline-md mb-6 text-on-surface">Your Creator Brain</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+                        Stop starting from scratch. The Creator Brain stores your unique frameworks, tone of voice, and past successful formats, applying them automatically to new ideas.
+                    </p>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-surface border border-glass-border flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">psychology</span>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface mb-1">Tone Mapping</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Ensures every script sounds exactly like you.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-12 h-12 shrink-0 rounded-full bg-surface border border-glass-border flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">library_books</span>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface mb-1">Format Vault</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Save and reuse structures from your highest-performing videos.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Preview -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-6 rounded-xl col-span-2 relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">VOICE PROFILE</div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Energetic Tech</div>
+</div>
+<div class="bg-electric-purple/20 text-electric-purple px-2 py-1 rounded font-label-mono text-[12px]">ACTIVE</div>
+</div>
+<div class="h-2 w-full bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-electric-purple w-[85%] cyber-glow-purple"></div>
+</div>
+<div class="mt-2 text-right font-label-mono text-[12px] text-on-surface-variant">85% Alignment Match</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col items-center justify-center text-center gap-3">
+<span class="material-symbols-outlined text-hyper-cyan text-4xl">folder_special</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">42</div>
+<div class="font-label-mono text-[12px] text-on-surface-variant">SAVED HOOKS</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col items-center justify-center text-center gap-3">
+<span class="material-symbols-outlined text-cyber-neon-green text-4xl">trending_up</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">12</div>
+<div class="font-label-mono text-[12px] text-on-surface-variant">WINNING FORMATS</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</body></html>

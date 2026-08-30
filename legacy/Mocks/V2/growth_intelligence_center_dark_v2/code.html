@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Montserrat:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "background": "#111317",
+                        "secondary-fixed-dim": "#2ae500",
+                        "on-secondary-container": "#0f6d00",
+                        "secondary": "#d7ffc5",
+                        "secondary-fixed": "#79ff5b",
+                        "on-primary-fixed-variant": "#6a0baa",
+                        "on-tertiary": "#00363a",
+                        "tertiary-container": "#00828b",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                        "on-tertiary-fixed": "#002022",
+                        "secondary-container": "#2ff801",
+                        "on-primary-fixed": "#2e004e",
+                        "primary": "#e0b6ff",
+                        "electric-purple": "#9D4EDD",
+                        "primary-container": "#9d4edd",
+                        "surface-container-highest": "#333539",
+                        "outline": "#998d9e",
+                        "on-secondary": "#053900",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#fffdff",
+                        "charcoal-black": "#0F1115",
+                        "deep-slate": "#1A1D23",
+                        "surface-bright": "#37393e",
+                        "on-surface": "#e2e2e8",
+                        "on-background": "#e2e2e8",
+                        "surface-container-high": "#282a2e",
+                        "primary-fixed": "#f2daff",
+                        "surface-container-low": "#1a1c20",
+                        "outline-variant": "#4d4353",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#e0b6ff",
+                        "tertiary-fixed-dim": "#00dbe9",
+                        "inverse-on-surface": "#2f3035",
+                        "on-tertiary-container": "#f9ffff",
+                        "hyper-cyan": "#00F0FF",
+                        "surface": "#111317",
+                        "on-surface-variant": "#d0c2d5",
+                        "on-primary": "#4c007d",
+                        "surface-container": "#1e2024",
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-primary": "#8433c4",
+                        "surface-variant": "#333539",
+                        "on-secondary-fixed-variant": "#095300",
+                        "on-secondary-fixed": "#022100",
+                        "tertiary-fixed": "#7df4ff",
+                        "inverse-surface": "#e2e2e8",
+                        "error-container": "#93000a",
+                        "surface-dim": "#111317",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "tertiary": "#00dbe9",
+                        "cyber-neon-green": "#39FF14"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "unit": "8px",
+                        "margin-mobile": "16px",
+                        "max-width": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "button-text": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "headline-sm": ["Montserrat"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "button-text": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "900" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #111317;
+            color: #e2e2e8;
+        }
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+        }
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+        /* Custom scrollbar for deep-slate panels */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333539;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9D4EDD;
+        }
+    </style>
+</head>
+<body class="font-body-md antialiased min-h-screen flex flex-col md:flex-row overflow-x-hidden relative">
+<!-- Ambient Background Lighting -->
+<div class="fixed inset-0 z-0 pointer-events-none opacity-30">
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-electric-purple/20 blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] rounded-full bg-cyber-neon-green/10 blur-[100px]"></div>
+</div>
+<!-- SideNavBar (Web) -->
+<nav class="hidden md:flex bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] fixed left-0 top-0 h-screen w-[280px] flex-col py-8 px-6 gap-y-4 z-50">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter">KontentOS V2</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Creator Command Center</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">lightbulb</span>
+                Idea Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">description</span>
+                Script Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">smart_toy</span>
+                Auto-Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">rocket_launch</span>
+                Publishing Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                Growth Intelligence
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+                Monetization
+            </a>
+</div>
+<div class="mt-auto pt-6 border-t border-glass-border">
+<button class="w-full py-3 px-4 bg-electric-purple text-on-primary-container font-button-text text-button-text rounded-lg cyber-glow-primary hover:bg-primary transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Quick Create
+            </button>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="bg-surface-dim/80 backdrop-blur-md fixed top-0 right-0 left-[280px] h-16 border-b border-glass-border flex justify-between items-center px-margin-desktop w-[calc(100%-280px)] z-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-deep-slate border border-glass-border rounded-full py-2 pl-10 pr-4 text-body-md text-on-surface focus:outline-none focus:border-cyber-neon-green transition-colors w-64" placeholder="Search insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-deep-slate px-3 py-1.5 rounded-full border border-glass-border">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green cyber-glow-secondary"></span>
+<span class="font-label-mono text-label-mono text-secondary">Readiness: 98%</span>
+</div>
+<button class="text-primary font-button-text text-button-text hover:text-hyper-cyan transition-colors">Create</button>
+<img alt="User Avatar" class="w-10 h-10 rounded-full border border-electric-purple cyber-glow-primary object-cover" data-alt="A futuristic avatar portrait of a modern digital creator, cyberpunk aesthetic, glowing neon highlights, professional studio lighting against a dark background, highly detailed digital illustration style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8lTG23lWPhB4nvctzp-itQ_ETOVWIuy5unJLuKEHb6uUWowN7x7ghDrHX0lVL-Tse7pupzNVn775ILBTPPEpwwv0dPDbRprcGluZSJ8Ryl4IV3xWBRugqqxt1GCYkvDjb2dQpk7r-XJo-nAnjvUnlILT2Mrqqn1gWjdCNpwspLX14ksRQpn9BEBetnVbBUqR8mq3Oo484DHpGelwhMZvsPHrhMIOFjgHkcS1ow2O-5hknjFuOoiKf"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-[280px] mt-16 p-margin-mobile md:p-margin-desktop relative z-10 w-full overflow-y-auto">
+<!-- Page Header -->
+<div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter">Omni-Channel <span class="text-hyper-cyan">Performance</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Aggregate intelligence across TikTok, YouTube, and Reels. Identify viral velocity and replicate winning architectures.</p>
+</div>
+<div class="flex gap-3">
+<button class="glass-panel px-4 py-2 rounded-lg font-button-text text-button-text text-on-surface hover:text-primary transition-colors border border-glass-border flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                    Last 7 Days
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Hero Metric: Views (Span 8) -->
+<div class="md:col-span-8 glass-panel rounded-xl p-6 flex flex-col justify-between group hover:border-electric-purple transition-colors duration-300 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">visibility</span>
+</div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div>
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Total Views Velocity</h3>
+<div class="flex items-baseline gap-4 mt-2">
+<span class="font-headline-md text-headline-md text-on-surface text-5xl">2.4M</span>
+<span class="font-body-md text-body-md text-cyber-neon-green flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +34%
+                            </span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="w-8 h-8 rounded-full bg-deep-slate border border-glass-border flex items-center justify-center text-primary" title="TikTok">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"></path></svg>
+</span>
+<span class="w-8 h-8 rounded-full bg-deep-slate border border-glass-border flex items-center justify-center text-primary" title="YouTube">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+</span>
+</div>
+</div>
+<!-- Mock Chart Area -->
+<div class="h-48 w-full border-b border-glass-border relative flex items-end justify-between px-2 pb-4 z-10">
+<div class="absolute inset-0 bg-gradient-to-t from-electric-purple/10 to-transparent"></div>
+<!-- Chart Bars Mockup -->
+<div class="w-[8%] bg-surface-variant h-[30%] rounded-t-sm hover:bg-electric-purple transition-colors"></div>
+<div class="w-[8%] bg-surface-variant h-[45%] rounded-t-sm hover:bg-electric-purple transition-colors"></div>
+<div class="w-[8%] bg-surface-variant h-[25%] rounded-t-sm hover:bg-electric-purple transition-colors"></div>
+<div class="w-[8%] bg-electric-purple h-[70%] rounded-t-sm shadow-[0_0_10px_rgba(157,78,221,0.5)]"></div>
+<div class="w-[8%] bg-surface-variant h-[50%] rounded-t-sm hover:bg-electric-purple transition-colors"></div>
+<div class="w-[8%] bg-cyber-neon-green h-[90%] rounded-t-sm shadow-[0_0_10px_rgba(57,255,20,0.5)]"></div>
+<div class="w-[8%] bg-surface-variant h-[65%] rounded-t-sm hover:bg-electric-purple transition-colors"></div>
+</div>
+<div class="flex justify-between mt-4 text-xs font-label-mono text-on-surface-variant opacity-70 z-10">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- Engagement & Retention (Span 4) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Engagement -->
+<div class="glass-panel rounded-xl p-6 flex-1 group hover:border-hyper-cyan transition-colors duration-300">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider mb-2">Aggregate Engagement</h3>
+<div class="flex items-baseline gap-3 mb-4">
+<span class="font-headline-md text-headline-md text-on-surface">184K</span>
+<span class="text-sm text-on-surface-variant">interactions</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">favorite</span> Likes</span>
+<span class="font-label-mono">142K</span>
+</div>
+<div class="w-full bg-deep-slate rounded-full h-1.5"><div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div></div>
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-hyper-cyan text-sm">chat_bubble</span> Comments</span>
+<span class="font-label-mono">24K</span>
+</div>
+<div class="w-full bg-deep-slate rounded-full h-1.5"><div class="bg-hyper-cyan h-1.5 rounded-full" style="width: 15%"></div></div>
+<div class="flex justify-between items-center text-sm">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-cyber-neon-green text-sm">share</span> Shares</span>
+<span class="font-label-mono">18K</span>
+</div>
+<div class="w-full bg-deep-slate rounded-full h-1.5"><div class="bg-cyber-neon-green h-1.5 rounded-full" style="width: 10%"></div></div>
+</div>
+</div>
+<!-- Retention -->
+<div class="glass-panel rounded-xl p-6 flex-1 group hover:border-cyber-neon-green transition-colors duration-300 bg-gradient-to-br from-deep-slate/70 to-deep-slate/90">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider mb-2">Avg. Retention Rate</h3>
+<div class="flex items-baseline gap-3 mb-2">
+<span class="font-headline-md text-headline-md text-cyber-neon-green">68%</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-4">Top 10% of creators in your niche.</p>
+<div class="relative h-12 w-full flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path class="opacity-70" d="M0,0 Q20,30 50,20 T100,35" fill="none" stroke="#39FF14" stroke-width="2"></path>
+<circle class="cyber-glow-secondary" cx="50" cy="20" fill="#39FF14" r="3"></circle>
+</svg>
+<div class="absolute bottom-0 left-[50%] -translate-x-1/2 translate-y-full text-xs font-label-mono mt-1 text-on-surface-variant">Hook (0-3s)</div>
+</div>
+</div>
+</div>
+<!-- AI Performance Diagnostic (Span 12) -->
+<div class="md:col-span-12 mt-4 glass-panel rounded-xl p-1 relative overflow-hidden">
+<!-- Inner Container for glow effect -->
+<div class="bg-charcoal-black rounded-lg p-6 md:p-8 h-full relative z-10 flex flex-col md:flex-row gap-8 items-stretch">
+<!-- Top Video Analysis -->
+<div class="flex-1 border-r border-glass-border pr-0 md:pr-8">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-electric-purple text-2xl">neurology</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">AI Performance Diagnostic</h2>
+</div>
+<div class="bg-deep-slate rounded-lg p-4 border border-glass-border flex gap-4 items-start mb-6">
+<div class="w-24 h-32 rounded bg-surface-variant flex-shrink-0 relative overflow-hidden group">
+<img alt="Video Thumbnail" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A stylized thumbnail for a tech review video, showing a glowing smartphone levitating above a dark desk, dramatic neon blue and purple backlighting, sharp focus, modern digital aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0nohGRDW3xriLv4l9-2NF8EVvbl4FGTRnOnW8gF99EPP0_8Ks9Zl2ak0KxBwIInBRxCTrHUJ6Oo9mu8Ul8ySwn94EL1Unc8tzsIOpHKs9rIiGAWPncJPKgqdJlFpgpPmQD0eYfdRrGuMpDFQFOeo30FY-IOgSth62sBpaHfx0B90k08Ec_Eo0Hf8PPOzPtEjZTBLW5mdenVTLEB9sqq_iUqguh8mogKIHMD2AXjN3c57zj2p7ZwZO"/>
+<span class="absolute bottom-1 right-1 bg-black/70 px-1 rounded text-[10px] font-label-mono">0:58</span>
+</div>
+<div>
+<h4 class="font-button-text text-on-surface mb-1 line-clamp-2">"Why The New AI Chip Changes Everything"</h4>
+<div class="flex gap-2 text-xs font-label-mono text-on-surface-variant mb-2">
+<span class="bg-surface-variant px-2 py-0.5 rounded text-electric-purple">Tech</span>
+<span class="bg-surface-variant px-2 py-0.5 rounded text-hyper-cyan">Review</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">visibility</span> 1.2M</span>
+<span class="flex items-center gap-1 text-cyber-neon-green"><span class="material-symbols-outlined text-xs">arrow_upward</span> Top 1%</span>
+</div>
+</div>
+</div>
+<!-- Diagnostic Factors -->
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 rounded-full bg-cyber-neon-green/20 text-cyber-neon-green flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-[14px]">check</span></div>
+<div>
+<h5 class="font-button-text text-sm text-on-surface">Hook Optimization (0-3s)</h5>
+<p class="text-sm text-on-surface-variant mt-1">High-contrast visual paired with auditory disruption (glass breaking sound) held 92% of viewers past 3 seconds.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 rounded-full bg-electric-purple/20 text-electric-purple flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-[14px]">check</span></div>
+<div>
+<h5 class="font-button-text text-sm text-on-surface">Pacing &amp; Cuts</h5>
+<p class="text-sm text-on-surface-variant mt-1">Average shot length of 1.2s aligned perfectly with the platform's trending attention span model.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Make 10 More Engine -->
+<div class="flex-1 flex flex-col justify-center relative">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-electric-purple/5 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="text-center mb-6">
+<span class="inline-block p-3 rounded-full bg-deep-slate border border-glass-border mb-4">
+<span class="material-symbols-outlined text-3xl text-primary">auto_fix_high</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Replicate Success</h3>
+<p class="text-body-md text-on-surface-variant max-w-sm mx-auto">Extract the winning DNA from this video and generate 10 new script concepts in the Idea Studio.</p>
+</div>
+<div class="bg-deep-slate p-4 rounded-lg border border-glass-border mb-6">
+<div class="text-xs font-label-mono text-on-surface-variant mb-2 uppercase tracking-wide">Extracted DNA Parameters</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-variant rounded-full text-xs font-medium text-on-surface border border-glass-border">Hook: Disruption</span>
+<span class="px-3 py-1 bg-surface-variant rounded-full text-xs font-medium text-on-surface border border-glass-border">Pacing: Fast (1.2s)</span>
+<span class="px-3 py-1 bg-surface-variant rounded-full text-xs font-medium text-on-surface border border-glass-border">Tone: Authoritative</span>
+<span class="px-3 py-1 bg-surface-variant rounded-full text-xs font-medium text-on-surface border border-glass-border">Length: 60s</span>
+</div>
+</div>
+<button class="w-full py-4 bg-cyber-neon-green text-charcoal-black font-button-text text-button-text rounded-lg hover:bg-secondary-fixed transition-colors cyber-glow-secondary flex justify-center items-center gap-2 group">
+<span class="material-symbols-outlined transition-transform group-hover:rotate-180 duration-500">sync</span>
+                            Make 10 More Like This
+                        </button>
+</div>
+</div>
+<!-- Animated border element -->
+<div class="absolute inset-0 z-0 bg-gradient-to-r from-electric-purple via-hyper-cyan to-electric-purple opacity-20" style="animation: border-flow 8s linear infinite;"></div>
+</div>
+</div>
+<style>
+            @keyframes border-flow {
+                0% { background-position: 0% 50%; }
+                100% { background-position: 200% 50%; }
+            }
+        </style>
+<!-- Bottom padding for mobile fab -->
+<div class="h-24 md:hidden"></div>
+</main>
+<!-- Mobile Quick Create FAB -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-electric-purple text-on-primary-container rounded-full cyber-glow-primary flex justify-center items-center z-50 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>

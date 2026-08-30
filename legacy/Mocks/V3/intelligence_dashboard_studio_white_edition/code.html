@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Intelligence Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-container": "#e2e4ea",
+                "on-tertiary-fixed": "#2e1065",
+                "primary-container": "#818cf8",
+                "on-secondary-container": "#585a68",
+                "background": "#e8eaf0",
+                "primary": "#6366f1",
+                "on-tertiary-container": "#3b1f63",
+                "on-secondary-fixed-variant": "#404252",
+                "on-primary": "#ffffff",
+                "on-error-container": "#991b1b",
+                "on-primary-container": "#e0e2ff",
+                "surface-tint": "#6366f1",
+                "surface-bright": "#edeef4",
+                "error": "#dc2626",
+                "error-container": "#fee2e2",
+                "outline-variant": "#d0d2dc",
+                "primary-fixed-dim": "#a5b4fc",
+                "on-error": "#ffffff",
+                "primary-fixed": "#e0e2ff",
+                "on-secondary": "#ffffff",
+                "outline": "#8a8c9a",
+                "on-surface": "#2e3040",
+                "on-tertiary": "#ffffff",
+                "tertiary": "#7c3aed",
+                "surface-variant": "#dcdee4",
+                "on-secondary-fixed": "#1a1b26",
+                "surface-dim": "#d4d6dc",
+                "inverse-primary": "#a5b4fc",
+                "on-primary-fixed": "#1e1b4b",
+                "on-tertiary-fixed-variant": "#5b21b6",
+                "on-primary-fixed-variant": "#4338ca",
+                "tertiary-container": "#a78bfa",
+                "on-background": "#2e3040",
+                "tertiary-fixed-dim": "#c4b5fd",
+                "surface-container-high": "#dcdee4",
+                "surface-container-highest": "#d6d8de",
+                "secondary": "#6c6e7e",
+                "surface": "#e8eaf0",
+                "surface-container-low": "#e5e7ed",
+                "secondary-container": "#d8dae6",
+                "surface-container-lowest": "#f0f2f8",
+                "inverse-surface": "#2e3040",
+                "tertiary-fixed": "#ede9fe",
+                "on-surface-variant": "#585a68",
+                "inverse-on-surface": "#e8eaf0",
+                "secondary-fixed": "#d8dae6",
+                "secondary-fixed-dim": "#b8baca"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem",
+                "xl": "1.5rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "4px",
+                "container-margin": "40px",
+                "gutter": "24px",
+                "section-gap": "64px"
+        },
+        "fontFamily": {
+                "headline": [
+                        "Plus Jakarta Sans"
+                ],
+                "display": [
+                        "Plus Jakarta Sans"
+                ],
+                "body": [
+                        "Plus Jakarta Sans"
+                ],
+                "label": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "data-mono": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Montserrat"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Montserrat"
+                ],
+                "headline-md-mobile": [
+                        "Montserrat"
+                ]
+        },
+        "fontSize": {
+                "body-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-caps": [
+                        "11px",
+                        {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.08em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "data-mono": [
+                        "13px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md-mobile": [
+                        "20px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        /* Tonal Layers & Ultra-Fine Outlines */
+        .card-border {
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+        .card-hover:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            transition: background-color 200ms ease;
+        }
+        /* Custom Input */
+        .minimal-input {
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            transition: border-color 200ms ease;
+        }
+        .minimal-input:focus {
+            outline: none;
+            border-bottom: 0.5px solid #6366f1; /* primary */
+        }
+        /* Custom Scrollbar for minimal look */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-white text-on-surface font-body-md min-h-screen antialiased flex flex-col md:flex-row">
+<!-- SideNavBar (Web) -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full z-50 flex-col bg-white h-screen w-20 hover:w-64 transition-all duration-300 ease-in-out border-r border-outline-variant/50 group">
+<div class="flex flex-col items-center justify-center h-16 w-full border-b border-outline-variant/50 shrink-0 px-4 bg-white">
+<span class="font-headline-md text-headline-md font-bold text-primary truncate group-hover:opacity-100 opacity-0 transition-opacity duration-300">Creator OS</span>
+<span class="material-symbols-outlined text-primary group-hover:hidden absolute">settings_input_component</span>
+</div>
+<div class="flex-1 overflow-y-auto py-4 flex flex-col gap-2 bg-white">
+<!-- Workspace (Active) -->
+<a class="flex items-center px-4 py-3 mx-2 rounded-lg text-primary border-l-2 border-primary bg-primary/5 hover:bg-primary/10 transition-colors duration-200 scale-95 active:scale-90 transition-transform group/link" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="space_dashboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">space_dashboard</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Workspace</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center px-4 py-3 mx-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 scale-95 active:scale-90 transition-transform group/link border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="query_stats">query_stats</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Analytics</span>
+</a>
+<!-- Network -->
+<a class="flex items-center px-4 py-3 mx-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 scale-95 active:scale-90 transition-transform group/link border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="hub">hub</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Network</span>
+</a>
+<!-- Assets -->
+<a class="flex items-center px-4 py-3 mx-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 scale-95 active:scale-90 transition-transform group/link border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_managed">folder_managed</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Assets</span>
+</a>
+<!-- Vault -->
+<a class="flex items-center px-4 py-3 mx-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 scale-95 active:scale-90 transition-transform group/link border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="lock_person">lock_person</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Vault</span>
+</a>
+</div>
+<div class="border-t border-outline-variant/50 p-4 shrink-0 bg-white">
+<!-- CTA -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-full border-[0.5px] border-outline-variant text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 mb-4 opacity-0 group-hover:opacity-100 h-0 group-hover:h-auto overflow-hidden shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="font-label-caps text-label-caps">Create</span>
+</button>
+<!-- Footer links -->
+<div class="flex flex-col gap-2">
+<a class="flex items-center px-2 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 group/link" href="#">
+<span class="material-symbols-outlined shrink-0 text-sm" data-icon="settings">settings</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Settings</span>
+</a>
+<a class="flex items-center px-2 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors duration-200 group/link" href="#">
+<span class="material-symbols-outlined shrink-0 text-sm" data-icon="help_outline">help_outline</span>
+<span class="ml-4 font-body-md text-body-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Support</span>
+</a>
+</div>
+<!-- Profile snippet -->
+<div class="mt-4 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden shrink-0 border border-outline-variant/50">
+<img alt="Executive Profile" class="w-full h-full object-cover grayscale" data-alt="A macro shot of a sleek, dark metallic texture with minimal specular highlights, reflecting a modern executive environment. The lighting is subtle, creating deep shadows and sharp, precise edges. The color palette is strictly monochromatic with deep blacks and cool silvers. Professional, high-end, abstract." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjOxJW6BF9DZ58ub_CF7yS10wn3knU-zHwzqzs8A4ye9d4qODtBq-pEjpRchhRUJUtjlhTbQYOwSmspHwFohQYLQSedotfj4ERdUvV5odWcrLR3tYo2iRh2841AO7N05aaVurr66uidWv6fS2Rhc9pQxL3Pw3B1nqeKSxwj34V9SgxENphpCrYGL-EtTMVO50Lq_e1v1iPxZ2H58FGnEvYqhISxSYvOTQp45Xwl5m2-Y0iAtDt8r51"/>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="font-body-md text-body-md font-medium truncate">Elite Tier</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col md:ml-20 min-h-screen bg-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-20 z-40 flex items-center justify-between px-gutter h-16 bg-white/90 backdrop-blur-xl border-b border-outline-variant/50">
+<!-- Mobile Brand/Menu (visible on mobile only) -->
+<div class="flex items-center gap-4 md:hidden">
+<span class="material-symbols-outlined text-on-surface cursor-pointer">menu</span>
+<span class="font-headline-md-mobile text-headline-md-mobile tracking-tighter text-primary font-bold">Creator OS</span>
+</div>
+<!-- Nav Links (Center/Leftish on Web) -->
+<div class="hidden md:flex items-center gap-8 font-label-caps text-label-caps text-on-surface-variant">
+<a class="text-primary border-b border-primary pb-1 opacity-100 transition-opacity" href="#">Focus</a>
+<a class="hover:text-primary opacity-100 transition-opacity" href="#">Publish</a>
+<a class="hover:text-primary opacity-100 transition-opacity" href="#">Review</a>
+</div>
+<!-- Trailing Actions & Search -->
+<div class="flex items-center gap-4">
+<div class="hidden md:flex relative items-center">
+<span class="material-symbols-outlined absolute left-2 text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent minimal-input pl-8 py-1 text-data-mono font-data-mono text-on-surface w-48 placeholder:text-on-surface-variant/50 focus:w-64 transition-all duration-300" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2"><span class="material-symbols-outlined" data-icon="notifications_none">notifications_none</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2"><span class="material-symbols-outlined" data-icon="offline_bolt">offline_bolt</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 md:hidden"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+</div>
+</header>
+<!-- Dashboard Content Grid -->
+<div class="flex-1 mt-16 p-4 md:p-container-margin md:grid md:grid-cols-12 md:gap-gutter flex flex-col gap-4 overflow-x-hidden bg-background/50">
+<!-- Daily Create Concept (Collapsed Focus) - Span 12 -->
+<section class="col-span-12 card-border rounded-xl bg-white shadow-sm p-6 relative overflow-hidden group">
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<div class="w-full h-full bg-gradient-to-br from-surface-container-lowest/50 to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-medium text-on-surface mb-1">Daily Concept</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">The architecture of silence. Why minimalist UI leads to higher conversion rates in high-ticket B2B SaaS.</p>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<span class="font-data-mono text-data-mono text-[#00A86B] flex items-center gap-1"><span class="material-symbols-outlined text-sm">arrow_upward</span> 94% Signal</span>
+<button class="flex items-center justify-center py-2 px-6 rounded-full border-[0.5px] border-outline-variant text-on-surface hover:bg-surface-container-lowest transition-colors duration-200">
+<span class="font-label-caps text-label-caps">Draft</span>
+</button>
+</div>
+</div>
+<!-- Hidden Breakdown -->
+<div class="mt-6 pt-4 border-t border-outline-variant/50 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300 overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-2">Core Thesis</span>
+<p class="font-body-md text-body-md text-on-surface">Cognitive load reduction directly correlates with perceived product value.</p>
+</div>
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-2">Supporting Data</span>
+<ul class="font-data-mono text-data-mono text-on-surface-variant space-y-1">
+<li>&gt; Case Study A: +22% MRR</li>
+<li>&gt; User testing: 1.4s faster TTI</li>
+</ul>
+</div>
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-2">Target Persona</span>
+<p class="font-body-md text-body-md text-on-surface">VPs of Product, Lead Designers.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Trend Radar (Signal-to-Noise) - Span 8 -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2 px-2">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">Trend Radar // Signal-to-Noise</h3>
+<span class="font-data-mono text-data-mono text-on-surface-variant text-xs">Live</span>
+</div>
+<div class="card-border rounded-xl bg-white shadow-sm p-4 flex flex-col gap-2">
+<!-- List Item 1 -->
+<div class="group card-hover p-3 rounded-lg border-b border-outline-variant/30 last:border-0 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-1.5 h-1.5 rounded-full bg-[#00A86B] shrink-0"></div>
+<span class="font-data-mono text-data-mono text-on-surface">Local LLMs</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-data-mono text-data-mono text-on-surface-variant hidden md:inline">Rising</span>
+<span class="font-data-mono text-data-mono text-on-surface text-right w-12">+45%</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group card-hover p-3 rounded-lg border-b border-outline-variant/30 last:border-0 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-1.5 h-1.5 rounded-full bg-[#00A86B] shrink-0"></div>
+<span class="font-data-mono text-data-mono text-on-surface">Agentic Workflows</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-data-mono text-data-mono text-on-surface-variant hidden md:inline">Spiking</span>
+<span class="font-data-mono text-data-mono text-on-surface text-right w-12">+82%</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="group card-hover p-3 rounded-lg border-b border-outline-variant/30 last:border-0 flex items-center justify-between cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-4">
+<div class="w-1.5 h-1.5 rounded-full bg-error shrink-0"></div>
+<span class="font-data-mono text-data-mono text-on-surface">Generic Prompts</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-data-mono text-data-mono text-on-surface-variant hidden md:inline">Saturated</span>
+<span class="font-data-mono text-data-mono text-on-surface text-right w-12">-12%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Idea Studio (Idea Roulette) - Span 4 -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<div class="flex items-center justify-between mb-2 px-2">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">Idea Studio</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-primary">casino</span>
+</div>
+<div class="card-border rounded-xl bg-white shadow-sm h-full p-6 flex flex-col relative overflow-hidden min-h-[300px]">
+<div class="flex-1 flex flex-col justify-center items-center text-center space-y-4 relative z-10">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant/50 mb-2">auto_awesome</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Input Seed</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Drop a concept or keyword to generate structured variations.</p>
+<div class="w-full mt-8">
+<input class="w-full bg-transparent minimal-input py-2 text-center text-data-mono font-data-mono text-on-surface placeholder:text-on-surface-variant/50" placeholder="e.g. 'Micro-SaaS'" type="text"/>
+</div>
+</div>
+<!-- Decorative subtle lines -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<line stroke="currentColor" stroke-dasharray="2 4" stroke-width="0.5" x1="0" x2="100" y1="50" y2="50"></line>
+<line stroke="currentColor" stroke-dasharray="2 4" stroke-width="0.5" x1="50" x2="50" y1="0" y2="100"></line>
+</svg>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="w-full py-4 border-t border-outline-variant/50 bg-white px-container-margin mt-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-on-surface-variant font-semibold font-data-mono text-data-mono">© 2024 Creator OS. Silent Intelligence.</span>
+<div class="flex items-center gap-6">
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Privacy</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Terms</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">System Status</a>
+</div>
+</footer>
+</main>
+</body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#401a08",
+                    "surface-tint": "#c2652a",
+                    "surface-bright": "#faf5ee",
+                    "tertiary": "#8c3c3c",
+                    "surface-container-highest": "#e6e0d6",
+                    "surface-container-high": "#ece6dc",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#c0392b",
+                    "on-primary-container": "#fbe8d8",
+                    "inverse-surface": "#3a302a",
+                    "surface-container-low": "#f6f0e8",
+                    "inverse-primary": "#f0a878",
+                    "outline-variant": "#d8d0c8",
+                    "on-surface": "#3a302a",
+                    "inverse-on-surface": "#faf5ee",
+                    "on-secondary-fixed": "#2a2420",
+                    "secondary-fixed-dim": "#cec6be",
+                    "surface-container": "#f2ece4",
+                    "on-tertiary-fixed-variant": "#6e3030",
+                    "tertiary-container": "#d47070",
+                    "secondary-fixed": "#eae2da",
+                    "on-tertiary-container": "#3a2020",
+                    "on-secondary-container": "#605850",
+                    "on-surface-variant": "#605850",
+                    "on-error-container": "#7a1a10",
+                    "primary": "#c2652a",
+                    "secondary-container": "#eae2da",
+                    "primary-container": "#e08850",
+                    "on-tertiary-fixed": "#2e1515",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#504840",
+                    "tertiary-fixed-dim": "#e8a0a0",
+                    "primary-fixed-dim": "#f0a878",
+                    "primary-fixed": "#fbe8d8",
+                    "error-container": "#fce4e0",
+                    "secondary": "#78706a",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#ece6dc",
+                    "outline": "#9a9088",
+                    "on-primary-fixed-variant": "#8a4518",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-background": "#3a302a",
+                    "tertiary-fixed": "#fce0e0",
+                    "background": "#faf5ee",
+                    "surface-dim": "#dcd6cc",
+                    "surface": "#faf5ee"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Eb Garamond"
+                    ],
+                    "display": [
+                            "Eb Garamond"
+                    ],
+                    "body": [
+                            "Manrope"
+                    ],
+                    "label": [
+                            "Manrope"
+                    ]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'EB Garamond', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopNavBar (Hidden on Mobile) -->
+<nav class="hidden md:flex bg-surface dark:bg-surface-dim text-primary docked full-width top-0 border-b border-outline-variant/60 shadow-sm flex justify-between items-center w-full px-6 py-4 max-w-full mx-auto z-50 fixed">
+<div class="text-2xl font-headline font-bold text-primary dark:text-primary-fixed">KontentOS V2</div>
+<div class="flex items-center space-x-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 active:scale-95 transition-transform font-label tracking-wide" href="#">Settings</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant/60" data-alt="A warm, professional headshot of a user against a neutral beige background. The lighting is soft and natural, emphasizing approachability and a modern aesthetic. The subject is wearing smart-casual clothing in warm tones. 50-100 words." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqfrX7UJui_w6b1hWJzd-sHJtkE5b8ZFPkYnDBO6yQEJSvCf6SdUab2d9yuLZfTOjxdrk_vJqm0Nuxcr7aGiAyuOhiunZq8nvKwr3PnxGyfZvEYyX3SiIQjgoHOKKXyRqWYDboZ89lLQvTKbodaAijEMJlLxB13QhYHeD3PcoUltbMmLHREm8izOtyP2oEE0c_6HyX_9DfWHyltRRiMDmIHNPaHOnN3Ai_9eylth9mcTkDyGPQm12-"/>
+</div>
+</nav>
+<!-- Layout Container -->
+<div class="flex flex-1 pt-[73px] md:pt-[73px] h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 bg-surface-container-low hidden md:flex flex-col h-full py-8 px-4 z-40 mt-[73px] border-r border-outline-variant/30">
+<div class="mb-8 px-4">
+<h2 class="font-headline text-lg text-on-surface font-bold">Onboarding</h2>
+<p class="font-label text-sm text-on-surface-variant">Setup your workspace</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label text-sm">Basic Info</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-primary-fixed-variant font-bold border-r-4 border-primary bg-primary-fixed/30 hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="category" data-weight="fill" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-label text-sm">Niche Details</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-label text-sm">Use Case</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="brush">brush</span>
+<span class="font-label text-sm">Content Style</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-2 px-4 rounded border border-outline-variant text-on-surface-variant font-label text-sm hover:border-primary hover:text-primary transition-colors duration-200">Save Draft</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 overflow-y-auto bg-background p-6 md:p-12 pb-24">
+<div class="max-w-4xl mx-auto">
+<!-- Step Indicator -->
+<div class="flex items-center justify-between mb-12">
+<p class="font-label text-sm text-on-surface-variant uppercase tracking-widest">Step 2 of 4</p>
+<div class="flex space-x-2">
+<div class="h-1 w-8 bg-surface-container-highest rounded-full"></div>
+<div class="h-1 w-8 bg-primary rounded-full"></div>
+<div class="h-1 w-8 bg-surface-container-highest rounded-full"></div>
+<div class="h-1 w-8 bg-surface-container-highest rounded-full"></div>
+</div>
+</div>
+<header class="mb-12">
+<h1 class="font-headline text-4xl md:text-5xl text-on-surface font-bold mb-4">Define your niche</h1>
+<p class="font-body text-lg text-on-surface-variant max-w-2xl">Select a primary category and specific micro-tags to help us tailor your creative workspace.</p>
+</header>
+<!-- Bento Grid for Primary Categories -->
+<section class="mb-16">
+<h2 class="font-headline text-2xl text-on-surface font-semibold mb-6">Primary Category</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Category Card 1 (Active) -->
+<div class="bg-primary-fixed/20 border-2 border-primary rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-transform hover:scale-105 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4 text-on-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="devices" data-weight="fill" style="font-variation-settings: 'FILL' 1;">devices</span>
+</div>
+<h3 class="font-label text-base font-bold text-on-primary-fixed-variant">Tech &amp; Startups</h3>
+</div>
+<!-- Category Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary/50 hover:bg-surface-container transition-all hover:scale-105 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="payments">payments</span>
+</div>
+<h3 class="font-label text-base font-medium text-on-surface">Finance</h3>
+</div>
+<!-- Category Card 3 -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary/50 hover:bg-surface-container transition-all hover:scale-105 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="fitness_center">fitness_center</span>
+</div>
+<h3 class="font-label text-base font-medium text-on-surface">Fitness &amp; Health</h3>
+</div>
+<!-- Category Card 4 -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary/50 hover:bg-surface-container transition-all hover:scale-105 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center mb-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="palette">palette</span>
+</div>
+<h3 class="font-label text-base font-medium text-on-surface">Design &amp; Art</h3>
+</div>
+</div>
+</section>
+<!-- Micro-Niche Tags Section -->
+<section class="mb-16">
+<h2 class="font-headline text-2xl text-on-surface font-semibold mb-4">Micro-Niche Tags</h2>
+<p class="font-body text-sm text-on-surface-variant mb-6">Select up to 5 tags that best describe your specific focus within Tech &amp; Startups.</p>
+<div class="flex flex-wrap gap-3">
+<button class="px-5 py-2.5 rounded-full border border-primary bg-primary text-on-primary font-label text-sm shadow-sm transition-all hover:bg-primary/90">SaaS</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all">AI &amp; Machine Learning</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all">Web3</button>
+<button class="px-5 py-2.5 rounded-full border border-primary bg-primary text-on-primary font-label text-sm shadow-sm transition-all hover:bg-primary/90">UX/UI Design</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all">Hardware</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all">Cybersecurity</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all">Developer Tools</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-surface-container-low text-on-surface font-label text-sm hover:border-primary hover:text-primary transition-all border-dashed flex items-center space-x-1">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span>Custom Tag</span>
+</button>
+</div>
+</section>
+<!-- Navigation Buttons -->
+<div class="flex justify-between items-center mt-12 pt-8 border-t border-outline-variant/30">
+<button class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface-variant font-label font-semibold hover:bg-surface-container-highest transition-colors">Back</button>
+<button class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label font-bold shadow-[0_2px_16px_rgba(194,101,42,0.3)] hover:bg-primary/90 hover:scale-[1.02] transition-all flex items-center space-x-2">
+<span>Continue</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Command Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config - Sahara Theme -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed-dim": "#f0a878",
+                        "background": "#faf5ee",
+                        "surface-container-high": "#ece6dc",
+                        "on-error": "#ffffff",
+                        "tertiary": "#8c3c3c",
+                        "on-surface-variant": "#605850",
+                        "inverse-primary": "#f0a878",
+                        "surface-container-low": "#f6f0e8",
+                        "on-background": "#3a302a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6e3030",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#78706a",
+                        "surface-variant": "#ece6dc",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#2a2420",
+                        "inverse-on-surface": "#faf5ee",
+                        "primary-fixed": "#fbe8d8",
+                        "surface-bright": "#faf5ee",
+                        "tertiary-fixed-dim": "#e8a0a0",
+                        "tertiary-container": "#d47070",
+                        "on-primary-fixed": "#401a08",
+                        "surface-dim": "#dcd6cc",
+                        "surface-tint": "#c2652a",
+                        "on-primary-fixed-variant": "#8a4518",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#605850",
+                        "secondary-fixed": "#eae2da",
+                        "tertiary-fixed": "#fce0e0",
+                        "primary-container": "#e08850",
+                        "surface-container-highest": "#e6e0d6",
+                        "surface": "#faf5ee",
+                        "on-primary-container": "#fbe8d8",
+                        "outline-variant": "#d8d0c8",
+                        "secondary-container": "#eae2da",
+                        "surface-container": "#f2ece4",
+                        "on-tertiary-container": "#3a2020",
+                        "error-container": "#fce4e0",
+                        "inverse-surface": "#3a302a",
+                        "primary": "#c2652a",
+                        "on-surface": "#3a302a",
+                        "on-secondary-fixed-variant": "#504840",
+                        "outline": "#9a9088",
+                        "on-tertiary-fixed": "#2e1515",
+                        "error": "#c0392b",
+                        "secondary-fixed-dim": "#cec6be",
+                        "on-error-container": "#7a1a10"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["EB Garamond", "serif"],
+                        "display": ["EB Garamond", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'sahara': '0 2px 16px rgba(58, 48, 42, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .symbol-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Subtle fade in animation */
+        @keyframes subtleFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: subtleFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col">
+<!-- Marketing Navigation (Shell Suppressed for Canvas Priority) -->
+<header class="w-full px-6 py-6 md:px-12 flex justify-between items-center z-50 absolute top-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined symbol-filled text-primary text-3xl">token</span>
+<span class="font-headline font-semibold text-2xl tracking-tight text-on-surface">KontentOS V2</span>
+</div>
+<nav class="hidden md:flex items-center gap-8 font-medium text-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#features">Architecture</a>
+<a class="hover:text-primary transition-colors" href="#engine">The Engine</a>
+<a class="hover:text-primary transition-colors" href="#pricing">Pricing</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-medium text-sm text-on-surface hover:text-primary transition-colors">Log In</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-surface-tint transition-all shadow-sahara hover:shadow-md transform hover:-translate-y-0.5">Start Creating</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col items-center pt-32 pb-24 px-6 md:px-12 w-full max-w-7xl mx-auto space-y-32 overflow-hidden">
+<!-- Hero Section -->
+<section class="w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24 min-h-[70vh]">
+<div class="flex-1 flex flex-col items-start space-y-8 animate-fade-up opacity-0">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-xs font-semibold tracking-wider text-primary uppercase">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Now available globally
+                </div>
+<h1 class="font-headline text-5xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-on-background">
+                    Sun-baked <br/>
+<span class="text-secondary italic font-light">simplicity.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-xl leading-relaxed font-light">
+                    KontentOS V2 is the luxurious, warm-minimalist command center for elite creators. Harness the Dual-Mode Engine to publish with editorial precision or viral velocity.
+                </p>
+<div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-4">
+<button class="w-full sm:w-auto bg-primary text-on-primary px-8 py-4 rounded-lg font-medium text-base hover:bg-surface-tint transition-all shadow-sahara hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        Enter the Studio
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<button class="w-full sm:w-auto bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded-lg font-medium text-base hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
+                        View Architecture
+                    </button>
+</div>
+</div>
+<div class="flex-1 w-full animate-fade-up opacity-0 delay-200 relative">
+<!-- Abstract decorative element -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-fixed-dim/30 rounded-full blur-3xl -z-10"></div>
+<!-- Product Preview Image -->
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-2xl border border-outline-variant/50 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A sophisticated, high-end digital dashboard interface rendered in warm, sun-baked desert tones. The UI features elegant EB Garamond serif typography paired with clean sans-serif data points. The layout is minimalist and spacious, resembling a luxury editorial magazine spread more than a traditional software tool. The color palette revolves around warm linen backgrounds, burnt sienna accents, and soft, warm grays. Soft, diffused lighting creates an inviting, premium atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOS9fbEi0vatLhVXTbvH7Vyk6pINY-yeg-iI_uVEwEh8vEhlBlGNiZs2djZmM6Cwh1MIWwZLi_I9z7Di5aqxIJeYfhblhePAcrIAPB_pt3NnOLgi1Keou6xSkkVtQ7X1GcdTeddW7Th8vB_-9MdglWA7HROuPj5sOT5YzSaJZe6aybD-BdTpdK8nWM4H4__97XbrCpX8-Juus65HBr3UA3iIm6xf29XmUQdb6NIEvNOTrQ1hEg7Z1-"/>
+<!-- Floating UI element simulation -->
+<div class="absolute bottom-6 left-6 right-6 bg-surface-bright/90 backdrop-blur-md border border-outline-variant/40 rounded-lg p-4 shadow-sahara flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface">Creator Brain Active</p>
+<p class="text-xs text-on-surface-variant">Processing 4 new insights...</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary">more_horiz</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid / Features -->
+<section class="w-full flex flex-col space-y-16 animate-fade-up opacity-0 delay-300" id="features">
+<div class="text-center max-w-2xl mx-auto space-y-4">
+<h2 class="font-headline text-4xl md:text-5xl text-on-background">Architected for clarity.</h2>
+<p class="text-on-surface-variant text-lg">Leave the clutter behind. Discover tools that respect your attention and elevate your output.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
+<!-- Large Card: Dual-Mode Engine -->
+<div class="md:col-span-2 bg-surface-container-low rounded-xl border border-outline-variant/60 p-8 md:p-12 shadow-sahara flex flex-col justify-between group overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 max-w-md space-y-6">
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">tune</span>
+<h3 class="font-headline text-3xl text-on-surface">The Dual-Mode Engine</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Shift gears instantly. Engage <strong class="text-on-surface font-medium">Viral Mode</strong> for high-frequency, trend-driven output, or switch to <strong class="text-on-surface font-medium">Pro Mode</strong> for deep, evergreen editorial pieces. The engine adapts its UI to your current strategy.
+                        </p>
+</div>
+<div class="relative z-10 mt-12 flex gap-4">
+<div class="flex-1 bg-surface rounded-lg p-4 border border-outline-variant/40 text-center">
+<span class="text-xs uppercase tracking-widest text-primary font-semibold mb-1 block">Viral</span>
+<span class="font-headline text-2xl text-on-surface">1.2M+</span>
+<p class="text-xs text-on-surface-variant mt-1">Est. Reach</p>
+</div>
+<div class="flex-1 bg-surface-variant rounded-lg p-4 border border-outline-variant/40 text-center opacity-60">
+<span class="text-xs uppercase tracking-widest text-secondary font-semibold mb-1 block">Pro</span>
+<span class="font-headline text-2xl text-on-surface">Deep</span>
+<p class="text-xs text-on-surface-variant mt-1">Focus State</p>
+</div>
+</div>
+</div>
+<!-- Small Card: Creator Brain -->
+<div class="bg-surface-bright rounded-xl border border-outline-variant/60 p-8 shadow-sahara flex flex-col">
+<span class="material-symbols-outlined text-4xl text-tertiary mb-6 block">psychology</span>
+<h3 class="font-headline text-2xl text-on-surface mb-4">Creator Brain</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                        Your digital cortex. It silently organizes your loose ideas, half-written scripts, and visual assets into cohesive campaign structures using semantic warmth.
+                    </p>
+<button class="mt-8 self-start text-sm font-semibold text-primary hover:text-surface-tint transition-colors flex items-center gap-1 border-b border-transparent hover:border-surface-tint pb-1">
+                        Explore the Brain
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Small Card: Aesthetic Formatting -->
+<div class="bg-surface-container-highest rounded-xl border border-outline-variant/40 p-8 shadow-sahara flex flex-col justify-center items-center text-center relative overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(var(--tw-colors-primary) 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-4xl text-on-surface mb-4 block">format_paint</span>
+<h3 class="font-headline text-2xl text-on-surface mb-2">Editorial Formats</h3>
+<p class="text-sm text-on-surface-variant max-w-xs">Publishing templates that respect whitespace and typography, straight out of the box.</p>
+</div>
+</div>
+<!-- Wide Card: Growth Intelligence -->
+<div class="md:col-span-2 bg-surface-container-low rounded-xl border border-outline-variant/60 p-8 shadow-sahara flex flex-col md:flex-row items-center gap-8">
+<div class="flex-1 space-y-4">
+<span class="material-symbols-outlined text-4xl text-primary block">monitoring</span>
+<h3 class="font-headline text-2xl text-on-surface">Growth Intelligence</h3>
+<p class="text-on-surface-variant">
+                            Analytics stripped of anxiety. We present only the metrics that dictate action, framed in warm, readable narratives rather than cold spreadsheets.
+                        </p>
+</div>
+<div class="w-full md:w-1/2 h-40 bg-surface rounded-lg border border-outline-variant/40 overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A minimalist data visualization chart depicted in soft, warm tones. The background is a pale, warm linen color. The data lines are smooth, elegant curves in burnt sienna and dusty rose colors. There are no harsh gridlines or complex axes, just elegant, floating data points that convey a sense of calm, positive growth. The aesthetic is clean, luxurious, and completely devoid of typical corporate software clutter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGbG2T_jheFlf_6_egYp2LvcIW6YEk2H2b5omBq8yVZgR06FDqoGQH49rSxsXnGuBajK15jFEehh6Kj0c95Fa-IQKTEjyMQnIGEbL_PfDyTyDJ5JNabIdCHpTfMDQBy2Ber9Y4ANpxJDxsD8Y0BiDJIfRV44XSOjZ-lS2hvF6tG14TMQrTbRwqwO5Tv1hTcI7lq8U0UaVK01CxZ5HbZ26FZYBCmLlSvncVaWoT6So_MrmKTcqe8g8V"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="w-full py-24 border-t border-outline-variant/30 flex flex-col items-center text-center space-y-8">
+<h2 class="font-headline text-4xl md:text-6xl text-on-background max-w-2xl">
+                Ready to command your empire?
+            </h2>
+<p class="text-on-surface-variant text-lg max-w-md">
+                Join the select group of creators treating their content like a luxury publication.
+            </p>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-lg font-medium text-lg hover:bg-surface-tint transition-all shadow-sahara hover:shadow-xl transform hover:-translate-y-1">
+                Start Creating Now
+            </button>
+</section>
+</main>
+<!-- Minimalist Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-12 px-6 md:px-12 mt-auto">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined symbol-filled text-primary text-xl">token</span>
+<span class="font-headline font-semibold text-lg text-on-surface">KontentOS</span>
+</div>
+<div class="flex gap-8 text-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">System Status</a>
+</div>
+<p class="text-xs text-secondary">© 2024 KontentOS Inc. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple intersection observer for scroll animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-fade-up').forEach((el) => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>

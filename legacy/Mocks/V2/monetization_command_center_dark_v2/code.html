@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Monetization Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "background": "#111317",
+                      "secondary-fixed-dim": "#2ae500",
+                      "on-secondary-container": "#0f6d00",
+                      "secondary": "#d7ffc5",
+                      "secondary-fixed": "#79ff5b",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "on-tertiary": "#00363a",
+                      "tertiary-container": "#00828b",
+                      "glass-border": "rgba(255, 255, 255, 0.12)",
+                      "on-tertiary-fixed": "#002022",
+                      "secondary-container": "#2ff801",
+                      "on-primary-fixed": "#2e004e",
+                      "primary": "#e0b6ff",
+                      "electric-purple": "#9D4EDD",
+                      "primary-container": "#9d4edd",
+                      "surface-container-highest": "#333539",
+                      "outline": "#998d9e",
+                      "on-secondary": "#053900",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#fffdff",
+                      "charcoal-black": "#0F1115",
+                      "deep-slate": "#1A1D23",
+                      "surface-bright": "#37393e",
+                      "on-surface": "#e2e2e8",
+                      "on-background": "#e2e2e8",
+                      "surface-container-high": "#282a2e",
+                      "primary-fixed": "#f2daff",
+                      "surface-container-low": "#1a1c20",
+                      "outline-variant": "#4d4353",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#e0b6ff",
+                      "tertiary-fixed-dim": "#00dbe9",
+                      "inverse-on-surface": "#2f3035",
+                      "on-tertiary-container": "#f9ffff",
+                      "hyper-cyan": "#00F0FF",
+                      "surface": "#111317",
+                      "on-surface-variant": "#d0c2d5",
+                      "on-primary": "#4c007d",
+                      "surface-container": "#1e2024",
+                      "surface-container-lowest": "#0c0e12",
+                      "inverse-primary": "#8433c4",
+                      "surface-variant": "#333539",
+                      "on-secondary-fixed-variant": "#095300",
+                      "on-secondary-fixed": "#022100",
+                      "tertiary-fixed": "#7df4ff",
+                      "inverse-surface": "#e2e2e8",
+                      "error-container": "#93000a",
+                      "surface-dim": "#111317",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "tertiary": "#00dbe9",
+                      "cyber-neon-green": "#39FF14"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "unit": "8px",
+                      "margin-mobile": "16px",
+                      "max-width": "1440px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "button-text": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "900"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0F1115;
+            color: #e2e2e8;
+        }
+        .cyber-glow {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        .cyber-glow-green {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md bg-charcoal-black text-on-surface antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-[280px] fixed left-0 top-0 bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] py-8 px-6 gap-y-4 z-50">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter">KontentOS V2</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">Creator Command Center</p>
+</div>
+<div class="flex flex-col gap-y-2 flex-grow">
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-button-text text-button-text">Idea Studio</span>
+</a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-button-text text-button-text">Script Studio</span>
+</a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-button-text text-button-text">Auto-Studio</span>
+</a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-button-text text-button-text">Publishing Hub</span>
+</a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-button-text text-button-text">Growth Intelligence</span>
+</a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-95 group" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-button-text text-button-text">Monetization</span>
+</a>
+</div>
+<button class="mt-auto flex items-center justify-center gap-2 w-full py-3 bg-electric-purple text-on-primary-container rounded-lg font-button-text text-button-text cyber-glow hover:bg-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+            Quick Create
+        </button>
+</nav>
+<!-- TopAppBar -->
+<header class="hidden md:flex fixed top-0 right-0 left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border justify-between items-center px-margin-desktop z-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-deep-slate border border-glass-border rounded-full py-2 pl-10 pr-4 text-sm text-on-surface focus:outline-none focus:border-cyber-neon-green transition-colors w-64 font-body-md text-body-md" placeholder="Search Command Center..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-deep-slate px-3 py-1.5 rounded-full border border-glass-border">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green cyber-glow-green"></span>
+<span class="font-label-mono text-label-mono text-cyber-neon-green">Readiness: 98%</span>
+</div>
+<button class="bg-transparent border border-glass-border text-on-surface px-4 py-2 rounded-lg font-button-text text-button-text hover:bg-surface-variant transition-colors backdrop-blur-md">
+                Create
+            </button>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-glass-border">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A futuristic avatar profile picture for a digital creator, featuring neon purple lighting and deep shadows, very cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB7SXByaIV4PLe00RPWbpvVbmuB9ioBwdVK0F8ZghOqq56HLY_rJsIwLdO2NAeD5hMJ2g4EOmZ-hRRYUXTCfjFyfrwKDdGzV2ZZfnpLWNFspOcUtlZLybl8zjoxD1xQi73wo0sbXWwng21ks6fMQtugrRt9CO0U-m2ybpdIt2LASbacyMKriHnAwZN7C0nD7e56neQ_qeZgmsgMJ6mEYpo_PR5SXRV-R24ejXTTSRnWmWnKLrvIVh9"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="md:ml-[280px] md:pt-16 min-h-screen p-margin-mobile md:p-gutter">
+<div class="max-w-max-width mx-auto">
+<div class="mb-8">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter mb-2">Monetization Hub</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Manage sponsorships, calculate rates, and optimize your public presence.</p>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Rate Calculator -->
+<div class="xl:col-span-1 glass-panel rounded-xl p-6 flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-glass-border pb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple">calculate</span>
+                            Rate Calculator
+                        </h3>
+<div class="relative">
+<select class="appearance-none bg-surface-container border border-glass-border rounded-md py-1 pl-3 pr-8 text-sm font-label-mono text-label-mono focus:outline-none focus:border-cyber-neon-green">
+<option>USD ($)</option>
+<option>EUR (€)</option>
+<option>GBP (£)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-1">Deliverable Type</label>
+<select class="w-full bg-deep-slate border border-glass-border rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-cyber-neon-green">
+<option>Dedicated YouTube Video</option>
+<option>YouTube Integration (60s)</option>
+<option>TikTok Series (3 parts)</option>
+<option>Instagram Reel + Story</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-1">Avg. Views (30d)</label>
+<input class="w-full bg-deep-slate border border-glass-border rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-cyber-neon-green" type="number" value="250000"/>
+</div>
+<div>
+<label class="block font-label-mono text-label-mono text-on-surface-variant mb-1">Engagement Rate</label>
+<input class="w-full bg-deep-slate border border-glass-border rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-cyber-neon-green" type="number" value="8.5"/>
+</div>
+</div>
+<div class="pt-4 border-t border-glass-border">
+<div class="flex justify-between items-end mb-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Suggested Base Rate</span>
+<span class="font-headline-md text-headline-md text-cyber-neon-green">$4,250</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="font-label-mono text-label-mono text-on-surface-variant">CPM: $17.00</span>
+<span class="font-label-mono text-label-mono text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">trending_up</span> +12% vs last month</span>
+</div>
+</div>
+<button class="w-full py-3 bg-transparent border border-electric-purple text-electric-purple rounded-lg font-button-text text-button-text hover:bg-electric-purple/10 transition-colors mt-2">
+                            Add to Proposal
+                        </button>
+</div>
+</div>
+<!-- Active Deal Pipeline -->
+<div class="xl:col-span-2 glass-panel rounded-xl p-6 flex flex-col">
+<div class="flex items-center justify-between border-b border-glass-border pb-4 mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-hyper-cyan">handshake</span>
+                            Active Deal Pipeline
+                        </h3>
+<button class="text-sm font-button-text text-button-text text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
+                            View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
+<!-- Column: Pitching -->
+<div class="bg-surface-container rounded-lg p-4 border border-glass-border flex flex-col gap-3">
+<h4 class="font-label-mono text-label-mono text-on-surface-variant flex justify-between items-center">
+                                PITCHING <span class="bg-surface-variant px-2 py-0.5 rounded-full text-xs">2</span>
+</h4>
+<div class="bg-deep-slate rounded border border-glass-border p-3 hover:border-electric-purple transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-button-text text-button-text text-on-surface">TechCorp Audio</span>
+<span class="font-label-mono text-label-mono text-electric-purple">$2.5k</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-3">Podcast Sponsorship Q3</p>
+<div class="flex items-center gap-2 text-xs font-label-mono text-label-mono text-outline">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Sent 2d ago
+                                </div>
+</div>
+</div>
+<!-- Column: Negotiating -->
+<div class="bg-surface-container rounded-lg p-4 border border-glass-border flex flex-col gap-3">
+<h4 class="font-label-mono text-label-mono text-on-surface-variant flex justify-between items-center">
+                                NEGOTIATING <span class="bg-surface-variant px-2 py-0.5 rounded-full text-xs">1</span>
+</h4>
+<div class="bg-deep-slate rounded border border-hyper-cyan/30 p-3 hover:border-hyper-cyan transition-colors cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-hyper-cyan"></div>
+<div class="flex justify-between items-start mb-2 ml-1">
+<span class="font-button-text text-button-text text-on-surface">EnergyDrink Co</span>
+<span class="font-label-mono text-label-mono text-hyper-cyan">$6.0k</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-3 ml-1">TikTok Series Integration</p>
+<div class="flex items-center gap-2 text-xs font-label-mono text-label-mono text-hyper-cyan ml-1">
+<span class="material-symbols-outlined text-[14px]">mail</span> Awaiting Contract
+                                </div>
+</div>
+</div>
+<!-- Column: Closed Won -->
+<div class="bg-surface-container rounded-lg p-4 border border-glass-border flex flex-col gap-3">
+<h4 class="font-label-mono text-label-mono text-on-surface-variant flex justify-between items-center">
+                                ACTIVE / WON <span class="bg-surface-variant px-2 py-0.5 rounded-full text-xs">1</span>
+</h4>
+<div class="bg-deep-slate rounded border border-cyber-neon-green/30 p-3 hover:border-cyber-neon-green transition-colors cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-cyber-neon-green"></div>
+<div class="flex justify-between items-start mb-2 ml-1">
+<span class="font-button-text text-button-text text-on-surface">Software SaaS</span>
+<span class="font-label-mono text-label-mono text-cyber-neon-green">$8.5k</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-3 ml-1">Dedicated YouTube Video</p>
+<div class="flex items-center gap-2 text-xs font-label-mono text-label-mono text-cyber-neon-green ml-1">
+<span class="material-symbols-outlined text-[14px]">play_circle</span> Script Approval Due
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Public Media Kit Preview -->
+<div class="xl:col-span-3 glass-panel rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-electric-purple/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
+<div class="flex items-center justify-between border-b border-glass-border pb-4 mb-6">
+<div class="flex items-center gap-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">public</span>
+                                Live Media Kit Preview
+                            </h3>
+<span class="bg-surface-variant px-3 py-1 rounded-full text-xs font-label-mono text-label-mono text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-cyber-neon-green"></span> Live at kontent.os/yourname
+                            </span>
+</div>
+<div class="flex gap-3">
+<button class="bg-transparent border border-glass-border text-on-surface px-4 py-2 rounded-lg font-button-text text-button-text hover:bg-surface-variant transition-colors text-sm">
+                                Copy Link
+                            </button>
+<button class="bg-surface-variant text-on-surface px-4 py-2 rounded-lg font-button-text text-button-text hover:bg-outline transition-colors text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit Kit
+                            </button>
+</div>
+</div>
+<div class="bg-background rounded-lg border border-glass-border p-8 flex flex-col md:flex-row gap-8 items-center md:items-start relative z-10">
+<div class="w-32 h-32 rounded-full border-4 border-surface-container overflow-hidden shrink-0 shadow-[0_0_20px_rgba(157,78,221,0.2)]">
+<img alt="Creator Profile" class="w-full h-full object-cover" data-alt="High-quality professional headshot of a creator looking confident, lit with moody cyberpunk lighting, purple and blue tones, dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHARS_fFX4kKt855G7-YBkOJVpJdCeOj3vqf9adChDyTX8p5Endy3nKSP9TZqUEeDiTM7d2CcIE7rgdLjYLrEnAK_iLEpT38-XXa9-d1GzkkePIKYXs8XiBzbQRM3Cq9Nd7Qd9XnROCKKubf6tu6u-Q_FQGVEZk_AJP60l27Q6-NoNOQRuDm9oVlY4JxBwwU_lhl6GPjkKdzn50hg9JKrFVhsTL0PtSVzgPxcNsn3w1rrrzPbUHlwe"/>
+</div>
+<div class="flex-grow text-center md:text-left">
+<h2 class="font-display-lg text-headline-md text-on-surface mb-1">Alex Kontent</h2>
+<p class="font-body-lg text-body-lg text-primary mb-4">Tech &amp; Design Educator</p>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mb-6">
+                                Demystifying complex software and design principles for a new generation of digital creators. Focused on high-quality, actionable tutorials and deep dives.
+                            </p>
+<div class="flex flex-wrap gap-4 justify-center md:justify-start">
+<div class="bg-surface-container px-4 py-2 rounded border border-glass-border">
+<div class="font-label-mono text-xs text-on-surface-variant mb-1">YOUTUBE SUBS</div>
+<div class="font-headline-sm text-headline-sm text-on-surface">1.2M</div>
+</div>
+<div class="bg-surface-container px-4 py-2 rounded border border-glass-border">
+<div class="font-label-mono text-xs text-on-surface-variant mb-1">MONTHLY VIEWS</div>
+<div class="font-headline-sm text-headline-sm text-on-surface">4.5M</div>
+</div>
+<div class="bg-surface-container px-4 py-2 rounded border border-glass-border">
+<div class="font-label-mono text-xs text-on-surface-variant mb-1">AUDIENCE</div>
+<div class="font-headline-sm text-headline-sm text-on-surface">18-34, US/UK</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

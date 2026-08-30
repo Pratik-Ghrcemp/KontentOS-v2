@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator OS - Monetization Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e2e4ea",
+                        "on-tertiary-fixed": "#2e1065",
+                        "primary-container": "#818cf8",
+                        "on-secondary-container": "#585a68",
+                        "background": "#ffffff",
+                        "primary": "#6366f1",
+                        "on-tertiary-container": "#3b1f63",
+                        "on-secondary-fixed-variant": "#404252",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#991b1b",
+                        "on-primary-container": "#e0e2ff",
+                        "surface-tint": "#6366f1",
+                        "surface-bright": "#ffffff",
+                        "error": "#dc2626",
+                        "error-container": "#fee2e2",
+                        "outline-variant": "#d0d2dc",
+                        "primary-fixed-dim": "#a5b4fc",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#e0e2ff",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8a8c9a",
+                        "on-surface": "#2e3040",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#7c3aed",
+                        "surface-variant": "#f0f2f8",
+                        "on-secondary-fixed": "#1a1b26",
+                        "surface-dim": "#d4d6dc",
+                        "inverse-primary": "#a5b4fc",
+                        "on-primary-fixed": "#1e1b4b",
+                        "on-tertiary-fixed-variant": "#5b21b6",
+                        "on-primary-fixed-variant": "#4338ca",
+                        "tertiary-container": "#a78bfa",
+                        "on-background": "#2e3040",
+                        "tertiary-fixed-dim": "#c4b5fd",
+                        "surface-container-high": "#dcdee4",
+                        "surface-container-highest": "#e5e7ed",
+                        "secondary": "#6c6e7e",
+                        "surface": "#ffffff",
+                        "surface-container-low": "#ffffff",
+                        "secondary-container": "#d8dae6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2e3040",
+                        "tertiary-fixed": "#ede9fe",
+                        "on-surface-variant": "#585a68",
+                        "inverse-on-surface": "#e8eaf0",
+                        "secondary-fixed": "#d8dae6",
+                        "secondary-fixed-dim": "#b8baca"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-margin": "40px",
+                        "gutter": "24px",
+                        "section-gap": "64px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "data-mono": ["JetBrains Mono"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "headline-md-mobile": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600" }],
+                        "data-mono": ["13px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "headline-md-mobile": ["20px", { "lineHeight": "1.2", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .border-ultra-fine {
+            border-color: rgba(0, 0, 0, 0.1);
+            border-width: 0.5px;
+        }
+        .border-t-ultra-fine { border-top-width: 0.5px; border-top-color: rgba(0, 0, 0, 0.1); }
+        .border-r-ultra-fine { border-right-width: 0.5px; border-right-color: rgba(0, 0, 0, 0.1); }
+        .border-b-ultra-fine { border-bottom-width: 0.5px; border-bottom-color: rgba(0, 0, 0, 0.1); }
+        .border-l-ultra-fine { border-left-width: 0.5px; border-left-color: rgba(0, 0, 0, 0.1); }
+        
+        .hover-elevate { transition: background-color 200ms ease; }
+        .hover-elevate:hover { background-color: #f8f9fa; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen selection:bg-surface-container selection:text-primary">
+<!-- TopAppBar -->
+<header class="bg-background/80 backdrop-blur-xl docked full-width top-0 h-16 border-b border-outline-variant/30 flat no shadows fixed top-0 right-0 left-20 z-40 flex items-center justify-between px-gutter">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md tracking-tighter text-on-surface hidden md:block">Creator OS</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-on-surface border-b border-on-surface pb-1 opacity-100 hover:opacity-80 uppercase" href="#">Focus</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-opacity opacity-100 hover:opacity-80 uppercase" href="#">Publish</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-opacity opacity-100 hover:opacity-80 uppercase" href="#">Review</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button aria-label="notifications_none" class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications_none</span>
+</button>
+<button aria-label="offline_bolt" class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">offline_bolt</span>
+</button>
+<button aria-label="account_circle" class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-background h-screen w-20 hover:w-64 transition-all duration-300 ease-in-out border-r border-outline-variant/30 flat no shadows fixed left-0 top-0 h-full z-50 flex flex-col group">
+<div class="p-4 flex flex-col h-full">
+<div class="mb-8 flex items-center gap-3 overflow-hidden whitespace-nowrap">
+<div class="w-10 h-10 rounded-full border-ultra-fine bg-surface-container flex items-center justify-center shrink-0">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">C</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+<div class="font-data-mono text-data-mono text-on-surface truncate">Executive Profile</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Elite Tier</div>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">space_dashboard</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Workspace</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">query_stats</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Analytics</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">hub</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Network</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-primary border-l-2 border-primary bg-surface-container-low transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]" style="font-variation-settings: 'FILL' 1;">folder_managed</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Assets</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">lock_person</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Vault</span>
+</a>
+</div>
+<div class="mt-auto space-y-2 pt-4 border-t-ultra-fine">
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">settings</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Settings</span>
+</a>
+<a class="flex items-center gap-4 p-3 rounded-lg font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200 scale-95 active:scale-90 transition-transform overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined shrink-0 text-[22px]">help_outline</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Support</span>
+</a>
+<button class="w-full mt-4 bg-transparent border border-on-surface text-on-surface font-data-mono text-data-mono py-2 rounded-lg hover:bg-surface-container-high transition-colors duration-200 flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap group-hover:px-4">
+<span class="material-symbols-outlined shrink-0 text-[18px]">add</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 w-0 group-hover:w-auto">Create</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-20 pt-16 min-h-screen flex flex-col p-container-margin md:p-container-margin sm:p-gutter p-4">
+<!-- Header Section -->
+<header class="mb-12 max-w-7xl mx-auto w-full">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2 tracking-tighter">Monetization Command Center</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Manage your active pipeline, optimize rate engines, and fine-tune your public media kit presentation.</p>
+</header>
+<div class="max-w-7xl mx-auto w-full flex-1 flex flex-col gap-section-gap">
+<!-- Rate Engine & Media Kit Row -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Rate Engine -->
+<section class="lg:col-span-8 flex flex-col gap-6">
+<div class="flex items-center justify-between border-b-ultra-fine pb-2">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Rate Engine</h2>
+<span class="font-data-mono text-data-mono text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +4.2% MoM
+                        </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Dedicated Integration</span>
+<div class="font-display-lg text-display-lg text-on-surface tabular-nums tracking-tighter mt-1">
+<span class="text-on-surface-variant font-medium text-[24px] mr-1">₹</span>2.4L
+                            </div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mt-2 text-[11px] opacity-70">Suggested vs Market: +15%</div>
+</div>
+<div class="flex flex-col gap-1 border-l-ultra-fine pl-6 hidden md:flex">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">60s Integration</span>
+<div class="font-display-lg text-display-lg text-on-surface tabular-nums tracking-tighter mt-1">
+<span class="text-on-surface-variant font-medium text-[24px] mr-1">₹</span>1.8L
+                            </div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mt-2 text-[11px] opacity-70">Suggested vs Market: +8%</div>
+</div>
+<div class="flex flex-col gap-1 border-l-ultra-fine pl-6 hidden md:flex">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">IG Reel (Collab)</span>
+<div class="font-display-lg text-display-lg text-on-surface tabular-nums tracking-tighter mt-1">
+<span class="text-on-surface-variant font-medium text-[24px] mr-1">₹</span>95K
+                            </div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mt-2 text-[11px] opacity-70">Suggested vs Market: -2%</div>
+</div>
+</div>
+</section>
+<!-- Media Kit Preview -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<div class="flex items-center justify-between border-b-ultra-fine pb-2">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Media Kit Preview</h2>
+<button class="font-data-mono text-data-mono text-primary hover:text-primary-container transition-colors">Edit</button>
+</div>
+<div class="border-ultra-fine rounded p-6 relative overflow-hidden group hover-elevate cursor-pointer bg-surface">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low to-transparent pointer-events-none"></div>
+<div class="relative z-10 flex flex-col h-full justify-between gap-8">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Executive Profile</h3>
+<p class="font-data-mono text-data-mono text-on-surface-variant">Tech &amp; Finance Content</p>
+</div>
+<div class="w-12 h-12 rounded-full border-ultra-fine bg-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">qr_code_2</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-1">Avg Reach</div>
+<div class="font-data-mono text-data-mono text-on-surface">450K+</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-1">Engagement</div>
+<div class="font-data-mono text-data-mono text-on-surface">8.4%</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Active Pipeline -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between border-b-ultra-fine pb-2 mb-2">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Active Pipeline</h2>
+<div class="flex gap-4">
+<button class="font-data-mono text-data-mono text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                        </button>
+<button class="font-data-mono text-data-mono text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">download</span> Export
+                        </button>
+</div>
+</div>
+<!-- High-Precision Table -->
+<div class="w-full overflow-x-auto pb-4">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="border-b-ultra-fine">
+<th class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest py-3 font-normal w-1/4">Partner</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest py-3 font-normal w-1/4">Deliverable</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest py-3 font-normal w-1/6 text-right">Value (INR)</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest py-3 font-normal w-1/6 pl-6">Status</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest py-3 font-normal w-1/6 text-right pr-4">Action</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono">
+<tr class="border-b-ultra-fine hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 text-on-surface flex items-center gap-3">
+<div class="w-6 h-6 rounded-sm bg-surface-container flex items-center justify-center shrink-0 border-ultra-fine">
+<span class="text-[10px] font-bold text-on-surface">Z</span>
+</div>
+                                    Zephyr Fin
+                                </td>
+<td class="py-4 text-on-surface-variant">Dedicated Video (Q3)</td>
+<td class="py-4 text-on-surface text-right tabular-nums">2,40,000</td>
+<td class="py-4 pl-6">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<span class="text-on-surface-variant">Contract Sent</span>
+</div>
+</td>
+<td class="py-4 text-right pr-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="border-b-ultra-fine hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 text-on-surface flex items-center gap-3">
+<div class="w-6 h-6 rounded-sm bg-surface-container flex items-center justify-center shrink-0 border-ultra-fine">
+<span class="text-[10px] font-bold text-on-surface">A</span>
+</div>
+                                    Apex Bank
+                                </td>
+<td class="py-4 text-on-surface-variant">60s Integration + IG Reel</td>
+<td class="py-4 text-on-surface text-right tabular-nums">1,85,000</td>
+<td class="py-4 pl-6">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-container"></div>
+<span class="text-on-surface-variant">Approved</span>
+</div>
+</td>
+<td class="py-4 text-right pr-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="border-b-ultra-fine hover:bg-surface-variant/50 transition-colors group">
+<td class="py-4 text-on-surface flex items-center gap-3">
+<div class="w-6 h-6 rounded-sm bg-surface-container flex items-center justify-center shrink-0 border-ultra-fine">
+<span class="text-[10px] font-bold text-on-surface">L</span>
+</div>
+                                    Lumina Tech
+                                </td>
+<td class="py-4 text-on-surface-variant">Newsletter Sponsor (Oct)</td>
+<td class="py-4 text-on-surface text-right tabular-nums">45,000</td>
+<td class="py-4 pl-6">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-outline-variant"></div>
+<span class="text-on-surface-variant">Negotiating</span>
+</div>
+</td>
+<td class="py-4 text-right pr-4">
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="md:ml-20 bg-background w-full py-4 border-t border-outline-variant/30 flat no shadows flex justify-between items-center px-container-margin mt-section-gap">
+<div class="text-on-surface-variant font-semibold font-data-mono text-data-mono">
+            © 2024 Creator OS. Silent Intelligence.
+        </div>
+<div class="flex gap-6">
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">Privacy</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">Terms</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">System Status</a>
+</div>
+</footer>
+</body></html>

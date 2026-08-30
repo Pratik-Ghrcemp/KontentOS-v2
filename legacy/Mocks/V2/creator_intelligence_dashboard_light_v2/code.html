@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f9f9ff",
+                      "surface-tint": "#8433c4",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#ecedf6",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#004e59",
+                      "secondary-fixed": "#7aff55",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#fffdff",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed": "#2e004e",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "primary-fixed": "#f2daff",
+                      "outline": "#7e7384",
+                      "electric-purple": "#9d4edd",
+                      "surface-container-highest": "#e1e2ea",
+                      "primary": "#8231c2",
+                      "tertiary": "#006673",
+                      "tertiary-container": "#008191",
+                      "on-background": "#191c22",
+                      "surface-glass": "rgba(255, 255, 255, 0.7)",
+                      "deep-slate": "#1a1d23",
+                      "on-surface": "#191c22",
+                      "on-secondary-fixed": "#032100",
+                      "inverse-primary": "#e0b6ff",
+                      "surface": "#f8f9fa",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "secondary-container": "#76fc51",
+                      "outline-variant": "#d0c2d5",
+                      "glass-border": "rgba(0, 0, 0, 0.08)",
+                      "tertiary-fixed": "#9eefff",
+                      "on-tertiary-fixed": "#001f24",
+                      "surface-container-high": "#e6e8f0",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#9d4edd",
+                      "on-secondary-container": "#197200",
+                      "inverse-on-surface": "#eff0f9",
+                      "tertiary-fixed-dim": "#55d7ed",
+                      "secondary-fixed-dim": "#5ce139",
+                      "on-secondary-fixed-variant": "#105300",
+                      "on-error-container": "#93000a",
+                      "secondary": "#186e00",
+                      "on-tertiary-container": "#fafeff",
+                      "surface-dim": "#d8dae2",
+                      "surface-variant": "#e1e2ea",
+                      "background": "#f9f9ff",
+                      "cyber-neon-green": "#2eb800",
+                      "on-surface-variant": "#4d4353",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f2f3fc",
+                      "inverse-surface": "#2d3037"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "48px",
+                      "max-width": "1440px",
+                      "base": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-sm": ["Montserrat"],
+                      "label-mono": ["JetBrains Mono"],
+                      "display-lg": ["Montserrat"],
+                      "headline-md": ["Montserrat"],
+                      "button-text": ["Montserrat"],
+                      "display-lg-mobile": ["Montserrat"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                      "label-mono": ["13px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                      "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                      "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "button-text": ["15px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                      "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "900" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #9d4edd;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #9d4edd, #2eb800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom Scrollbar for inner components */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d8dae2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen overflow-x-hidden selection:bg-electric-purple selection:text-white">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-primary-container opacity-10 rounded-full blur-[120px] mix-blend-multiply"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-tertiary-container opacity-10 rounded-full blur-[150px] mix-blend-multiply"></div>
+</div>
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-8 px-6 gap-y-4 fixed left-0 top-0 w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] z-50">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-electric-purple tracking-tighter">KontentOS V2</h1>
+<p class="text-surface-variant font-body-md mt-2 opacity-80">Creator Command Center</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<!-- Tabs -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-electric-purple transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb" style="font-variation-settings: 'FILL' 0;">lightbulb</span>
+<span>Idea Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-electric-purple transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="description" style="font-variation-settings: 'FILL' 0;">description</span>
+<span>Script Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-electric-purple transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy" style="font-variation-settings: 'FILL' 0;">smart_toy</span>
+<span>Auto-Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-electric-purple transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch" style="font-variation-settings: 'FILL' 0;">rocket_launch</span>
+<span>Publishing Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-electric-purple font-bold border-r-4 border-electric-purple bg-primary/10 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span>Growth Intelligence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-electric-purple transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 0;">payments</span>
+<span>Monetization</span>
+</a>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-4 bg-electric-purple text-on-primary font-button-text text-button-text rounded-lg hover:opacity-90 transition-opacity shadow-[inset_0_1px_4px_rgba(255,255,255,0.3)]">
+                Quick Create
+            </button>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="hidden md:flex justify-between items-center px-margin-desktop w-full z-40 fixed top-0 right-0 left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border">
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-lowest border border-glass-border rounded-full font-body-md text-sm focus:outline-none focus:border-cyber-neon-green focus:bg-[rgba(46,184,0,0.02)] transition-all w-64" placeholder="Search insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label-mono text-label-mono text-secondary">Readiness: 98%</span>
+<button class="font-button-text text-button-text text-electric-purple hover:text-tertiary-fixed-dim transition-colors active:opacity-80">
+                Create
+            </button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-glass-border">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A clean, minimalist 3D rendering of a generic user avatar placeholder, featuring smooth matte textures in light grey and soft white tones, illuminated by gentle studio lighting to create a professional, high-end light-mode aesthetic without distinct facial features." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8u6yZZxbTqN6xMkUib9IPQQwDpNMEGE1bjmYUkqVXOOKae-P84lWK29hMD-EMJAwRKvB0WsR5bbHPzXVmnwPfh0Pq3eorbaiZwaH-OypNCs2OMTD-jfSw2ZJ1oDrzIEO1xRqO4VivwrSjYXAd-hNbpSljpcKifqk19n3xnE0k2gIbbW8Su7FAN7xsni0ncknPh-GL0cDTXO0YiNdUuYVBfXaN4GGEHWv8m432zl1gjTnO2HX7BanN"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="md:ml-[280px] md:pt-16 min-h-screen p-margin-mobile md:p-margin-desktop max-w-max-width mx-auto">
+<header class="mb-12">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Growth <span class="text-gradient">Intelligence</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Your daily tactical briefing. Analyze trends, ideate rapidly, and execute content that demands attention.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Daily Create This Today (Hero/Priority Queue) -->
+<div class="col-span-1 md:col-span-8 glass-card rounded-xl p-6 flex flex-col relative overflow-hidden group">
+<!-- Decorative background flair -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-fixed/20 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+<div class="flex justify-between items-center mb-6 z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-cyber-neon-green">local_fire_department</span>
+                        Daily Create This Today
+                    </h3>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-mono text-label-mono uppercase">Priority Queue</span>
+</div>
+<div class="space-y-4 z-10 flex-grow">
+<!-- Queue Item 1 (Active) -->
+<div class="bg-surface-container-lowest border-l-4 border-cyber-neon-green rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute inset-0 bg-[rgba(46,184,0,0.02)] pointer-events-none"></div>
+<div class="flex justify-between items-start mb-2 relative z-10">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">AI Tool Breakdown: Midjourney V6 vs Dall-E 3</h4>
+<span class="font-label-mono text-label-mono text-electric-purple bg-primary-fixed py-1 px-2 rounded">Tech / AI</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Audience overlap detected. High search volume predicted over the next 48 hours based on recent feature releases.</p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-sm">trending_up</span>
+<span class="font-label-mono text-label-mono text-on-surface">Trend Score: 94/100</span>
+</div>
+<button class="ml-auto bg-electric-purple text-on-primary px-4 py-2 rounded-lg font-button-text text-button-text hover:bg-primary-container transition-colors shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]">
+                                Draft Script
+                            </button>
+</div>
+</div>
+<!-- Queue Item 2 -->
+<div class="bg-surface-container-lowest border border-glass-border rounded-lg p-4 opacity-70 hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface text-base">3 Productivity Hacks for Freelance Designers</h4>
+<span class="font-label-mono text-label-mono text-outline bg-surface-variant py-1 px-2 rounded">Lifestyle</span>
+</div>
+<div class="flex items-center gap-4 mt-3">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-sm">trending_flat</span>
+<span class="font-label-mono text-label-mono text-on-surface">Trend Score: 78/100</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Viral Idea Roulette -->
+<div class="col-span-1 md:col-span-4 glass-card rounded-xl p-6 flex flex-col justify-center items-center text-center relative overflow-hidden bg-gradient-to-br from-surface-glass to-surface-bright">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiM5ZDRlZGQiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')] opacity-50"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 relative z-10">Viral Idea Roulette</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 relative z-10">Feeling stuck? Spin for a wild combination.</p>
+<div class="relative z-10 w-full mb-8">
+<!-- Slot Machine UI mockup -->
+<div class="flex justify-center gap-2 mb-4">
+<div class="bg-surface-container-lowest border border-glass-border rounded-lg p-3 w-1/3 shadow-inner">
+<span class="font-label-mono text-label-mono text-electric-purple block truncate">"React Devs"</span>
+</div>
+<div class="bg-surface-container-lowest border border-glass-border rounded-lg p-3 w-1/3 shadow-inner">
+<span class="font-label-mono text-label-mono text-tertiary block truncate">"Try"</span>
+</div>
+<div class="bg-surface-container-lowest border border-glass-border rounded-lg p-3 w-1/3 shadow-inner">
+<span class="font-label-mono text-label-mono text-cyber-neon-green block truncate">"Farming"</span>
+</div>
+</div>
+</div>
+<button class="relative z-10 bg-deep-slate text-on-primary font-button-text text-button-text px-8 py-3 rounded-full hover:bg-on-background transition-colors flex items-center gap-2 w-full justify-center group">
+<span class="material-symbols-outlined group-hover:animate-spin">casino</span>
+                    Spin Roulette
+                </button>
+</div>
+<!-- Trend Radar -->
+<div class="col-span-1 md:col-span-12 glass-card rounded-xl p-6 mt-4">
+<div class="flex justify-between items-end mb-8 border-b border-glass-border pb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Trend Radar</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Localized opportunity scoring matrix.</p>
+</div>
+<div class="hidden sm:flex gap-2">
+<button class="px-3 py-1 bg-surface-container rounded-md font-label-mono text-label-mono text-on-surface-variant hover:bg-surface-variant transition-colors">Global</button>
+<button class="px-3 py-1 bg-electric-purple text-on-primary rounded-md font-label-mono text-label-mono shadow-sm">US Local</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Data Vis placeholder / List -->
+<div class="lg:col-span-2">
+<div class="flex flex-col gap-4">
+<!-- Header Row -->
+<div class="grid grid-cols-12 gap-4 px-4 py-2 text-surface-variant font-label-mono text-label-mono uppercase text-xs border-b border-glass-border">
+<div class="col-span-5">Topic</div>
+<div class="col-span-3 text-center">Interest</div>
+<div class="col-span-2 text-center">Competition</div>
+<div class="col-span-2 text-right">Opp Score</div>
+</div>
+<!-- Rows -->
+<div class="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container-lowest rounded-lg border border-transparent hover:border-electric-purple transition-colors items-center">
+<div class="col-span-5 font-headline-sm text-sm text-on-surface truncate">Sustainable Tech Gadgets 2024</div>
+<div class="col-span-3">
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-electric-purple h-full w-[85%]"></div>
+</div>
+</div>
+<div class="col-span-2 text-center font-label-mono text-label-mono text-tertiary">Low</div>
+<div class="col-span-2 text-right font-label-mono text-label-mono text-cyber-neon-green font-bold">9.2</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container-lowest rounded-lg border border-transparent hover:border-electric-purple transition-colors items-center">
+<div class="col-span-5 font-headline-sm text-sm text-on-surface truncate">Urban Foraging Guide NYC</div>
+<div class="col-span-3">
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-electric-purple h-full w-[60%]"></div>
+</div>
+</div>
+<div class="col-span-2 text-center font-label-mono text-label-mono text-error">High</div>
+<div class="col-span-2 text-right font-label-mono text-label-mono text-on-surface">5.1</div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container-lowest rounded-lg border border-transparent hover:border-electric-purple transition-colors items-center">
+<div class="col-span-5 font-headline-sm text-sm text-on-surface truncate">Micro-SaaS Architectures</div>
+<div class="col-span-3">
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-electric-purple h-full w-[95%]"></div>
+</div>
+</div>
+<div class="col-span-2 text-center font-label-mono text-label-mono text-outline">Med</div>
+<div class="col-span-2 text-right font-label-mono text-label-mono text-electric-purple font-bold">8.8</div>
+</div>
+</div>
+</div>
+<!-- Mini Visual / Map abstract -->
+<div class="lg:col-span-1 bg-surface-container-lowest border border-glass-border rounded-lg p-4 relative flex flex-col justify-between">
+<h4 class="font-headline-sm text-headline-sm text-on-surface text-base mb-4">Hotspots</h4>
+<div class="w-full h-40 bg-surface-variant rounded-md overflow-hidden relative" data-alt="A highly stylized, minimalist vector map of the United States rendered in light mode. The map uses subtle off-white and soft grey tones for the landmass, overlaid with glowing electric purple and neon green heat-map dots indicating data hotspots. The background is a clean, bright digital surface, projecting a professional, analytical, and modern interface aesthetic." data-location="United States" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDvJohqzULVmUOyYLXgZWO48kHWKZN9Zd-g6jF7x4aZMtgMC1sfQa7ZN_UER5A30QoJ7q78-r7yZayDR7fyIXX0b8DJus2momnDfucWjLw4oHiJk0i6fdbWAmeGhnT27q_-MDmFoKu0SWy3QHtyTsHYSm0zqjwqJmY07xCWNezZwX3-n1dBxvgA7bXxn2tn2b1TbFHV77Ap1uzjE49jvPi3XLrdhNT3LKhEOaXjTUUnXq1xy38OKhD-')">
+<!-- Map placeholder stylized via data-alt -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-50"></div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-4">East Coast showing a 14% spike in tech-related micro-content consumption.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

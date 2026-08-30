@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>KontentOS — The AI Creator Operating System (Studio White Edition)</title>
+  <meta name="description" content="KontentOS is the effortless AI creator operating system. Go from raw video to auto-subtitled reels, platform-tailored copy, and 1-click omni-channel publishing in seconds." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, Montserrat, Source Serif 4, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..800;1,8..60,400..800&display=swap" rel="stylesheet" />
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  
+  <!-- Master Design System Stylesheet -->
+  <link rel="stylesheet" href="./css/design-system.css" />
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+  <div id="app-container">
+    <!-- Desktop Sidebar -->
+    <aside id="desktop-sidebar" class="desktop-sidebar"></aside>
+
+    <!-- Main Viewport -->
+    <main class="main-viewport">
+      <!-- Top Application Bar -->
+      <div id="topbar-container"></div>
+
+      <!-- Dynamic Active Screen Container -->
+      <div id="active-view-container"></div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav id="mobile-bottom-nav" class="mobile-bottom-nav"></nav>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

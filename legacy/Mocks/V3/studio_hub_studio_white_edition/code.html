@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Raw-to-Reel Studio Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-container": "#e2e4ea",
+                "on-tertiary-fixed": "#2e1065",
+                "primary-container": "#818cf8",
+                "on-secondary-container": "#585a68",
+                "background": "#e8eaf0",
+                "primary": "#6366f1",
+                "on-tertiary-container": "#3b1f63",
+                "on-secondary-fixed-variant": "#404252",
+                "on-primary": "#ffffff",
+                "on-error-container": "#991b1b",
+                "on-primary-container": "#e0e2ff",
+                "surface-tint": "#6366f1",
+                "surface-bright": "#edeef4",
+                "error": "#dc2626",
+                "error-container": "#fee2e2",
+                "outline-variant": "#d0d2dc",
+                "primary-fixed-dim": "#a5b4fc",
+                "on-error": "#ffffff",
+                "primary-fixed": "#e0e2ff",
+                "on-secondary": "#ffffff",
+                "outline": "#8a8c9a",
+                "on-surface": "#2e3040",
+                "on-tertiary": "#ffffff",
+                "tertiary": "#7c3aed",
+                "surface-variant": "#dcdee4",
+                "on-secondary-fixed": "#1a1b26",
+                "surface-dim": "#d4d6dc",
+                "inverse-primary": "#a5b4fc",
+                "on-primary-fixed": "#1e1b4b",
+                "on-tertiary-fixed-variant": "#5b21b6",
+                "on-primary-fixed-variant": "#4338ca",
+                "tertiary-container": "#a78bfa",
+                "on-background": "#2e3040",
+                "tertiary-fixed-dim": "#c4b5fd",
+                "surface-container-high": "#dcdee4",
+                "surface-container-highest": "#d6d8de",
+                "secondary": "#6c6e7e",
+                "surface": "#e8eaf0",
+                "surface-container-low": "#e5e7ed",
+                "secondary-container": "#d8dae6",
+                "surface-container-lowest": "#f0f2f8",
+                "inverse-surface": "#2e3040",
+                "tertiary-fixed": "#ede9fe",
+                "on-surface-variant": "#585a68",
+                "inverse-on-surface": "#e8eaf0",
+                "secondary-fixed": "#d8dae6",
+                "secondary-fixed-dim": "#b8baca"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem",
+                "xl": "1.5rem",
+                "full": "9999px"
+        },
+        "spacing": {
+            "unit": "4px",
+            "gutter": "24px",
+            "margin": "40px",
+            "panel-padding": "16px"
+        },
+        "fontFamily": {
+                "headline": [
+                        "Plus Jakarta Sans"
+                ],
+                "display": [
+                        "Plus Jakarta Sans"
+                ],
+                "body": [
+                        "Plus Jakarta Sans"
+                ],
+                "label": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "label-caps": ["Inter"],
+                "headline-md": ["\"Source Serif 4\""],
+                "data-mono": ["JetBrains Mono"],
+                "display-lg": ["\"Source Serif 4\""],
+                "display-lg-mobile": ["\"Source Serif 4\""]
+        },
+        "fontSize": {
+            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "label-caps": ["11px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+            "data-mono": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500" }],
+            "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .border-ultra-fine { border-width: 0.5px; border-color: rgba(0, 0, 0, 0.1); }
+        .border-t-ultra-fine { border-top-width: 0.5px; border-top-color: rgba(0, 0, 0, 0.1); }
+        .border-b-ultra-fine { border-bottom-width: 0.5px; border-bottom-color: rgba(0, 0, 0, 0.1); }
+        .border-l-ultra-fine { border-left-width: 0.5px; border-left-color: rgba(0, 0, 0, 0.1); }
+        .border-r-ultra-fine { border-right-width: 0.5px; border-right-color: rgba(0, 0, 0, 0.1); }
+        
+        /* Minimal Scrollbar */
+        ::-webkit-scrollbar { width: 2px; height: 2px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: transparent; }
+        :hover::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen flex flex-col overflow-hidden font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar (Shared Component) -->
+<header class="flex justify-between items-center px-gutter w-full h-14 bg-surface border-b border-outline-variant shrink-0">
+<div class="flex items-center gap-gutter">
+<span class="font-headline-md text-headline-md font-bold text-primary-fixed-dim tracking-tighter">KontentOS</span>
+<div class="hidden md:flex items-center gap-6">
+<!-- Navigation Structure injected from TopNavBar config -->
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80" href="#">Timeline</a>
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80" href="#">Assets</a>
+<a class="text-primary-fixed-dim border-b border-primary-fixed-dim pb-4 hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 translate-y-[8px]" href="#">Drafts</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors p-2">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="border-ultra-fine px-4 py-1.5 font-label-caps text-label-caps text-on-surface hover:border-primary-fixed-dim hover:text-primary-fixed-dim transition-colors rounded">Export</button>
+<button class="bg-primary-fixed-dim text-on-primary px-4 py-1.5 font-label-caps text-label-caps hover:bg-primary-container transition-colors rounded">Publish</button>
+<img alt="User profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover grayscale" data-alt="A minimalist, monochromatic user avatar placeholder icon in a dark UI setting, high contrast, professional, stark." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNqWxHTd51eee6Z377d5L9pwKBiHxhGopxnKBy7kEoZxrXhM52xet2DOz1bj_ad9n8biDHeNiY9_CPckcYYc2yUY9fonfcdGqKwdjqzlyURlgNPD2jt7U1A13BN-d8Er2h0ewHhUKfZg-A3mEiMVvsn25xMNTn0_HS3oSHheJA7_Urh-24Zb2xWAvKCBdjUSxVGc2kLA2r2ZoGy3szANGJEUf_5COtG160DU8DTgikXOX80V5aIMsJ"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex h-full w-16 flex-col justify-between border-r border-outline-variant bg-surface-container-low py-panel-padding shrink-0 z-10">
+<div class="flex flex-col items-center gap-6">
+<div class="flex flex-col items-center text-center">
+<span class="font-display-lg text-headline-md text-primary-fixed-dim">K-OS</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant">v1.0</span>
+</div>
+<div class="flex flex-col gap-2 w-full px-2">
+<button aria-label="Video Edits" class="w-full aspect-square flex flex-col items-center justify-center bg-primary-container text-on-primary-container border-l-2 border-primary-fixed-dim cursor-pointer duration-150 relative group rounded">
+<span class="material-symbols-outlined text-[20px]">movie_edit</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Video Edits</div>
+</button>
+<button aria-label="AI Subtitles" class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">closed_caption</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">AI Subtitles</div>
+</button>
+<button aria-label="Visual FX" class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">magic_button</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Visual FX</div>
+</button>
+<button aria-label="Audio" class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">graphic_eq</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Audio</div>
+</button>
+<button aria-label="Image Studio" class="w-full aspect-square flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">photo_camera_back</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Image Studio</div>
+</button>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2 w-full px-2">
+<button aria-label="Help" class="w-full aspect-square flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Help</div>
+</button>
+<button aria-label="Archive" class="w-full aspect-square flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer duration-150 relative group border-l-2 border-transparent rounded">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+<div class="absolute left-16 bg-surface-container-highest px-3 py-1.5 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border-ultra-fine font-label-caps text-label-caps z-50 rounded">Archive</div>
+</button>
+</div>
+</nav>
+<!-- Main Workspace: Split Screen -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden relative bg-surface-lowest">
+<!-- Left: Video Canvas (Sticky/Fixed fluid hybrid) -->
+<section class="w-full md:w-[45%] lg:w-[40%] xl:w-[35%] border-r-ultra-fine bg-surface-container-lowest flex flex-col relative shrink-0">
+<!-- Canvas Header -->
+<div class="h-10 border-b-ultra-fine flex items-center justify-between px-4 shrink-0">
+<span class="font-data-mono text-data-mono text-on-surface-variant">PREVIEW_CH_01</span>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors" title="Toggle Safe Zones">
+<span class="material-symbols-outlined text-[16px]">grid_on</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors" title="Audio Levels">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+</button>
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-sm"></span>
+</div>
+</div>
+<!-- 9:16 Canvas Area -->
+<div class="flex-1 flex items-center justify-center p-gutter relative overflow-hidden bg-surface-container-lowest">
+<!-- The actual video element placeholder -->
+<div class="relative aspect-[9/16] h-full max-h-[819px] border-ultra-fine shadow-md bg-surface flex flex-col overflow-hidden group rounded">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="A moody, high-contrast vertical video still showing a solitary figure walking down a rain-slicked cyberpunk street illuminated by sharp cyan neon signs. The aesthetic is gritty, cinematic, and technically sharp, resembling a high-end commercial edit." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6sX-OA5tMu0KRtv-zg8qC8huk-sEUklX_WSgXRUDjMlk5aUpEgl1iUxzVCAxl2pKmTQhb3hzbANF09FoynM_gqkwls83Q6BW7MJRZf9oWxnYDdR1y1dgrpickkf-dYDWDl8X6Zc0doCwvQES-5v7TWNThN-hJnPZlcUOBhfP9KViNodVtekhz3lLtX53ZJTumeUJPP_4quAMpmDXk_bKpISjEpfCKXu6gDrVI2h2tsOr0s8g763v8')"></div>
+<!-- Safe Zone Overlay (Toggled State) -->
+<div class="absolute inset-4 border border-dashed border-primary-fixed-dim opacity-30 pointer-events-none rounded"></div>
+<!-- On-Canvas Controls (Visible on hover) -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between">
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center bg-surface border-ultra-fine text-on-surface hover:border-primary-fixed-dim transition-colors rounded">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-surface border-ultra-fine text-on-surface hover:border-primary-fixed-dim transition-colors rounded">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+</button>
+</div>
+<span class="font-data-mono text-[10px] text-primary-fixed-dim tracking-widest">00:01:23:14</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right: Inspector Panel -->
+<section class="flex-1 flex flex-col bg-surface overflow-hidden relative">
+<!-- Inspector Tabs -->
+<div class="h-10 border-b-ultra-fine flex shrink-0 px-4 gap-6 bg-surface-container-low">
+<button class="h-full border-b border-primary-fixed-dim text-primary-fixed-dim font-label-caps text-label-caps flex items-center tracking-widest">VIDEO</button>
+<button class="h-full border-b border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-caps text-label-caps flex items-center tracking-widest">SUBTITLES</button>
+<button class="h-full border-b border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-caps text-label-caps flex items-center tracking-widest">FX</button>
+<button class="h-full border-b border-transparent text-on-surface-variant hover:text-on-surface transition-colors font-label-caps text-label-caps flex items-center tracking-widest">AUDIO</button>
+</div>
+<!-- Inspector Content Area (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-panel-padding md:p-gutter flex flex-col gap-margin">
+<!-- Section: Auto Actions -->
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">INTELLIGENT PROCESSING</span>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<button class="p-4 border-ultra-fine flex flex-col gap-2 hover:border-primary-fixed-dim transition-colors text-left group rounded shadow-sm">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-on-surface group-hover:text-primary-fixed-dim transition-colors">cut</span>
+<span class="w-2 h-2 border-ultra-fine group-hover:bg-primary-fixed-dim transition-colors rounded-full"></span>
+</div>
+<div>
+<div class="font-body-md text-on-surface">Auto-Trim Silence</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant mt-1">Threshold: -40dB</div>
+</div>
+</button>
+<button class="p-4 border-ultra-fine flex flex-col gap-2 border-primary-fixed-dim bg-primary-fixed-dim/5 text-left group rounded shadow-sm">
+<div class="flex items-center justify-between w-full">
+<span class="material-symbols-outlined text-primary-fixed-dim">center_focus_strong</span>
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full"></span>
+</div>
+<div>
+<div class="font-body-md text-on-surface">Smart Reframe 9:16</div>
+<div class="font-data-mono text-[10px] text-primary-fixed-dim mt-1">Subject Tracking: ACTIVE</div>
+</div>
+</button>
+</div>
+</div>
+<!-- Divider -->
+<div class="w-full h-[0.5px] bg-outline-variant opacity-50"></div>
+<!-- Section: LUTs / Color -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CINEMATIC LUTS</span>
+<span class="font-data-mono text-[10px] text-primary-fixed-dim">INTENSITY 85%</span>
+</div>
+<!-- Horizontal Scroll for LUTs -->
+<div class="flex gap-4 overflow-x-auto pb-4 snap-x">
+<!-- LUT Card: Active -->
+<div class="shrink-0 w-32 border border-primary-fixed-dim snap-start cursor-pointer group rounded shadow-sm overflow-hidden">
+<div class="h-20 bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-50 group-hover:opacity-80 transition-opacity" data-alt="A small horizontal preview thumbnail showing a cinematic teal and orange color grading applied to a street scene, crisp details, dark professional UI context." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBua_PdbY0K2a7obiezepbUhIk6Z3bvpJ4L00P2KgHlHeTJWTHI3QUw9hnYnPjBvzTmk_2LGheZRQI60OvlbxNuVuhsHuY6UxcwdtD02wWTgqjR4E8rG4eI679oOL6PQoPrLza1IxLc7xAAnzimmKl8wRBetJ2N-KHfw9OJ35qo_PVKq1qyGaHOtKRaVxyw4RYWO8kmYTOJRPYMYvQGTBPON-d_Tb2f-0mFeNjpi5qVz2NeTc05KbHJ')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent"></div>
+</div>
+<div class="p-2 border-t-ultra-fine bg-primary-fixed-dim/10">
+<div class="font-data-mono text-[10px] text-primary-fixed-dim tracking-wider">H-WOOD TEAL</div>
+</div>
+</div>
+<!-- LUT Card: Inactive -->
+<div class="shrink-0 w-32 border-ultra-fine snap-start cursor-pointer hover:border-outline transition-colors group rounded shadow-sm overflow-hidden">
+<div class="h-20 bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-30 group-hover:opacity-60 transition-opacity" data-alt="A small horizontal preview thumbnail showing a warm, vintage film emulation look similar to Kodak Portra, soft contrast, dark professional UI context." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAndtMqyEYhMyVm81ctK1kx8VfW6J1C-bI9bvxAqCVutIo3-hNn6PUeqVjTNPQQGmY0Et3iujE0g3Cgqz0jxeSVZWmxPJCAq7WPhnMhGnoTMwliXVD_6kST8-aNrKf-NY-2l3umZlCkpQ2SGab776j2Fy5RQWHmQc1oBMHR3RNjH_SrbmP6pe6VWqWFhEf80lIgOutZ4wzj7c0hYm-uNXvKYgTZ49J8585f_avwAhAuhGdXNXlXdBTP')"></div>
+</div>
+<div class="p-2 border-t-ultra-fine bg-surface">
+<div class="font-data-mono text-[10px] text-on-surface-variant tracking-wider group-hover:text-on-surface transition-colors">PORTRA 400</div>
+</div>
+</div>
+<!-- LUT Card: Inactive -->
+<div class="shrink-0 w-32 border-ultra-fine snap-start cursor-pointer hover:border-outline transition-colors group rounded shadow-sm overflow-hidden">
+<div class="h-20 bg-surface-container-low relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-luminosity opacity-30 group-hover:opacity-60 transition-opacity" data-alt="A small horizontal preview thumbnail showing a harsh, high-contrast monochrome black and white visual aesthetic, stark shadows, dark professional UI context." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0FaiR3d9vM1IAnoGlUhlNPbVn3Gwt-H97V2M4ZKXwOz3b5n390S4wEXmrH6vwifirTA6TVpB_SK92CU-iMoAmMOOJSHE5Dar9CubYklVJdY8G3p0z817CRR-NmkpbHuXkIaTF6lb5wSOvsclN-4Xm0XS1cIkko7G02TZ9zP1LFtPrHEydyTYhIMdRx5or7XJFRFStomLjps0zOKN9TviwdqV25CJE5KF8TTs4SbZyAb1NN7ltXfHR')"></div>
+</div>
+<div class="p-2 border-t-ultra-fine bg-surface">
+<div class="font-data-mono text-[10px] text-on-surface-variant tracking-wider group-hover:text-on-surface transition-colors">MONO BLEACH</div>
+</div>
+</div>
+<!-- LUT Card: Inactive -->
+<div class="shrink-0 w-32 border-ultra-fine snap-start cursor-pointer hover:border-outline transition-colors flex items-center justify-center rounded shadow-sm bg-surface">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+</div>
+</div>
+<!-- Timeline/Data Strip Mockup -->
+<div class="mt-auto pt-8 flex flex-col gap-2">
+<span class="font-label-caps text-[8px] text-on-surface-variant text-right">PLAYHEAD_DATA_STRIP</span>
+<div class="h-16 border-y-ultra-fine bg-surface-container-low relative flex items-center">
+<!-- Playhead line -->
+<div class="absolute left-1/3 top-0 bottom-0 w-[1px] bg-primary-fixed-dim z-10 flex flex-col items-center">
+<div class="w-2 h-2 bg-primary-fixed-dim absolute -top-1 rounded-full"></div>
+</div>
+<!-- Video Track -->
+<div class="absolute left-10 right-20 top-2 h-4 bg-surface-variant border-ultra-fine overflow-hidden rounded-sm">
+<!-- Waveform simulation lines -->
+<div class="w-full h-full flex items-center gap-[1px] opacity-20 px-1">
+<div class="w-[1px] h-[80%] bg-on-surface"></div>
+<div class="w-[1px] h-[40%] bg-on-surface"></div>
+<div class="w-[1px] h-[90%] bg-on-surface"></div>
+<div class="w-[1px] h-[60%] bg-on-surface"></div>
+<div class="w-[1px] h-[100%] bg-on-surface"></div>
+<div class="w-[1px] h-[30%] bg-on-surface"></div>
+</div>
+</div>
+<!-- Audio Track -->
+<div class="absolute left-10 right-20 bottom-2 h-4 bg-surface border-ultra-fine flex items-center gap-[1px] px-1 overflow-hidden rounded-sm">
+<div class="w-[1px] h-[60%] bg-primary-fixed-dim opacity-50"></div>
+<div class="w-[1px] h-[30%] bg-primary-fixed-dim opacity-50"></div>
+<div class="w-[1px] h-[80%] bg-primary-fixed-dim opacity-50"></div>
+<div class="w-[1px] h-[100%] bg-primary-fixed-dim opacity-80"></div>
+<div class="w-[1px] h-[40%] bg-primary-fixed-dim opacity-50"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#f0a878",
+                        "background": "#faf5ee",
+                        "surface-container-high": "#ece6dc",
+                        "on-error": "#ffffff",
+                        "tertiary": "#8c3c3c",
+                        "on-surface-variant": "#605850",
+                        "inverse-primary": "#f0a878",
+                        "surface-container-low": "#f6f0e8",
+                        "on-background": "#3a302a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6e3030",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#78706a",
+                        "surface-variant": "#ece6dc",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#2a2420",
+                        "inverse-on-surface": "#faf5ee",
+                        "primary-fixed": "#fbe8d8",
+                        "surface-bright": "#faf5ee",
+                        "tertiary-fixed-dim": "#e8a0a0",
+                        "tertiary-container": "#d47070",
+                        "on-primary-fixed": "#401a08",
+                        "surface-dim": "#dcd6cc",
+                        "surface-tint": "#c2652a",
+                        "on-primary-fixed-variant": "#8a4518",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#605850",
+                        "secondary-fixed": "#eae2da",
+                        "tertiary-fixed": "#fce0e0",
+                        "primary-container": "#e08850",
+                        "surface-container-highest": "#e6e0d6",
+                        "surface": "#faf5ee",
+                        "on-primary-container": "#fbe8d8",
+                        "outline-variant": "#d8d0c8",
+                        "secondary-container": "#eae2da",
+                        "surface-container": "#f2ece4",
+                        "on-tertiary-container": "#3a2020",
+                        "error-container": "#fce4e0",
+                        "inverse-surface": "#3a302a",
+                        "primary": "#c2652a",
+                        "on-surface": "#3a302a",
+                        "on-secondary-fixed-variant": "#504840",
+                        "outline": "#9a9088",
+                        "on-tertiary-fixed": "#2e1515",
+                        "error": "#c0392b",
+                        "secondary-fixed-dim": "#cec6be",
+                        "on-error-container": "#7a1a10"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["EB Garamond", "serif"],
+                        "display": ["EB Garamond", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #faf5ee;
+            color: #3a302a;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline, .font-display {
+            font-family: 'EB Garamond', serif;
+        }
+        .soft-shadow {
+            box-shadow: 0 2px 16px rgba(58, 48, 42, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] flex flex-col py-8 px-6 gap-y-4 z-50 bg-surface-container-low hidden md:flex">
+<div class="mb-8">
+<h1 class="font-display text-2xl font-bold text-on-background tracking-tighter">KontentOS V2</h1>
+<p class="font-body text-sm text-on-surface-variant mt-1">Creator Command Center</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+                Idea Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+                Script Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                Auto-Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+                Publishing Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-l-4 border-primary bg-primary-fixed-dim/20 transition-all duration-300 scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                Growth Intelligence
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Monetization
+            </a>
+</div>
+<button class="mt-auto bg-primary text-on-primary py-3 px-4 rounded-lg font-medium hover:bg-surface-tint transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+            Quick Create
+        </button>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:ml-[280px] h-screen overflow-hidden bg-background">
+<!-- TopAppBar -->
+<header class="h-16 flex justify-between items-center px-8 border-b border-outline-variant/60 bg-surface-bright/80 backdrop-blur-md z-40 sticky top-0">
+<div class="flex items-center gap-4 w-1/3">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant" placeholder="Search insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-sm font-medium text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                    Readiness: 98%
+                </span>
+<button class="text-primary font-medium hover:text-surface-tint transition-colors text-sm">Create</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A close up portrait of a professional creator in a warm, sunlit studio environment. The lighting is soft and natural, emphasizing a sophisticated, modern light-mode aesthetic with earthy tones and warm minimalist vibes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr4EWEqquod6SNrO1OX-PFJR-rag8DFA3uPKtjdOMVDGzTX0G8vd3QjV46_f3mw8f-t_jcv9tsYngpm8xPcl0-EHVQ-Umd8MrhxxQh0qmQmS_pJ2xShIv4hNrgK8imCFUv8Kk3k4CgISHQDrwZnrIGm-WIzV9MwPdciMGfDpLytoeUqGRH8U-bSsYsIV0ERTkT4xHUuprvxfuyLl6JJDcgHLzjc1QX3I5R-R4bkB0X8dGo8ZMVeM6b"/>
+</div>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<div class="flex-1 overflow-y-auto p-8 lg:p-12">
+<div class="max-w-7xl mx-auto space-y-12">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline text-4xl text-on-background mb-2 tracking-tight">Omni-Channel Performance</h2>
+<p class="text-on-surface-variant font-body text-lg">AI diagnostics and unified growth metrics across all platforms.</p>
+</div>
+<div class="flex gap-4">
+<select class="bg-surface-container border border-outline-variant rounded-lg px-4 py-2 text-sm text-on-background focus:ring-primary focus:border-primary">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+<option>This Quarter</option>
+</select>
+</div>
+</div>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Total Reach Card -->
+<div class="bg-surface-container-low rounded-xl p-6 soft-shadow border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<span class="text-on-surface-variant text-sm font-medium uppercase tracking-wider">Total Reach</span>
+<span class="material-symbols-outlined text-primary">public</span>
+</div>
+<div>
+<div class="font-headline text-5xl text-on-background mb-2">2.4M</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="text-primary font-medium flex items-center"><span class="material-symbols-outlined text-sm mr-1">trending_up</span> +14.2%</span>
+<span class="text-on-surface-variant">vs previous period</span>
+</div>
+</div>
+</div>
+<!-- Engagement Rate -->
+<div class="bg-surface-container-low rounded-xl p-6 soft-shadow border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<span class="text-on-surface-variant text-sm font-medium uppercase tracking-wider">Avg. Engagement</span>
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+<div>
+<div class="font-headline text-5xl text-on-background mb-2">6.8%</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="text-tertiary font-medium flex items-center"><span class="material-symbols-outlined text-sm mr-1">trending_down</span> -1.1%</span>
+<span class="text-on-surface-variant">vs previous period</span>
+</div>
+</div>
+</div>
+<!-- Conversion Impact -->
+<div class="bg-primary/5 rounded-xl p-6 soft-shadow border border-primary/20 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-primary-container/30 rounded-full blur-2xl"></div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<span class="text-primary text-sm font-medium uppercase tracking-wider">Conversion Impact</span>
+<span class="material-symbols-outlined text-primary">ads_click</span>
+</div>
+<div class="relative z-10">
+<div class="font-headline text-5xl text-primary mb-2">$14.2k</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="text-primary font-medium flex items-center"><span class="material-symbols-outlined text-sm mr-1">trending_up</span> +22.4%</span>
+<span class="text-on-surface-variant">Attributed Revenue</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

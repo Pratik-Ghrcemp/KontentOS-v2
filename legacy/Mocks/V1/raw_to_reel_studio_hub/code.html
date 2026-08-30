@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Multi-Format Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Montserrat:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1e2024",
+                    "surface-dim": "#111317",
+                    "tertiary-container": "#00828b",
+                    "tertiary": "#00dbe9",
+                    "primary": "#e0b6ff",
+                    "on-tertiary-container": "#f9ffff",
+                    "deep-slate": "#1A1D23",
+                    "primary-fixed": "#f2daff",
+                    "on-tertiary": "#00363a",
+                    "on-tertiary-fixed-variant": "#004f54",
+                    "tertiary-fixed": "#7df4ff",
+                    "on-primary-container": "#fffdff",
+                    "secondary-fixed-dim": "#2ae500",
+                    "on-primary-fixed": "#2e004e",
+                    "surface-tint": "#e0b6ff",
+                    "glass-border": "rgba(255, 255, 255, 0.12)",
+                    "on-surface-variant": "#d0c2d5",
+                    "surface": "#111317",
+                    "on-secondary-fixed-variant": "#095300",
+                    "on-primary-fixed-variant": "#6a0baa",
+                    "surface-variant": "#333539",
+                    "inverse-primary": "#8433c4",
+                    "charcoal-black": "#0F1115",
+                    "secondary": "#d7ffc5",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#022100",
+                    "tertiary-fixed-dim": "#00dbe9",
+                    "surface-container-highest": "#333539",
+                    "surface-container-low": "#1a1c20",
+                    "secondary-container": "#2ff801",
+                    "surface-container-high": "#282a2e",
+                    "surface-container-lowest": "#0c0e12",
+                    "on-secondary": "#053900",
+                    "on-primary": "#4c007d",
+                    "background": "#111317",
+                    "primary-container": "#9d4edd",
+                    "on-background": "#e2e2e8",
+                    "electric-purple": "#9D4EDD",
+                    "error-container": "#93000a",
+                    "outline-variant": "#4d4353",
+                    "hyper-cyan": "#00F0FF",
+                    "secondary-fixed": "#79ff5b",
+                    "on-tertiary-fixed": "#002022",
+                    "error": "#ffb4ab",
+                    "on-secondary-container": "#0f6d00",
+                    "cyber-neon-green": "#39FF14",
+                    "inverse-on-surface": "#2f3035",
+                    "primary-fixed-dim": "#e0b6ff",
+                    "on-surface": "#e2e2e8",
+                    "inverse-surface": "#e2e2e8",
+                    "outline": "#998d9e",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#37393e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "max-width": "1440px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "margin-desktop": "48px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-mono": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg-mobile": [
+                            "Montserrat"
+                    ],
+                    "button-text": [
+                            "Montserrat"
+                    ],
+                    "display-lg": [
+                            "Montserrat"
+                    ],
+                    "headline-sm": [
+                            "Montserrat"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Montserrat"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-mono": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "36px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "button-text": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "headline-sm": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Cyber-Glassmorphism Custom Styles */
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .hover-cyber-border:hover {
+            border-color: #9D4EDD;
+            transition: border-color 0.3s ease;
+        }
+
+        .text-gradient-primary {
+            background: linear-gradient(90deg, #e0b6ff, #9D4EDD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Atomization Animation Sequence */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(157, 78, 221, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(157, 78, 221, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(157, 78, 221, 0); }
+        }
+
+        .animate-pulse-ring {
+            animation: pulse-ring 2s infinite;
+        }
+
+        .drag-active {
+            border-color: #39FF14 !important;
+            background: rgba(57, 255, 20, 0.05) !important;
+        }
+        
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333539;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d4353;
+        }
+    </style>
+</head>
+<body class="bg-charcoal-black text-on-surface font-body-md min-h-screen overflow-x-hidden selection:bg-electric-purple selection:text-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full z-40">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-display-lg-mobile md:font-display-lg text-headline-sm md:text-headline-sm text-primary tracking-tighter">
+                KontentOS V2
+            </div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-mono text-label-mono bg-surface-variant/30 px-3 py-1.5 rounded-full border border-glass-border">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green animate-pulse"></span>
+                Readiness: 98%
+            </div>
+<button class="bg-electric-purple text-white font-button-text text-button-text px-6 py-2 rounded-lg cyber-glow-primary hover:bg-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                Create
+            </button>
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-primary object-cover hidden md:block" data-alt="A sleek, futuristic user avatar profile picture. The avatar is a high-tech glowing geometric shape against a deep black background, styled in cyber-neon purple and green. The mood is professional and cutting-edge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIKxqrMo1mdW4bWEbo4yLxlwDGSU469-qYJs73GF0CGnpZOnJYy7ExU0nuubO2Ild_6hWxIENcOPXqIGHZ4ER6iUeg-WRquvcGE2VLIm-EG8GJKWDEEI01RdHAjbYOSw9Ik8J4Lle4mmZcCpLBvrQLVSQcP2vAXpZHwLhJumYfMDgCZCB-cjXxgiYJvtDKZBPUoAKySvF2T68hXe5vhunfhvE1oHi-t0bEjYjGF6mHjqE1dImwivsT"/>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] py-8 px-6 gap-y-4 z-50">
+<div class="mb-8 flex items-center gap-3">
+<img alt="Creator Profile" class="w-12 h-12 rounded-xl object-cover border border-glass-border" data-alt="A small, stylized app icon logo for a creator tool. It features a glowing neon purple 'K' embedded in a dark glass-like block. The aesthetic is cyber-glassmorphism, highly detailed and sharp." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATLutApaIVEICH0GsqOHp8_jismyOCujVagV9jg--79Qw-KrGC0QCXSWHWKPUyMXKQlUXJ2QOIlomtpvdw-t4aMl3oa_L7Gm60UMTArIgIrCF_lc2YCiJcpuZzNz5WF6mouVMy-U6x3X3tRxInxF5LlZ3e-1xoZDTBRXvGf6cRLap_dapqwBhMSlmnop1I9UZONK_lxE_df1JGQaAh4w9ddoWjQfet3iOA8mEo7j-XMI-0rtPdGWzQ"/>
+<div>
+<div class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest text-xs">Creator Command Center</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-body-md text-body-md">Idea Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md">Script Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-body-md text-body-md">Auto-Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-md text-body-md">Publishing Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md text-body-md">Growth Intelligence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md">Monetization</span>
+</a>
+</div>
+<button class="mt-auto w-full bg-surface-variant/30 text-primary border border-primary/30 font-button-text text-button-text py-3 rounded-lg hover:bg-primary/20 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">bolt</span>
+            Quick Create
+        </button>
+</nav>
+<!-- Main Canvas -->
+<main class="pt-24 md:pl-[304px] px-margin-mobile md:px-gutter pb-24 min-h-screen">
+<div class="mb-8">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Multi-Format <span class="text-gradient-primary">Studio</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Module 4: Upload raw footage. The AI handles the rest.</p>
+</div>
+<!-- Raw Video Upload Drop Zone Hero -->
+<section class="mb-12">
+<div class="glass-panel rounded-xl p-12 border-2 border-dashed border-outline-variant hover-cyber-border flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 min-h-[300px] relative overflow-hidden group" id="drop-zone">
+<!-- Background decorative elements -->
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-electric-purple/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-hyper-cyan/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-20 h-20 rounded-full bg-surface-variant/50 border border-glass-border flex items-center justify-center mb-6 animate-pulse-ring text-electric-purple">
+<span class="material-symbols-outlined text-4xl">cloud_upload</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-3">Drop Raw Video Here</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-md">Supports MP4, MOV, up to 4K resolution. The AI will automatically analyze, transcribe, and slice into optimized formats.</p>
+<button class="bg-surface-variant/50 border border-glass-border text-on-surface font-button-text text-button-text px-8 py-3 rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">folder_open</span>
+                        Browse Files
+                    </button>
+<div class="mt-6 font-label-mono text-label-mono text-outline flex gap-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Max 50GB</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Auto-Transcription</span>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Pipeline Preview (Atomization) -->
+<section class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">route</span>
+                        Auto-Edit Pipeline
+                    </h3>
+<div class="font-label-mono text-label-mono text-cyber-neon-green bg-cyber-neon-green/10 px-3 py-1 rounded-full border border-cyber-neon-green/20 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green"></span>
+                        Ready to Process
+                    </div>
+</div>
+<div class="glass-panel rounded-xl p-8 relative">
+<!-- Conceptual Flow Diagram -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+<!-- Source Node -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-24 h-32 bg-surface-dim border-2 border-primary rounded-lg flex items-center justify-center relative shadow-[0_0_20px_rgba(157,78,221,0.2)]">
+<span class="material-symbols-outlined text-3xl text-primary">movie</span>
+<div class="absolute -bottom-2 -right-2 bg-charcoal-black px-2 py-0.5 rounded font-label-mono text-[10px] text-outline border border-glass-border">16:9</div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Source.mp4</span>
+</div>
+<!-- Processing Core -->
+<div class="flex-grow flex items-center justify-center relative w-full md:w-auto h-24 md:h-auto my-8 md:my-0">
+<!-- Connecting lines (simplified via borders in CSS for conceptual look, actual SVG would be better for complex paths) -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-primary via-hyper-cyan to-cyber-neon-green opacity-50 -translate-y-1/2 hidden md:block"></div>
+<div class="relative w-16 h-16 rounded-full bg-surface-variant border border-glass-border flex items-center justify-center z-10 cyber-glow-secondary">
+<span class="material-symbols-outlined text-hyper-cyan animate-spin" style="animation-duration: 3s;">settings</span>
+</div>
+</div>
+<!-- Output Nodes -->
+<div class="flex flex-col gap-4 w-full md:w-auto">
+<!-- TikTok / Reels Format -->
+<div class="flex items-center gap-4 bg-surface-dim/50 p-3 rounded-lg border border-glass-border hover-cyber-border group">
+<div class="w-12 h-16 bg-surface border border-outline-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-cyber-neon-green transition-colors">smartphone</span>
+</div>
+<div class="flex-grow">
+<div class="font-body-md text-body-md text-on-surface font-semibold flex items-center gap-2">
+                                        Shorts <span class="font-label-mono text-[10px] text-cyber-neon-green bg-cyber-neon-green/10 px-1.5 rounded">9:16</span>
+</div>
+<div class="font-label-mono text-[12px] text-on-surface-variant mt-1 flex gap-2">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span> Smart Crop
+                                    </div>
+</div>
+</div>
+<!-- YT Long Format -->
+<div class="flex items-center gap-4 bg-surface-dim/50 p-3 rounded-lg border border-glass-border hover-cyber-border group">
+<div class="w-16 h-12 bg-surface border border-outline-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">desktop_windows</span>
+</div>
+<div class="flex-grow">
+<div class="font-body-md text-body-md text-on-surface font-semibold flex items-center gap-2">
+                                        VOD <span class="font-label-mono text-[10px] text-primary bg-primary/10 px-1.5 rounded">16:9</span>
+</div>
+<div class="font-label-mono text-[12px] text-on-surface-variant mt-1 flex gap-2">
+<span class="material-symbols-outlined text-[14px]">content_cut</span> Auto-Silences
+                                    </div>
+</div>
+</div>
+<!-- X / LinkedIn Format -->
+<div class="flex items-center gap-4 bg-surface-dim/50 p-3 rounded-lg border border-glass-border hover-cyber-border group">
+<div class="w-14 h-14 bg-surface border border-outline-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-hyper-cyan transition-colors">crop_square</span>
+</div>
+<div class="flex-grow">
+<div class="font-body-md text-body-md text-on-surface font-semibold flex items-center gap-2">
+                                        Social <span class="font-label-mono text-[10px] text-hyper-cyan bg-hyper-cyan/10 px-1.5 rounded">1:1</span>
+</div>
+<div class="font-label-mono text-[12px] text-on-surface-variant mt-1 flex gap-2">
+<span class="material-symbols-outlined text-[14px]">subtitles</span> Burned Subs
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Subtitle Preset Previews -->
+<section class="space-y-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">closed_caption</span>
+                    Subtitle Presets
+                </h3>
+<div class="glass-panel rounded-xl p-6 h-full flex flex-col gap-4">
+<!-- Preset 1 -->
+<div class="bg-surface-dim border border-glass-border rounded-lg p-4 cursor-pointer hover-cyber-border border-primary transition-all relative overflow-hidden group">
+<div class="absolute top-2 right-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+</div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface mb-3">The "Beast"</h4>
+<div class="bg-charcoal-black h-24 rounded flex items-center justify-center relative overflow-hidden">
+<!-- Faux video background -->
+<div class="absolute inset-0 bg-cover bg-center opacity-40" data-alt="A blurry, fast-paced action shot in a video background, featuring vibrant colors, a bright blue sky, and green grass. High energy, YouTube thumbnail style aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKUDqaMuaDsxa-5C-lYlYQMSZjwn_y-FXG01CAaNOMkYIqi81WDdttAVuHlLbnWDL5cDUIWQsTSPXAcfsM78K0WcNYN_WfBBd2vhLrWJRRRqETnMlCqImSuNM3rqVfL9REnyp3tJSLNtycbb-vDNjJzeyjvSoB3jKKz23wLJNvnBCKs4DYuPC3vACoJly2Tj3dRd5d3Vifa9k6fqf6NULR6x3HDM54gRl0lsGd1wRUCoph37xDVEOM')"></div>
+<!-- Subtitle rendering -->
+<div class="relative z-10 font-display-lg text-headline-md text-white font-black tracking-tighter" style="text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 4px 10px rgba(0,0,0,0.8);">
+<span class="text-secondary-container">INSANE</span> CHALLENGE
+                            </div>
+</div>
+<div class="mt-3 flex justify-between items-center text-outline-variant font-label-mono text-[11px]">
+<span>1-2 Words/Sec</span>
+<span>High Impact Colors</span>
+</div>
+</div>
+<!-- Preset 2 -->
+<div class="bg-surface-dim border border-glass-border rounded-lg p-4 cursor-pointer hover:border-hyper-cyan transition-all relative overflow-hidden">
+<div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-outline">radio_button_unchecked</span>
+</div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface mb-3">The "Hormozi"</h4>
+<div class="bg-charcoal-black h-24 rounded flex items-center justify-center relative overflow-hidden px-4">
+<!-- Faux video background -->
+<div class="absolute inset-0 bg-cover bg-center opacity-40" data-alt="A dark, moody, professional studio background with a subtle spotlight and acoustic foam panels. Minimalist, serious business podcast aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAV-QjjJEfPIvqLMGcXpxNdunqxLTWRHVRixkg1_UzkPs1s5iNAhkja2qIEJ6u2zBaEUMJ65XuLqx0PO_TRHpM8pWxm2OSZy42J0hq-EbShkmL4ncYXAiCeZabTlhWcuiKslNQAqPuMC5jhAwmVntYhGtUACACfK_2REJYABtTpFbceZDt_Ngp52H8E0AqR5V1NLR85bE2OQcrFN3i_j3Xq9cH-ZtbK1RpbRSqFGlTpKP2t0NJ22sdv')"></div>
+<!-- Subtitle rendering -->
+<div class="relative z-10 font-body-lg text-body-lg text-white font-bold leading-tight text-center" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">
+                                Here's the <span class="text-cyber-neon-green">secret</span> to scaling your business.
+                            </div>
+</div>
+<div class="mt-3 flex justify-between items-center text-outline-variant font-label-mono text-[11px]">
+<span>Phrases</span>
+<span>Highlight Focus Words</span>
+</div>
+</div>
+<button class="w-full mt-auto bg-surface-variant/30 text-on-surface border border-glass-border border-dashed font-button-text text-sm py-3 rounded-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">tune</span>
+                        Custom Preset Editor
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB (Mobile Only for Quick Actions, suppressed on main studio if complex, but kept as required by some rules if it fits. Given the prompt focuses on drop zone, we'll keep it simple or hide it. Hiding as per contextual rules for complex task pages, but let's add a subtle processing indicator FAB just in case.) -->
+<!-- Suppressed FAB as this is a specific tool/task screen -->
+<script>
+        // Simple Drag and Drop visual feedback interaction
+        const dropZone = document.getElementById('drop-zone');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('drag-active');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('drag-active');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            
+            // In a real app, handle files here. 
+            // For UI demo, just show a temporary visual state change.
+            const icon = dropZone.querySelector('.material-symbols-outlined');
+            const h2 = dropZone.querySelector('h2');
+            const p = dropZone.querySelector('p');
+            
+            icon.textContent = 'hourglass_top';
+            icon.classList.add('animate-spin');
+            h2.textContent = 'Analyzing Footage...';
+            p.textContent = 'Please wait while the AI prepares your pipeline.';
+            
+            setTimeout(() => {
+                icon.textContent = 'check_circle';
+                icon.classList.remove('animate-spin');
+                icon.classList.replace('text-electric-purple', 'text-cyber-neon-green');
+                h2.textContent = 'Upload Complete';
+                p.textContent = 'Pipeline is ready to begin atomization.';
+            }, 2000);
+        }
+    </script>
+</body></html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#00dbe9",
+                      "surface": "#111317",
+                      "surface-container": "#1e2024",
+                      "surface-container-highest": "#333539",
+                      "outline": "#998d9e",
+                      "surface-container-lowest": "#0c0e12",
+                      "on-tertiary": "#00363a",
+                      "on-secondary-container": "#0f6d00",
+                      "on-secondary": "#053900",
+                      "surface-variant": "#333539",
+                      "on-secondary-fixed-variant": "#095300",
+                      "charcoal-black": "#0F1115",
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "primary": "#e0b6ff",
+                      "electric-purple": "#9D4EDD",
+                      "tertiary-fixed": "#7df4ff",
+                      "background": "#111317",
+                      "surface-bright": "#37393e",
+                      "tertiary-container": "#00828b",
+                      "on-surface-variant": "#d0c2d5",
+                      "secondary-fixed": "#79ff5b",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#e0b6ff",
+                      "deep-slate": "#1A1D23",
+                      "inverse-on-surface": "#2f3035",
+                      "inverse-surface": "#e2e2e8",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "hyper-cyan": "#00F0FF",
+                      "on-surface": "#e2e2e8",
+                      "primary-container": "#9d4edd",
+                      "on-primary-fixed": "#2e004e",
+                      "cyber-neon-green": "#39FF14",
+                      "glass-border": "rgba(255, 255, 255, 0.12)",
+                      "on-primary": "#4c007d",
+                      "secondary-fixed-dim": "#2ae500",
+                      "surface-dim": "#111317",
+                      "error-container": "#93000a",
+                      "tertiary-fixed-dim": "#00dbe9",
+                      "surface-container-high": "#282a2e",
+                      "primary-fixed": "#f2daff",
+                      "secondary-container": "#2ff801",
+                      "secondary": "#d7ffc5",
+                      "outline-variant": "#4d4353",
+                      "inverse-primary": "#8433c4",
+                      "on-primary-container": "#fffdff",
+                      "on-secondary-fixed": "#022100",
+                      "on-error": "#690005",
+                      "on-background": "#e2e2e8",
+                      "surface-container-low": "#1a1c20",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#f9ffff",
+                      "on-tertiary-fixed": "#002022"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "max-width": "1440px",
+                      "unit": "8px",
+                      "margin-desktop": "48px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "button-text": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.charcoal-black');
+            color: theme('colors.on-background');
+        }
+        
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid theme('colors.glass-border');
+        }
+        
+        .input-cyber {
+            background-color: theme('colors.deep-slate');
+            border: 1px solid theme('colors.glass-border');
+            color: theme('colors.on-surface');
+            transition: all 0.3s ease;
+        }
+        
+        .input-cyber:focus {
+            outline: none;
+            border-color: theme('colors.cyber-neon-green');
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
+        }
+
+        .btn-primary {
+            background-color: theme('colors.electric-purple');
+            color: white;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant');
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col md:flex-row font-body-md">
+<!-- TopAppBar (Mobile Only, or Desktop if specified, but usually hidden on desktop with SideNav) -->
+<header class="fixed top-0 w-full z-50 bg-charcoal-black/80 backdrop-blur-xl border-b border-glass-border shadow-[0_0_15px_rgba(157,78,221,0.2)] md:hidden">
+<div class="flex justify-between items-center h-16 px-margin-mobile w-full max-w-max-width mx-auto">
+<div class="font-headline-md text-headline-md font-black tracking-tighter text-electric-purple italic">
+                KontentOS V2
+            </div>
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-hyper-cyan transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-hyper-cyan transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="fixed left-0 top-0 h-full w-[280px] hidden md:flex flex-col bg-deep-slate border-r border-glass-border shadow-2xl py-8 px-4 gap-6 z-40">
+<!-- Brand / Header -->
+<div class="flex items-center gap-4 px-4 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-electric-purple">
+<img class="w-full h-full object-cover" data-alt="A futuristic, cyber-punk styled avatar portrait of a digital creator. The avatar has glowing neon green eyes and is wearing a high-tech headset. The background is a dark, abstract digital space with subtle purple circuit patterns. Lighting is dramatic, coming from below, emphasizing the high-tech, energetic aesthetic of a professional content creator." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjxBwhkvt0LSi1O7iQgZHksyJnmVEjDlG8mdehomHGDqrMP_t_lGXmY-xmig7t4NhYNRjJPTrleHKxhLz-j-dDtUtKZCrSNcU7VcFFRttkEXu47uPPl4mAxaQuFBdG5Zv_m1h-w5D6AmJxWJ3Fl5Jk68-1PyDgtPnm19Bz7MOzjAamIF3fN4g9kQn_h1N9zWtRhF7swoux9SxYII8-dOYRQEcqbGe9vJU2Rf5lFJ8kKjrGtlbmMKO7"/>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-electric-purple">KontentOS</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">Creator Pro</div>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg btn-primary font-button-text text-button-text flex justify-center items-center gap-2 mb-4">
+<span class="material-symbols-outlined">add</span> Create New
+        </button>
+<!-- Navigation Links -->
+<div class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-body-md text-body-md font-medium">Idea Studio</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+<span class="font-body-md text-body-md font-medium">Teleprompter</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-body-md text-body-md font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg bg-primary-container/20 text-electric-purple border-r-4 border-electric-purple active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md font-medium">Settings</span>
+</a>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-col gap-2 mt-auto border-t border-glass-border pt-4">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md text-body-md font-medium">Support</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md font-medium">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] pt-20 md:pt-8 px-margin-mobile md:px-gutter pb-24 md:pb-8 max-w-max-width w-full mx-auto">
+<div class="mb-8">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Creator Profile Settings</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Configure your digital identity, niche targeting, and content style to train your AI co-pilot.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Settings Navigation (In-page) -->
+<div class="lg:col-span-3">
+<div class="glass-panel rounded-xl p-4 sticky top-24">
+<ul class="flex flex-col gap-2">
+<li>
+<a class="block px-4 py-3 rounded-lg bg-surface-container-highest text-cyber-neon-green font-medium border-l-2 border-cyber-neon-green transition-all" href="#basic-info">
+                                Basic Info
+                            </a>
+</li>
+<li>
+<a class="block px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" href="#niche-intent">
+                                Niche &amp; Intent
+                            </a>
+</li>
+<li>
+<a class="block px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" href="#content-style">
+                                Content Style
+                            </a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Settings Form Areas -->
+<div class="lg:col-span-9 flex flex-col gap-8">
+<!-- Basic Info Section -->
+<section class="glass-panel rounded-xl p-6 md:p-8" id="basic-info">
+<h2 class="font-headline-sm text-headline-sm text-electric-purple mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">person</span> Basic Information
+                    </h2>
+<div class="flex flex-col md:flex-row gap-8 items-start mb-8">
+<!-- Avatar Upload -->
+<div class="flex flex-col items-center gap-4">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-glass-border relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A sleek, metallic 3D icon of a user profile placeholder. The icon is rendered in a dark cyber environment, illuminated by soft blue and neon green rim lights, suggesting a high-tech interface. The surface of the icon has a subtle brushed metal texture, blending with the glassmorphism aesthetic of the surrounding UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUd_uygkT68CBc9G-o79Eo3KcBA3AYKyCWW1v_xBbYWbj1C7v1VbEAu0w6GLe2QFS9ZrrDtcBH7suVScsSgXiLyybZO1onHPRqtVnN37derXYkwB7EHkStjJYJ15ijdISHoKDtdkHbOkxgtcXarm9EppXU-4e4JTO-R8ir-m5OFeI-18yXH0VlQeO19nGefXF2K-8L2xGdbKknJqeDGoFaHBNAppHVpYOynZnl3ke8tFHA7JrjDWMW"/>
+<div class="absolute inset-0 bg-charcoal-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<button class="font-label-mono text-label-mono text-tertiary hover:text-hyper-cyan transition-colors">Change Avatar</button>
+</div>
+<!-- Core Fields -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Display Name</label>
+<input class="input-cyber rounded-lg px-4 py-3 w-full" type="text" value="Alex Nova"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Handle / Username</label>
+<div class="relative">
+<span class="absolute left-4 top-3 text-on-surface-variant">@</span>
+<input class="input-cyber rounded-lg pl-10 pr-4 py-3 w-full" type="text" value="alexnova_tech"/>
+</div>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Short Bio</label>
+<textarea class="input-cyber rounded-lg px-4 py-3 w-full h-24 resize-none">Demystifying tech &amp; coding for the next generation of builders. Building KontentOS in public.</textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Niche & Intent Section -->
+<section class="glass-panel rounded-xl p-6 md:p-8 relative overflow-hidden" id="niche-intent">
+<!-- Decorative background element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-hyper-cyan/5 rounded-full blur-3xl pointer-events-none"></div>
+<h2 class="font-headline-sm text-headline-sm text-hyper-cyan mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">track_changes</span> Niche &amp; Intent
+                    </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Primary Content Category</label>
+<select class="input-cyber rounded-lg px-4 py-3 w-full appearance-none">
+<option>Technology &amp; Coding</option>
+<option>Business &amp; Finance</option>
+<option>Lifestyle &amp; Vlogs</option>
+<option>Education</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Target Audience (Keywords)</label>
+<input class="input-cyber rounded-lg px-4 py-3 w-full" placeholder="e.g., developers, startup founders, gen z" type="text"/>
+<p class="text-xs text-outline mt-1">Comma separated list of who you are talking to.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Primary Platform Goals</label>
+<!-- Custom Radio Buttons -->
+<label class="flex items-center gap-3 p-3 rounded-lg border border-glass-border hover:border-hyper-cyan/50 cursor-pointer transition-colors bg-surface-container-low">
+<input checked="" class="w-5 h-5 text-hyper-cyan bg-deep-slate border-outline focus:ring-hyper-cyan focus:ring-offset-deep-slate" name="intent" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-medium">Audience Growth</span>
+<span class="text-sm text-on-surface-variant">Maximize reach and virality.</span>
+</div>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg border border-glass-border hover:border-hyper-cyan/50 cursor-pointer transition-colors bg-surface-container-low">
+<input class="w-5 h-5 text-hyper-cyan bg-deep-slate border-outline focus:ring-hyper-cyan focus:ring-offset-deep-slate" name="intent" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-medium">Authority &amp; Trust</span>
+<span class="text-sm text-on-surface-variant">Deep-dive, high-value educational content.</span>
+</div>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg border border-glass-border hover:border-hyper-cyan/50 cursor-pointer transition-colors bg-surface-container-low">
+<input class="w-5 h-5 text-hyper-cyan bg-deep-slate border-outline focus:ring-hyper-cyan focus:ring-offset-deep-slate" name="intent" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface font-medium">Conversion</span>
+<span class="text-sm text-on-surface-variant">Drive traffic to products or services.</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Content Style Section -->
+<section class="glass-panel rounded-xl p-6 md:p-8" id="content-style">
+<h2 class="font-headline-sm text-headline-sm text-cyber-neon-green mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">style</span> Content Style &amp; Tone
+                    </h2>
+<p class="font-body-md text-on-surface-variant mb-6">Train the Idea Studio AI to match your unique voice.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Tone Sliders -->
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-mono text-label-mono">
+<span class="text-on-surface-variant">Professional</span>
+<span class="text-cyber-neon-green">Casual</span>
+</div>
+<input class="w-full h-2 bg-deep-slate rounded-lg appearance-none cursor-pointer accent-cyber-neon-green" max="100" min="1" type="range" value="70"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-mono text-label-mono">
+<span class="text-on-surface-variant">Analytical</span>
+<span class="text-cyber-neon-green">Emotional</span>
+</div>
+<input class="w-full h-2 bg-deep-slate rounded-lg appearance-none cursor-pointer accent-cyber-neon-green" max="100" min="1" type="range" value="40"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-mono text-label-mono">
+<span class="text-on-surface-variant">Concise</span>
+<span class="text-cyber-neon-green">Detailed</span>
+</div>
+<input class="w-full h-2 bg-deep-slate rounded-lg appearance-none cursor-pointer accent-cyber-neon-green" max="100" min="1" type="range" value="30"/>
+</div>
+</div>
+<!-- Vocabulary / Banned Words -->
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Signature Catchphrases</label>
+<textarea class="input-cyber rounded-lg px-4 py-3 w-full h-20 resize-none" placeholder="e.g., 'Let's build', 'Welcome back builders'"></textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant">Negative Constraints (Banned Words)</label>
+<textarea class="input-cyber rounded-lg px-4 py-3 w-full h-20 resize-none" placeholder="Words you never use (e.g., 'synergy', 'hustle')"></textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Action Bar -->
+<div class="flex justify-end gap-4 mt-4 pt-4 border-t border-glass-border">
+<button class="px-6 py-3 rounded-lg border border-glass-border text-on-surface hover:bg-surface-container transition-colors font-button-text">
+                        Discard Changes
+                    </button>
+<button class="px-8 py-3 rounded-lg btn-primary font-button-text flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">save</span> Save Configuration
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full md:hidden rounded-t-xl bg-charcoal-black/90 backdrop-blur-lg border-t border-glass-border shadow-[0_-4px_20px_rgba(0,0,0,0.5)] z-50 flex justify-around items-center px-4 pb-6 pt-2">
+<a class="flex flex-col items-center justify-center text-outline hover:text-hyper-cyan transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-mono text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline hover:text-hyper-cyan transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="movie_filter">movie_filter</span>
+<span class="font-label-mono text-[10px] mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline hover:text-hyper-cyan transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-label-mono text-[10px] mt-1">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-electric-purple/20 text-electric-purple rounded-xl py-1 px-3 shadow-[0_0_10px_rgba(157,78,221,0.3)] active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-mono text-[10px] mt-1">Settings</span>
+</a>
+</nav>
+<script>
+        // Simple script to handle smooth scrolling and active state for the in-page nav
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.lg\\:col-span-3 a');
+            const sections = document.querySelectorAll('section');
+
+            // Click handler for smooth scroll
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 100, // offset for header
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Scroll spy to update active state
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('bg-surface-container-highest', 'text-cyber-neon-green', 'border-l-2', 'border-cyber-neon-green');
+                    link.classList.add('text-on-surface-variant');
+                    
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.remove('text-on-surface-variant');
+                        link.classList.add('bg-surface-container-highest', 'text-cyber-neon-green', 'border-l-2', 'border-cyber-neon-green');
+                    }
+                });
+            });
+        });
+    </script>
+</body></html>

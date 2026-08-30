@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Raw-to-Reel Studio Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Montserrat:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "background": "#111317",
+                      "secondary-fixed-dim": "#2ae500",
+                      "on-secondary-container": "#0f6d00",
+                      "secondary": "#d7ffc5",
+                      "secondary-fixed": "#79ff5b",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "on-tertiary": "#00363a",
+                      "tertiary-container": "#00828b",
+                      "glass-border": "rgba(255, 255, 255, 0.12)",
+                      "on-tertiary-fixed": "#002022",
+                      "secondary-container": "#2ff801",
+                      "on-primary-fixed": "#2e004e",
+                      "primary": "#e0b6ff",
+                      "electric-purple": "#9D4EDD",
+                      "primary-container": "#9d4edd",
+                      "surface-container-highest": "#333539",
+                      "outline": "#998d9e",
+                      "on-secondary": "#053900",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#fffdff",
+                      "charcoal-black": "#0F1115",
+                      "deep-slate": "#1A1D23",
+                      "surface-bright": "#37393e",
+                      "on-surface": "#e2e2e8",
+                      "on-background": "#e2e2e8",
+                      "surface-container-high": "#282a2e",
+                      "primary-fixed": "#f2daff",
+                      "surface-container-low": "#1a1c20",
+                      "outline-variant": "#4d4353",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#e0b6ff",
+                      "tertiary-fixed-dim": "#00dbe9",
+                      "inverse-on-surface": "#2f3035",
+                      "on-tertiary-container": "#f9ffff",
+                      "hyper-cyan": "#00F0FF",
+                      "surface": "#111317",
+                      "on-surface-variant": "#d0c2d5",
+                      "on-primary": "#4c007d",
+                      "surface-container": "#1e2024",
+                      "surface-container-lowest": "#0c0e12",
+                      "inverse-primary": "#8433c4",
+                      "surface-variant": "#333539",
+                      "on-secondary-fixed-variant": "#095300",
+                      "on-secondary-fixed": "#022100",
+                      "tertiary-fixed": "#7df4ff",
+                      "inverse-surface": "#e2e2e8",
+                      "error-container": "#93000a",
+                      "surface-dim": "#111317",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "tertiary": "#00dbe9",
+                      "cyber-neon-green": "#39FF14"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "unit": "8px",
+                      "margin-mobile": "16px",
+                      "max-width": "1440px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "button-text": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "900"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        
+        .glass-panel {
+            background: theme('colors.deep-slate');
+            border: 1px solid theme('colors.glass-border');
+            backdrop-filter: blur(20px);
+        }
+
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        
+        .neon-glow-secondary {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.background'); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant'); 
+            border-radius: theme('borderRadius.full');
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.electric-purple'); 
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex selection:bg-electric-purple selection:text-white">
+<!-- Side Nav Bar (From JSON) -->
+<nav class="hidden md:flex flex-col h-full py-8 px-6 gap-y-4 fixed left-0 top-0 w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] z-50">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter">KontentOS V2</h1>
+<p class="font-label-mono text-label-mono text-hyper-cyan mt-1">Creator Command Center</p>
+</div>
+<button class="w-full bg-electric-purple text-on-primary-container font-button-text text-button-text py-3 px-4 rounded-lg neon-glow-primary hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2 mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+            Quick Create
+        </button>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-body-md text-body-md">Idea Studio</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md text-body-md">Script Studio</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 hover:bg-surface-variant/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-body-md text-body-md">Auto-Studio</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md text-body-md">Publishing Hub</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-body-md text-body-md">Growth Intelligence</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Monetization</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto flex items-center gap-3 pt-6 border-t border-glass-border">
+<img alt="Creator Profile" class="w-10 h-10 rounded-full border border-electric-purple object-cover" data-alt="A futuristic avatar profile picture of a creator with glowing neon purple accents in a cyberpunk aesthetic. The background is dark and moody, typical of a high-end tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB39OeKQh3sUrdfIYW9dfXtKuCTDsrJInIDfmsODR8qIK6qch5ozpDywAupm9T1ONaEgY4MvfjuPOHv8JXa87K7NkTDCOPqPm_ZJR6qbrpgTQJJNTaN2MJYrMze-PZ-QiGa5LKz3YELBtEcQbzYddQa_qV41scckgOAK178aa5aCZaADUwquc256od1vrVqw42ymndaPObbcHGu_DyMQhRbqw4GyNnzFpt70jfngn_9xZ6tJH3-agnV"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Alex Nova</p>
+<p class="font-label-mono text-[12px] text-on-surface-variant">Pro Tier</p>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] min-h-screen relative overflow-x-hidden">
+<!-- Top App Bar (From JSON) -->
+<header class="flex justify-between items-center px-margin-desktop w-full z-40 fixed top-0 right-0 md:left-[280px] left-0 h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border">
+<div class="flex items-center gap-4">
+<span class="md:hidden font-display-lg text-headline-sm text-primary">KontentOS</span>
+<div class="hidden md:flex items-center bg-surface-variant rounded-full px-4 py-1.5 border border-glass-border focus-within:border-cyber-neon-green transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface placeholder:text-on-surface-variant/50 w-64 ml-2" placeholder="Search commands..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-2 bg-secondary/10 px-3 py-1 rounded-full border border-secondary/20">
+<div class="w-2 h-2 rounded-full bg-cyber-neon-green animate-pulse"></div>
+<span class="font-label-mono text-label-mono text-cyber-neon-green">Readiness: 98%</span>
+</div>
+<button class="hidden md:block bg-electric-purple text-on-primary-container font-button-text text-button-text px-6 py-2 rounded-lg hover:opacity-80 transition-opacity">Create</button>
+</div>
+</header>
+<!-- Canvas Setup -->
+<div class="pt-[100px] px-margin-mobile md:px-margin-desktop pb-24 max-w-max-width mx-auto">
+<div class="mb-8">
+<h2 class="font-display-lg text-headline-md lg:text-display-lg text-on-surface">Raw-to-Reel <span class="text-hyper-cyan">Studio Hub</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Drop your raw footage. Let the AI engine trim, reframe, and subtilize your content into viral-ready assets in seconds.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- 1. Raw Video Upload (Spans 8 cols) -->
+<section class="lg:col-span-8 glass-panel rounded-xl p-8 relative overflow-hidden group flex flex-col justify-center min-h-[400px] border-dashed border-2 border-outline/30 hover:border-electric-purple transition-colors duration-300 cursor-pointer">
+<!-- Subtle background texture -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<div class="text-center z-10">
+<div class="w-20 h-20 mx-auto bg-surface-variant rounded-full flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-electric-purple/20 transition-all duration-500">
+<span class="material-symbols-outlined text-[40px] text-on-surface group-hover:text-electric-purple transition-colors" data-weight="fill">cloud_upload</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Drop Raw Footage Here</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Supports MP4, MOV, ProRes up to 4K (Max 10GB)</p>
+<div class="flex items-center justify-center gap-4">
+<button class="bg-surface-variant text-on-surface font-button-text text-button-text px-6 py-3 rounded-lg border border-glass-border hover:bg-surface-bright transition-colors">Browse Files</button>
+<button class="bg-transparent text-hyper-cyan font-button-text text-button-text px-6 py-3 rounded-lg border border-hyper-cyan/30 hover:bg-hyper-cyan/10 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">link</span>
+                                Import URL
+                            </button>
+</div>
+</div>
+</section>
+<!-- 2. Auto-Edit Pipeline Configuration (Spans 4 cols) -->
+<section class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Pipeline Settings Card -->
+<div class="glass-panel rounded-xl p-6 flex-1">
+<div class="flex items-center justify-between mb-6 border-b border-glass-border pb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple">auto_fix_high</span>
+                                Auto-Edit Engine
+                            </h3>
+<div class="w-3 h-3 rounded-full bg-cyber-neon-green animate-pulse" title="Engine Ready"></div>
+</div>
+<div class="space-y-5">
+<!-- Toggle 1 -->
+<label class="flex items-center justify-between cursor-pointer group">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface block mb-1">Trim Silence</span>
+<span class="font-body-md text-[13px] text-on-surface-variant">Remove gaps &gt; 0.5s</span>
+</div>
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyber-neon-green"></div>
+</div>
+</label>
+<!-- Toggle 2 -->
+<label class="flex items-center justify-between cursor-pointer group">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface block mb-1">Auto-Reframe</span>
+<span class="font-body-md text-[13px] text-on-surface-variant">Track face to 9:16</span>
+</div>
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyber-neon-green"></div>
+</div>
+</label>
+<!-- Toggle 3 -->
+<label class="flex items-center justify-between cursor-pointer group">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface block mb-1">Enhance Audio</span>
+<span class="font-body-md text-[13px] text-on-surface-variant">Studio mic emulation</span>
+</div>
+<div class="relative">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyber-neon-green"></div>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- 3. Dynamic Subtitle Presets (Spans 12 cols) -->
+<section class="lg:col-span-12 glass-panel rounded-xl p-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Dynamic Subtitle Presets</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Select AI transcription style</p>
+</div>
+<!-- Watermark Toggle -->
+<div class="flex items-center gap-3 bg-surface-container-highest px-4 py-2 rounded-lg border border-glass-border">
+<span class="font-label-mono text-label-mono text-on-surface">"Made with KontentOS" Watermark</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-surface-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-electric-purple"></div>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Preset 1: The Beast -->
+<div class="relative group cursor-pointer">
+<div class="absolute inset-0 bg-cyber-neon-green/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+<div class="relative bg-surface-container border-2 border-cyber-neon-green rounded-xl p-6 h-full flex flex-col justify-between overflow-hidden neon-glow-secondary">
+<div class="absolute top-0 right-0 bg-cyber-neon-green text-charcoal-black font-label-mono text-[10px] px-2 py-1 rounded-bl-lg font-bold">ACTIVE</div>
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-cyber-neon-green">bolt</span>
+<h4 class="font-button-text text-button-text text-on-surface">The "Beast"</h4>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6">High-energy, fast-paced word-by-word highlight. Aggressive colors and bouncing animations.</p>
+</div>
+<!-- Mock Preview -->
+<div class="bg-charcoal-black h-24 rounded-lg flex items-center justify-center overflow-hidden border border-glass-border relative">
+<div class="font-display-lg text-[24px] text-white uppercase italic transform -skew-x-12 font-black tracking-tighter">
+<span class="text-cyber-neon-green">INSANE</span> RETENTION
+                                    </div>
+</div>
+</div>
+</div>
+<!-- Preset 2: The Hormozi -->
+<div class="relative group cursor-pointer">
+<div class="absolute inset-0 bg-electric-purple/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+<div class="relative bg-surface-container border border-glass-border hover:border-electric-purple rounded-xl p-6 h-full flex flex-col justify-between transition-colors duration-300">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-electric-purple">psychology</span>
+<h4 class="font-button-text text-button-text text-on-surface">The "Hormozi"</h4>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6">Clean, bold, blocky text with specific keywords highlighted in yellow or red. Authority-building.</p>
+</div>
+<!-- Mock Preview -->
+<div class="bg-charcoal-black h-24 rounded-lg flex items-center justify-center overflow-hidden border border-glass-border relative">
+<div class="font-headline-md text-[20px] text-white font-bold text-center leading-tight">
+                                        VALUE <br/> <span class="bg-[#FFD700] text-black px-1 rounded-sm">EQUATION</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Preset 3: Minimalist Docu -->
+<div class="relative group cursor-pointer">
+<div class="absolute inset-0 bg-hyper-cyan/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+<div class="relative bg-surface-container border border-glass-border hover:border-hyper-cyan rounded-xl p-6 h-full flex flex-col justify-between transition-colors duration-300">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-hyper-cyan">closed_caption</span>
+<h4 class="font-button-text text-button-text text-on-surface">Cinematic Minimal</h4>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6">Subtle, lower-third elegance. Smooth fades. Perfect for podcasts and long-form aesthetic content.</p>
+</div>
+<!-- Mock Preview -->
+<div class="bg-charcoal-black h-24 rounded-lg flex items-center justify-end flex-col pb-4 overflow-hidden border border-glass-border relative">
+<div class="font-body-lg text-[14px] text-white/90 font-light tracking-wide text-center">
+                                        "The architecture of modern design..."
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Processing Action -->
+<div class="lg:col-span-12 flex justify-end mt-4">
+<button class="bg-electric-purple text-on-primary-container font-button-text text-button-text px-10 py-4 rounded-xl neon-glow-primary hover:scale-[1.02] transition-transform duration-300 flex items-center gap-3">
+<span class="material-symbols-outlined">movie_edit</span>
+                        Generate Viral Drafts
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile FAB -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-electric-purple rounded-full flex items-center justify-center text-white neon-glow-primary z-50">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</body></html>

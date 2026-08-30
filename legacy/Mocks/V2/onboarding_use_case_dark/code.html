@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Onboarding Step 3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,900&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#00dbe9",
+                        "surface": "#111317",
+                        "surface-container": "#1e2024",
+                        "surface-container-highest": "#333539",
+                        "outline": "#998d9e",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-tertiary": "#00363a",
+                        "on-secondary-container": "#0f6d00",
+                        "on-secondary": "#053900",
+                        "surface-variant": "#333539",
+                        "on-secondary-fixed-variant": "#095300",
+                        "charcoal-black": "#0F1115",
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "primary": "#e0b6ff",
+                        "electric-purple": "#9D4EDD",
+                        "tertiary-fixed": "#7df4ff",
+                        "background": "#111317",
+                        "surface-bright": "#37393e",
+                        "tertiary-container": "#00828b",
+                        "on-surface-variant": "#d0c2d5",
+                        "secondary-fixed": "#79ff5b",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#e0b6ff",
+                        "deep-slate": "#1A1D23",
+                        "inverse-on-surface": "#2f3035",
+                        "inverse-surface": "#e2e2e8",
+                        "on-primary-fixed-variant": "#6a0baa",
+                        "hyper-cyan": "#00F0FF",
+                        "on-surface": "#e2e2e8",
+                        "primary-container": "#9d4edd",
+                        "on-primary-fixed": "#2e004e",
+                        "cyber-neon-green": "#39FF14",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                        "on-primary": "#4c007d",
+                        "secondary-fixed-dim": "#2ae500",
+                        "surface-dim": "#111317",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#00dbe9",
+                        "surface-container-high": "#282a2e",
+                        "primary-fixed": "#f2daff",
+                        "secondary-container": "#2ff801",
+                        "secondary": "#d7ffc5",
+                        "outline-variant": "#4d4353",
+                        "inverse-primary": "#8433c4",
+                        "on-primary-container": "#fffdff",
+                        "on-secondary-fixed": "#022100",
+                        "on-error": "#690005",
+                        "on-background": "#e2e2e8",
+                        "surface-container-low": "#1a1c20",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#f9ffff",
+                        "on-tertiary-fixed": "#002022"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "max-width": "1440px",
+                        "unit": "8px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "headline-sm": ["Montserrat"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "button-text": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "900" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "button-text": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0F1115; /* Charcoal Black */
+            color: #e2e2e8; /* on-background */
+        }
+        
+        .glass-card {
+            background: rgba(26, 29, 35, 0.7); /* Deep Slate with opacity */
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .cyber-glow-active {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+            border-color: #9D4EDD !important;
+        }
+
+        .cyber-glow-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            border-color: #00F0FF;
+            transform: translateY(-2px);
+        }
+        
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+        }
+
+        /* Hide Nav Shells for Onboarding as per instructions */
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Decorative Background Elements -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-electric-purple rounded-full blur-[150px] opacity-20"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-hyper-cyan rounded-full blur-[150px] opacity-10"></div>
+</div>
+<!-- Onboarding Container -->
+<main class="flex-grow flex items-center justify-center relative z-10 px-margin-mobile md:px-margin-desktop py-12">
+<div class="w-full max-w-4xl mx-auto flex flex-col items-center">
+<!-- Brand & Step Indicator -->
+<div class="w-full flex flex-col items-center mb-12 text-center">
+<h2 class="font-headline-md text-headline-md font-black tracking-tighter text-electric-purple italic mb-8">KontentOS V2</h2>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-deep-slate border border-glass-border text-on-surface-variant font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-[2px] w-8 bg-surface-variant"></div>
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-deep-slate border border-glass-border text-on-surface-variant font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-[2px] w-8 bg-electric-purple/50"></div>
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-electric-purple/20 border border-electric-purple text-electric-purple font-label-mono text-label-mono shadow-[0_0_10px_rgba(157,78,221,0.3)]">
+                        3
+                    </div>
+<div class="h-[2px] w-8 bg-surface-variant"></div>
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-deep-slate border border-glass-border text-on-surface-variant font-label-mono text-label-mono">
+                        4
+                    </div>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-4">What's your main goal?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Select the primary use case for your KontentOS workspace to help us tailor your dashboard experience.</p>
+</div>
+<!-- Interactive Selection Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-12">
+<!-- Card 1: Viral Growth -->
+<button class="glass-card rounded-xl p-6 flex flex-col items-start text-left transition-all duration-300 cyber-glow-hover group relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-hyper-cyan" onclick="toggleActive(this)">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-[.cyber-glow-active]:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-electric-purple" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-cyber-neon-green/10 border border-cyber-neon-green/30 flex items-center justify-center mb-4 text-cyber-neon-green">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Viral Growth</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Maximize reach, analyze trends, and scale audience across TikTok, Reels, and Shorts.</p>
+</button>
+<!-- Card 2: Authority -->
+<button class="glass-card rounded-xl p-6 flex flex-col items-start text-left transition-all duration-300 cyber-glow-hover group relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-hyper-cyan" onclick="toggleActive(this)">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-[.cyber-glow-active]:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-electric-purple" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-hyper-cyan/10 border border-hyper-cyan/30 flex items-center justify-center mb-4 text-hyper-cyan">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Authority Building</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Establish thought leadership with long-form essays, newsletters, and high-value educational content.</p>
+</button>
+<!-- Card 3: Monetization -->
+<button class="glass-card rounded-xl p-6 flex flex-col items-start text-left transition-all duration-300 cyber-glow-hover group relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-hyper-cyan" onclick="toggleActive(this)">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-[.cyber-glow-active]:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-electric-purple" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-electric-purple/10 border border-electric-purple/30 flex items-center justify-center mb-4 text-electric-purple">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Monetization</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Convert audience into customers. Track sponsors, manage digital products, and optimize funnels.</p>
+</button>
+<!-- Card 4: Automation -->
+<button class="glass-card rounded-xl p-6 flex flex-col items-start text-left transition-all duration-300 cyber-glow-hover group relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-hyper-cyan" onclick="toggleActive(this)">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-[.cyber-glow-active]:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-electric-purple" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-outline/10 border border-outline/30 flex items-center justify-center mb-4 text-on-surface">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Workflow Automation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Streamline production with AI tools, automated scheduling, and bulk content generation.</p>
+</button>
+</div>
+<!-- Action Buttons -->
+<div class="w-full flex justify-between items-center mt-auto border-t border-glass-border pt-8">
+<button class="px-6 py-3 rounded-lg font-button-text text-button-text text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                    Back
+                </button>
+<button class="bg-electric-purple text-on-primary px-8 py-3 rounded-lg font-button-text text-button-text shadow-[0_0_15px_rgba(157,78,221,0.4)] hover:shadow-[0_0_25px_rgba(157,78,221,0.6)] hover:bg-primary transition-all flex items-center gap-2">
+                    Continue Step
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<script>
+        function toggleActive(element) {
+            // Remove active class from all cards
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => card.classList.remove('cyber-glow-active'));
+            
+            // Add active class to clicked card
+            element.classList.add('cyber-glow-active');
+        }
+    </script>
+</body></html>

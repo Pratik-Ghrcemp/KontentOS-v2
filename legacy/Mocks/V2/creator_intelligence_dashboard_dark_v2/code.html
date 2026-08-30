@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#004f54",
+                    "background": "#111317",
+                    "secondary-fixed-dim": "#2ae500",
+                    "on-secondary-container": "#0f6d00",
+                    "secondary": "#d7ffc5",
+                    "secondary-fixed": "#79ff5b",
+                    "on-primary-fixed-variant": "#6a0baa",
+                    "on-tertiary": "#00363a",
+                    "tertiary-container": "#00828b",
+                    "glass-border": "rgba(255, 255, 255, 0.12)",
+                    "on-tertiary-fixed": "#002022",
+                    "secondary-container": "#2ff801",
+                    "on-primary-fixed": "#2e004e",
+                    "primary": "#e0b6ff",
+                    "electric-purple": "#9D4EDD",
+                    "primary-container": "#9d4edd",
+                    "surface-container-highest": "#333539",
+                    "outline": "#998d9e",
+                    "on-secondary": "#053900",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#fffdff",
+                    "charcoal-black": "#0F1115",
+                    "deep-slate": "#1A1D23",
+                    "surface-bright": "#37393e",
+                    "on-surface": "#e2e2e8",
+                    "on-background": "#e2e2e8",
+                    "surface-container-high": "#282a2e",
+                    "primary-fixed": "#f2daff",
+                    "surface-container-low": "#1a1c20",
+                    "outline-variant": "#4d4353",
+                    "on-error-container": "#ffdad6",
+                    "surface-tint": "#e0b6ff",
+                    "tertiary-fixed-dim": "#00dbe9",
+                    "inverse-on-surface": "#2f3035",
+                    "on-tertiary-container": "#f9ffff",
+                    "hyper-cyan": "#00F0FF",
+                    "surface": "#111317",
+                    "on-surface-variant": "#d0c2d5",
+                    "on-primary": "#4c007d",
+                    "surface-container": "#1e2024",
+                    "surface-container-lowest": "#0c0e12",
+                    "inverse-primary": "#8433c4",
+                    "surface-variant": "#333539",
+                    "on-secondary-fixed-variant": "#095300",
+                    "on-secondary-fixed": "#022100",
+                    "tertiary-fixed": "#7df4ff",
+                    "inverse-surface": "#e2e2e8",
+                    "error-container": "#93000a",
+                    "surface-dim": "#111317",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#e0b6ff",
+                    "tertiary": "#00dbe9",
+                    "cyber-neon-green": "#39FF14"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "unit": "8px",
+                    "margin-mobile": "16px",
+                    "max-width": "1440px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "button-text": [
+                            "Montserrat"
+                    ],
+                    "headline-md": [
+                            "Montserrat"
+                    ],
+                    "headline-sm": [
+                            "Montserrat"
+                    ],
+                    "label-mono": [
+                            "JetBrains Mono"
+                    ],
+                    "display-lg": [
+                            "Montserrat"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "display-lg-mobile": [
+                            "Montserrat"
+                    ]
+            },
+            "fontSize": {
+                    "button-text": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-sm": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-mono": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "36px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "900"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.charcoal-black');
+            color: theme('colors.on-surface');
+        }
+        
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px theme('colors.electric-purple');
+        }
+        
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px theme('colors.cyber-neon-green');
+        }
+        
+        .glass-card {
+            background-color: theme('colors.deep-slate');
+            border: 1px solid theme('colors.glass-border');
+            backdrop-filter: blur(20px);
+        }
+        
+        .glass-card:hover {
+            border-color: theme('colors.electric-purple');
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.charcoal-black'); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant'); 
+            border-radius: theme('borderRadius.full');
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline'); 
+        }
+    </style>
+</head>
+<body class="bg-charcoal-black min-h-screen flex flex-col md:flex-row overflow-x-hidden font-body-md text-body-md text-on-surface">
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] py-8 px-6 gap-y-4 z-50">
+<div class="mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-electric-purple overflow-hidden flex-shrink-0">
+<img alt="Creator Profile" class="w-full h-full object-cover" data-alt="A futuristic 3D avatar of a content creator, styled with neon purple and cyan accents against a dark background, embodying the 'KontentOS V2' cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUVLce4vkhLmtkMv5bRTlxWZwmnsQ_x-U05QgUTYBkuZAGiMbyopOMaEKgAxACWR9sjt007DXdwLGrwlhK-bpvinyGYMf-8CwTB5Gn-tCkQwpPPQ_gSgakm66eS-EMH1kUqHucSTFWzG44AlpRtJzLzGL2m1Syu46ww4wz7hD434oJ2oV4Pe638RRYSoNpalnI_-MsjBh3X9KmhiJ0xfM2ZcNX38j3-gafaWrRm1dxSNOstmOvdQeY"/>
+</div>
+<div>
+<h1 class="font-display-lg text-headline-sm text-primary tracking-tighter leading-none">KontentOS V2</h1>
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest mt-1">Creator Command Center</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+<span>Idea Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Script Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span>Auto-Studio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span>Publishing Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span>Growth Intelligence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Monetization</span>
+</a>
+</div>
+<button class="mt-auto bg-electric-purple text-on-primary-container font-button-text text-button-text py-3 rounded-lg cyber-glow-primary hover:opacity-90 transition-opacity w-full flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+            Quick Create
+        </button>
+</nav>
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex fixed top-0 right-0 left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border justify-between items-center px-margin-desktop w-[calc(100%-280px)] z-40">
+<div class="flex items-center gap-4">
+<!-- Search left empty as per spec 'on_left' implied but focus is dashboard -->
+<span class="font-headline-sm text-on-surface opacity-50">Growth Intelligence</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label-mono text-label-mono text-cyber-neon-green bg-cyber-neon-green/10 px-3 py-1 rounded-full border border-cyber-neon-green/30">Readiness: 98%</span>
+<button class="text-on-surface-variant hover:text-hyper-cyan transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-electric-purple overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A small 3D avatar thumbnail of a content creator, styled with neon purple and cyan accents against a dark background, matching the main profile image." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqZ-_QhNpQHSD92c1-RBCr4wdLBykL-MVxed43qqdZmgtS9moXSDQhqqKscZJMh3sRh_ESaPHdjsHgJanxiH9_ofqdSHVXaeakmTro5RZky81-zrIuY7_e26i89LfEOui9oVfT6NAKAGjtGQ9ZZRdwmG_BKyZQZucvcJoOIFVl3Mio1tP42fZC031p3wy4Mes39sN7FsNfRkzG3O3JBhEttLI7_pPMAKtDZpVm-EKVp2as1XBAH1W8"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] md:mt-16 p-margin-mobile md:p-margin-desktop flex flex-col gap-[64px]">
+<!-- Dashboard Header -->
+<div class="flex flex-col gap-2">
+<h2 class="font-display-lg-mobile md:font-display-lg text-primary tracking-tighter">Your Daily Radar</h2>
+<p class="font-body-lg text-on-surface-variant">Analyze trends, spot opportunities, and roll the dice on your next viral hit.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Section 1: Daily Create This Today (High Priority) -->
+<section class="md:col-span-8 flex flex-col gap-4">
+<div class="flex justify-between items-end mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Create This Today</h3>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Based on your audience</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Task Card 1 -->
+<div class="glass-card rounded-xl p-6 relative group cursor-pointer transition-all duration-300">
+<div class="absolute top-4 right-4 font-label-mono text-[12px] bg-electric-purple/20 text-electric-purple px-2 py-1 rounded border border-electric-purple/30">
+                            95% Match
+                        </div>
+<div class="w-12 h-12 rounded-lg bg-tertiary-container/20 flex items-center justify-center mb-4 text-hyper-cyan">
+<span class="material-symbols-outlined text-[24px]">movie</span>
+</div>
+<h4 class="font-headline-sm text-[20px] text-on-surface mb-2 group-hover:text-primary transition-colors">"Day in the Life" Hook Swap</h4>
+<p class="font-body-md text-on-surface-variant mb-4 line-clamp-2">Your audience is highly engaged with vlog formats right now. Use the 'Pattern Interrupt' hook template.</p>
+<button class="bg-transparent border border-glass-border text-on-surface font-button-text text-sm py-2 px-4 rounded-lg hover:border-white/30 hover:bg-white/5 transition-all w-full text-left flex items-center justify-between">
+                            Draft Script <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Task Card 2 -->
+<div class="glass-card rounded-xl p-6 relative group cursor-pointer transition-all duration-300">
+<div class="absolute top-4 right-4 font-label-mono text-[12px] bg-cyber-neon-green/20 text-cyber-neon-green px-2 py-1 rounded border border-cyber-neon-green/30">
+                            Trending Now
+                        </div>
+<div class="w-12 h-12 rounded-lg bg-secondary-container/20 flex items-center justify-center mb-4 text-cyber-neon-green">
+<span class="material-symbols-outlined text-[24px]">bolt</span>
+</div>
+<h4 class="font-headline-sm text-[20px] text-on-surface mb-2 group-hover:text-primary transition-colors">AI Tools Reaction</h4>
+<p class="font-body-md text-on-surface-variant mb-4 line-clamp-2">A new competitor tool just launched. Quick reaction videos are trending in your niche.</p>
+<button class="bg-transparent border border-glass-border text-on-surface font-button-text text-sm py-2 px-4 rounded-lg hover:border-white/30 hover:bg-white/5 transition-all w-full text-left flex items-center justify-between">
+                            Open Auto-Studio <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 2: Viral Idea Roulette (Aggressive/Casual) -->
+<section class="md:col-span-4 flex flex-col gap-4">
+<div class="flex justify-between items-end mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Idea Roulette</h3>
+<span class="material-symbols-outlined text-electric-purple animate-pulse">casino</span>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center h-full relative overflow-hidden">
+<!-- Subtle background glow -->
+<div class="absolute inset-0 bg-gradient-to-br from-cyber-neon-green/10 to-transparent pointer-events-none"></div>
+<div class="w-20 h-20 rounded-full bg-cyber-neon-green/20 border-2 border-cyber-neon-green flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(57,255,20,0.3)]">
+<span class="material-symbols-outlined text-[40px] text-cyber-neon-green">autorenew</span>
+</div>
+<h4 class="font-headline-sm text-on-surface mb-2">Feeling Stuck?</h4>
+<p class="font-body-md text-on-surface-variant mb-8">Generate a high-variance, experimental idea outside your usual content pillars.</p>
+<button class="bg-cyber-neon-green text-charcoal-black font-button-text text-button-text py-3 px-8 rounded-lg cyber-glow-secondary hover:bg-secondary-fixed transition-colors w-full mt-auto">
+                        Spin the Wheel
+                    </button>
+</div>
+</section>
+<!-- Section 3: Trend Radar (Data Viz) -->
+<section class="md:col-span-12 flex flex-col gap-4">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Trend Radar</h3>
+<div class="glass-card rounded-xl p-6 md:p-8">
+<div class="flex flex-col md:flex-row gap-8 items-center">
+<!-- Radar Chart Placeholder (Stylized with HTML/CSS) -->
+<div class="w-full md:w-1/3 aspect-square relative flex items-center justify-center">
+<!-- Background concentric circles -->
+<div class="absolute inset-0 border border-glass-border rounded-full opacity-20"></div>
+<div class="absolute inset-[15%] border border-glass-border rounded-full opacity-40"></div>
+<div class="absolute inset-[30%] border border-glass-border rounded-full opacity-60"></div>
+<div class="absolute inset-[45%] border border-glass-border rounded-full opacity-80"></div>
+<!-- Crosshairs -->
+<div class="absolute w-full h-[1px] bg-glass-border opacity-50"></div>
+<div class="absolute h-full w-[1px] bg-glass-border opacity-50"></div>
+<!-- Abstract shape for radar -->
+<svg class="absolute inset-0 w-full h-full drop-shadow-[0_0_10px_rgba(157,78,221,0.5)] z-10" viewbox="0 0 100 100">
+<polygon fill="rgba(157, 78, 221, 0.2)" points="50,10 85,35 70,85 30,85 15,35" stroke="#9D4EDD" stroke-width="2"></polygon>
+<polygon fill="rgba(57, 255, 20, 0.2)" points="50,25 75,45 60,75 40,75 25,45" stroke="#39FF14" stroke-dasharray="2,2" stroke-width="1"></polygon>
+</svg>
+<!-- Labels -->
+<span class="absolute top-0 font-label-mono text-[10px] text-electric-purple -translate-y-full">Interest</span>
+<span class="absolute right-0 font-label-mono text-[10px] text-on-surface-variant translate-x-full">Velocity</span>
+<span class="absolute bottom-0 font-label-mono text-[10px] text-cyber-neon-green translate-y-full">Low Comp</span>
+<span class="absolute left-0 font-label-mono text-[10px] text-on-surface-variant -translate-x-full">Longevity</span>
+</div>
+<!-- Trend List -->
+<div class="w-full md:w-2/3 flex flex-col gap-4">
+<div class="flex justify-between items-center pb-2 border-b border-glass-border text-on-surface-variant font-label-mono text-sm">
+<span>Topic</span>
+<div class="flex gap-8">
+<span class="w-20 text-right">Score</span>
+<span class="w-20 text-right">Action</span>
+</div>
+</div>
+<!-- Trend Item 1 -->
+<div class="flex justify-between items-center group">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-electric-purple cyber-glow-primary"></div>
+<span class="font-body-lg text-on-surface group-hover:text-electric-purple transition-colors">Micro-SaaS Breakdowns</span>
+</div>
+<div class="flex gap-8 items-center">
+<span class="w-20 text-right font-label-mono text-electric-purple">92/100</span>
+<button class="w-20 text-right text-hyper-cyan hover:text-white transition-colors">Analyze</button>
+</div>
+</div>
+<!-- Trend Item 2 -->
+<div class="flex justify-between items-center group">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-cyber-neon-green cyber-glow-secondary"></div>
+<span class="font-body-lg text-on-surface group-hover:text-cyber-neon-green transition-colors">Local SEO Hacks</span>
+</div>
+<div class="flex gap-8 items-center">
+<span class="w-20 text-right font-label-mono text-cyber-neon-green">88/100</span>
+<button class="w-20 text-right text-hyper-cyan hover:text-white transition-colors">Analyze</button>
+</div>
+</div>
+<!-- Trend Item 3 -->
+<div class="flex justify-between items-center group opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<span class="font-body-lg text-on-surface">General Productivity Apps</span>
+</div>
+<div class="flex gap-8 items-center">
+<span class="w-20 text-right font-label-mono text-on-surface-variant">45/100</span>
+<button class="w-20 text-right text-on-surface-variant hover:text-white transition-colors">Analyze</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Button (Mobile Only, usually suppressed on dashboards but requested in style guidance) -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-electric-purple rounded-full flex items-center justify-center text-white cyber-glow-primary z-50">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</body></html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monetization Command Center | KontentOS V2</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected via JSON -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#f0a878",
+                      "background": "#faf5ee",
+                      "surface-container-high": "#ece6dc",
+                      "on-error": "#ffffff",
+                      "tertiary": "#8c3c3c",
+                      "on-surface-variant": "#605850",
+                      "inverse-primary": "#f0a878",
+                      "surface-container-low": "#f6f0e8",
+                      "on-background": "#3a302a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#6e3030",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#78706a",
+                      "surface-variant": "#ece6dc",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#2a2420",
+                      "inverse-on-surface": "#faf5ee",
+                      "primary-fixed": "#fbe8d8",
+                      "surface-bright": "#faf5ee",
+                      "tertiary-fixed-dim": "#e8a0a0",
+                      "tertiary-container": "#d47070",
+                      "on-primary-fixed": "#401a08",
+                      "surface-dim": "#dcd6cc",
+                      "surface-tint": "#c2652a",
+                      "on-primary-fixed-variant": "#8a4518",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#605850",
+                      "secondary-fixed": "#eae2da",
+                      "tertiary-fixed": "#fce0e0",
+                      "primary-container": "#e08850",
+                      "surface-container-highest": "#e6e0d6",
+                      "surface": "#faf5ee",
+                      "on-primary-container": "#fbe8d8",
+                      "outline-variant": "#d8d0c8",
+                      "secondary-container": "#eae2da",
+                      "surface-container": "#f2ece4",
+                      "on-tertiary-container": "#3a2020",
+                      "error-container": "#fce4e0",
+                      "inverse-surface": "#3a302a",
+                      "primary": "#c2652a",
+                      "on-surface": "#3a302a",
+                      "on-secondary-fixed-variant": "#504840",
+                      "outline": "#9a9088",
+                      "on-tertiary-fixed": "#2e1515",
+                      "error": "#c0392b",
+                      "secondary-fixed-dim": "#cec6be",
+                      "on-error-container": "#7a1a10"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "EB Garamond", "serif"
+                      ],
+                      "display": [
+                              "EB Garamond", "serif"
+                      ],
+                      "body": [
+                              "Manrope", "sans-serif"
+                      ],
+                      "label": [
+                              "Manrope", "sans-serif"
+                      ]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline, .font-display { font-family: 'EB Garamond', serif; }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased flex flex-col md:flex-row font-body">
+<!-- TopAppBar (Web & Mobile, mostly visible on Mobile/Tablet if SideNav is hidden, but JSON says hidden md:flex usually. Let's make it responsive.) -->
+<nav class="md:hidden fixed top-0 w-full z-40 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border flex justify-between items-center px-4 h-16 shadow-none">
+<div class="font-display text-2xl text-primary font-bold tracking-tighter">KontentOS V2</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">search</span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label text-sm hover:opacity-90 transition-opacity">Create</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A sophisticated headshot of a creator looking confident, lit with warm golden hour light, wearing a beige linen shirt against a soft terra-cotta background. The mood is professional, artistic, and trusting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-GJmQLL2rG49lcom7-qOJ8mnzRLyFq2dsuCB7mCiitqK6UT8Yxb_JKJQBrKnStqpcNU14ilI1V8e9xdhW-jAoP60_nA20qEuXSCuiJUlvJC9xxJQWtc8BL9VVB0U4rnrZVZgR2zG0KIypXW90k_byzoz5FE1u1oOpoVyztc8lumuQyhX0G846X7Xskwsh4a9s16HzFaDvztRvlFSjNx2Qijx9HGl-2h1SlxdLURk8CQ49yD--mfRA"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Web Only per JSON shape 'fixed left-0 top-0 h-screen w-[280px]') -->
+<aside class="hidden md:flex fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border flex-col py-8 px-6 gap-y-4 shadow-[0_0_20px_rgba(157,78,221,0.1)] z-50">
+<div class="mb-8">
+<h1 class="font-display text-4xl text-primary tracking-tighter font-extrabold mb-1">KontentOS V2</h1>
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-widest font-medium">Creator Command Center</p>
+</div>
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-label font-bold mb-6 hover:bg-surface-tint transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span> Quick Create
+        </button>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 font-body text-base" href="#">
+<span class="material-symbols-outlined">lightbulb</span> Idea Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 font-body text-base" href="#">
+<span class="material-symbols-outlined">description</span> Script Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 font-body text-base" href="#">
+<span class="material-symbols-outlined">smart_toy</span> Auto-Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 font-body text-base" href="#">
+<span class="material-symbols-outlined">rocket_launch</span> Publishing Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 font-body text-base" href="#">
+<span class="material-symbols-outlined">monitoring</span> Growth Intelligence
+            </a>
+<!-- Active State Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 scale-95 transition-transform font-body text-base" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span> Monetization
+            </a>
+</nav>
+<div class="mt-auto flex items-center gap-3 pt-6 border-t border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-secondary-container overflow-hidden shrink-0">
+<img alt="Creator Profile" class="w-full h-full object-cover" data-alt="A close up detailed shot of a creator smiling slightly, warm professional lighting, earth tones, soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRZhZGMAu9DxfA_Jto9ee62ZFaArRNfLtnizIE0oxWQypUCxz438fcqWeyUEYpYVZyAqvWiQTJNQDzuInu_Fxsu25nGWGWgPSgkuBmgAtiTfwTYTvYbvvwMOfnZywOq5_EGZ2uK4VNwAx9xa45pJV3Z2Hv2yL5ZwZNM_Ybr2f9eXp7Kb3rIDtp7IX4DSnmakebCHG5zDn760O7rwquV_ij-TPd6wg1ZIrgjsQVQKULRWUaI5beCknf"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="font-label font-bold text-sm truncate">Elena Rostova</p>
+<p class="text-xs text-on-surface-variant truncate">elena@kontentos.io</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] pt-16 md:pt-0 p-6 md:p-10 lg:p-16 max-w-7xl mx-auto w-full">
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+<div>
+<h2 class="font-headline text-5xl md:text-6xl text-on-background tracking-tight leading-none mb-3">Monetization</h2>
+<p class="text-on-surface-variant text-lg font-body max-w-xl">Manage your brand partnerships, analyze your value, and orchestrate your revenue streams with precision.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-5 py-2.5 rounded-lg border border-outline text-on-surface-variant hover:bg-surface-variant/30 transition-colors font-label font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span> Export Report
+                </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-surface-tint transition-colors font-label font-semibold shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add_circle</span> New Deal
+                </button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[minmax(180px,auto)]">
+<!-- Rate Calculator (Hero Metric) -->
+<section class="col-span-1 md:col-span-8 bg-surface-container-low rounded-xl p-8 border border-outline-variant/50 shadow-[0_2px_16px_rgba(58,48,42,0.04)] relative overflow-hidden flex flex-col justify-between group">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
+<div class="flex justify-between items-start mb-6 z-10">
+<div>
+<h3 class="font-headline text-2xl text-on-background mb-1">Sponsorship Rate Engine</h3>
+<p class="text-on-surface-variant text-sm font-label">Calculated based on 30-day avg engagement &amp; market index.</p>
+</div>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-3 rounded-full">calculate</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 z-10">
+<div>
+<p class="text-on-surface-variant text-sm font-label mb-1">Dedicated Video</p>
+<p class="font-headline text-4xl text-on-background">₹ 4,50,000</p>
+<p class="text-xs text-primary font-medium mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">trending_up</span> +12% this month</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-label mb-1">60s Integration</p>
+<p class="font-headline text-4xl text-on-background">₹ 2,25,000</p>
+<p class="text-xs text-on-surface-variant mt-1">Stable</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-label mb-1">IG Reel + Story</p>
+<p class="font-headline text-4xl text-on-background">₹ 1,80,000</p>
+<p class="text-xs text-primary font-medium mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">trending_up</span> +5% this month</p>
+</div>
+</div>
+</section>
+<!-- Revenue Pipeline Mini -->
+<section class="col-span-1 md:col-span-4 bg-primary text-on-primary rounded-xl p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, #ffffff 0%, transparent 50%);"></div>
+<div>
+<h3 class="font-headline text-2xl mb-1 flex items-center gap-2"><span class="material-symbols-outlined">account_balance_wallet</span> Total Pipeline</h3>
+<p class="text-on-primary/80 text-sm font-label mb-6">Current active negotiations</p>
+</div>
+<div>
+<p class="font-headline text-5xl mb-2">₹ 12.5M</p>
+<div class="w-full bg-black/20 h-2 rounded-full overflow-hidden">
+<div class="bg-white h-full w-[65%] rounded-full"></div>
+</div>
+<p class="text-xs font-label text-on-primary/80 mt-2 text-right">65% closing probability</p>
+</div>
+</section>
+<!-- CRM Pipeline (Bento Span) -->
+<section class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/50 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-3xl text-on-background">Active Deals CRM</h3>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer p-2 rounded-lg hover:bg-surface-variant/30">filter_list</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer p-2 rounded-lg hover:bg-surface-variant/30">sort</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body text-sm border-collapse">
+<thead>
+<tr class="text-on-surface-variant border-b border-outline-variant/30 font-label">
+<th class="pb-4 font-semibold pl-2">Brand</th>
+<th class="pb-4 font-semibold">Deliverables</th>
+<th class="pb-4 font-semibold">Value (INR)</th>
+<th class="pb-4 font-semibold">Stage</th>
+<th class="pb-4 font-semibold">Timeline</th>
+<th class="pb-4"></th>
+</tr>
+</thead>
+<tbody class="text-on-background">
+<tr class="border-b border-outline-variant/20 hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 pl-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center font-headline text-lg text-on-secondary-container">F</div>
+<span class="font-semibold">FintechApp Inc.</span>
+</td>
+<td class="py-4 text-on-surface-variant">1x Dedicated, 2x Shorts</td>
+<td class="py-4 font-medium">₹ 5,50,000</td>
+<td class="py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                                        Negotiation
+                                    </span>
+</td>
+<td class="py-4 text-on-surface-variant">Oct 15 - Nov 01</td>
+<td class="py-4 text-right pr-2">
+<button class="opacity-0 group-hover:opacity-100 text-tertiary hover:text-tertiary-container transition-opacity"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 pl-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-dim flex items-center justify-center font-headline text-lg text-on-surface">L</div>
+<span class="font-semibold">Lumina Skincare</span>
+</td>
+<td class="py-4 text-on-surface-variant">IG Reel Campaign</td>
+<td class="py-4 font-medium">₹ 1,80,000</td>
+<td class="py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-dim text-on-surface-variant border border-outline-variant/50">
+                                        Contract Sent
+                                    </span>
+</td>
+<td class="py-4 text-on-surface-variant">Nov 10 - Nov 20</td>
+<td class="py-4 text-right pr-2">
+<button class="opacity-0 group-hover:opacity-100 text-tertiary hover:text-tertiary-container transition-opacity"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 pl-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-tertiary/10 flex items-center justify-center font-headline text-lg text-tertiary">T</div>
+<span class="font-semibold">TechWear Co</span>
+</td>
+<td class="py-4 text-on-surface-variant">60s Integration</td>
+<td class="py-4 font-medium">₹ 2,25,000</td>
+<td class="py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary/10 text-tertiary border border-tertiary/20">
+                                        In Production
+                                    </span>
+</td>
+<td class="py-4 text-on-surface-variant">Live: Oct 28</td>
+<td class="py-4 text-right pr-2">
+<button class="opacity-0 group-hover:opacity-100 text-tertiary hover:text-tertiary-container transition-opacity"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 text-center">
+<button class="text-sm font-label text-primary hover:text-primary-fixed-dim transition-colors">View All 14 Deals</button>
+</div>
+</section>
+<!-- Public Media Kit Preview -->
+<section class="col-span-1 md:col-span-6 bg-surface-container-high rounded-xl p-8 border border-outline-variant/50 shadow-[0_2px_16px_rgba(58,48,42,0.04)] flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-2xl text-on-background">Media Kit Preview</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded hover:bg-surface-variant transition-colors text-on-surface-variant" title="Copy Link"><span class="material-symbols-outlined text-[20px]">link</span></button>
+<button class="p-2 rounded hover:bg-surface-variant transition-colors text-on-surface-variant" title="Edit"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-lg border border-outline-variant/30 overflow-hidden flex flex-col relative group">
+<div class="h-32 bg-secondary-container w-full relative">
+<img alt="Media Kit Cover" class="w-full h-full object-cover" data-alt="A cinematic, wide aspect ratio banner image for a creator media kit. Warm sunlight streaming through window blinds into a clean, minimalist studio setting with architectural plants and a neutral color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAWU42Jv3dUjW4LYWdW0vQ8Zr6raLiyaFB1FgEPNDvEKhpysue9Tzb8gL-raZA3njmHE2hWDsmjQEm9S4HJI6Z7htzpfull69ISnZXcyjH8JwJPpjtpkBuOaBEjIibtxd0lrECeXE6xAeQUMPCFtbcR09-kjT9cdazSaT5o0WCq9jCKuM_cqzJpwiBGk1EtX0GpKnpFosdc1vBfuOqN4jiGc-eg5mRvgBiU6TJDwxeZq3Yn7u0lCLL"/>
+<div class="absolute -bottom-8 left-6 w-16 h-16 rounded-full border-4 border-surface-container-lowest bg-surface-dim overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A sophisticated headshot of a creator looking confident, lit with warm golden hour light, wearing a beige linen shirt against a soft terra-cotta background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNk6ioPePbmRCDoy53vxEzJS6xKQN1h-QbOFwbeZxRfeM__RHJUt5li0ytj0vcnDNQgZxeBoTpmRFpkEZ19NTSY2v8LreBDnL39W1UcvrNDHFJ7ibAJwYyYb5O7RslBBH49SbhKp1QxbzDqV_MkXjTeL4fhvJHh9I-9ux0ODi_4cfRtXIdRgadCw1MLNUucE1XLz_9L2rWFE62zeb3xPKeI4DaG8_cQvUzogBa5cLlt-rCvp6-Ukjl"/>
+</div>
+</div>
+<div class="pt-10 px-6 pb-6">
+<h4 class="font-headline text-xl text-on-background mb-1">Elena Rostova</h4>
+<p class="text-sm text-on-surface-variant font-label mb-4">Tech &amp; Lifestyle • 1.2M Community</p>
+<div class="flex gap-4">
+<div class="text-center">
+<p class="font-headline text-lg text-on-background">850K</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wide">YouTube</p>
+</div>
+<div class="text-center">
+<p class="font-headline text-lg text-on-background">350K</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wide">Insta</p>
+</div>
+</div>
+</div>
+<div class="absolute inset-0 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label shadow-lg hover:bg-surface-tint transition-colors">Preview Full Kit</button>
+</div>
+</div>
+</section>
+<!-- Insights & Alerts -->
+<section class="col-span-1 md:col-span-6 flex flex-col gap-6">
+<!-- Alert Card -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-primary/20 flex gap-4 items-start shadow-sm">
+<span class="material-symbols-outlined text-primary mt-1">lightbulb</span>
+<div>
+<h4 class="font-headline text-lg text-on-background mb-1">Rate Optimization Opportunity</h4>
+<p class="text-sm text-on-surface-variant font-body mb-3">Your average retention rate on dedicated videos has increased by 14% over the last quarter. Consider raising your dedicated video base rate by ₹ 50,000.</p>
+<button class="text-sm font-label text-primary font-semibold hover:underline">Apply new rate to kit</button>
+</div>
+</div>
+<!-- Demographic Snapshot -->
+<div class="flex-1 bg-surface-container-highest rounded-xl p-6 border border-outline-variant/30 flex flex-col justify-between">
+<h4 class="font-headline text-lg text-on-background mb-4">Core Demographic Value</h4>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm font-label mb-1">
+<span class="text-on-surface-variant">Tier 1 India (Top Spenders)</span>
+<span class="text-on-background font-medium">42%</span>
+</div>
+<div class="w-full bg-outline-variant/40 h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[42%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm font-label mb-1">
+<span class="text-on-surface-variant">Ages 25-34 (Key Demo)</span>
+<span class="text-on-background font-medium">58%</span>
+</div>
+<div class="w-full bg-outline-variant/40 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[58%] rounded-full"></div>
+</div>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant mt-6 italic">*These stats command a 15% premium over industry average.</p>
+</div>
+</section>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Onboarding</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=JetBrains+Mono:ital,wght@0,500;1,500&amp;family=Montserrat:ital,wght@0,700;0,900;1,700;1,900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#00dbe9",
+                    "surface": "#111317",
+                    "surface-container": "#1e2024",
+                    "surface-container-highest": "#333539",
+                    "outline": "#998d9e",
+                    "surface-container-lowest": "#0c0e12",
+                    "on-tertiary": "#00363a",
+                    "on-secondary-container": "#0f6d00",
+                    "on-secondary": "#053900",
+                    "surface-variant": "#333539",
+                    "on-secondary-fixed-variant": "#095300",
+                    "charcoal-black": "#0F1115",
+                    "on-tertiary-fixed-variant": "#004f54",
+                    "primary": "#e0b6ff",
+                    "electric-purple": "#9D4EDD",
+                    "tertiary-fixed": "#7df4ff",
+                    "background": "#111317",
+                    "surface-bright": "#37393e",
+                    "tertiary-container": "#00828b",
+                    "on-surface-variant": "#d0c2d5",
+                    "secondary-fixed": "#79ff5b",
+                    "on-error-container": "#ffdad6",
+                    "surface-tint": "#e0b6ff",
+                    "deep-slate": "#1A1D23",
+                    "inverse-on-surface": "#2f3035",
+                    "inverse-surface": "#e2e2e8",
+                    "on-primary-fixed-variant": "#6a0baa",
+                    "hyper-cyan": "#00F0FF",
+                    "on-surface": "#e2e2e8",
+                    "primary-container": "#9d4edd",
+                    "on-primary-fixed": "#2e004e",
+                    "cyber-neon-green": "#39FF14",
+                    "glass-border": "rgba(255, 255, 255, 0.12)",
+                    "on-primary": "#4c007d",
+                    "secondary-fixed-dim": "#2ae500",
+                    "surface-dim": "#111317",
+                    "error-container": "#93000a",
+                    "tertiary-fixed-dim": "#00dbe9",
+                    "surface-container-high": "#282a2e",
+                    "primary-fixed": "#f2daff",
+                    "secondary-container": "#2ff801",
+                    "secondary": "#d7ffc5",
+                    "outline-variant": "#4d4353",
+                    "inverse-primary": "#8433c4",
+                    "on-primary-container": "#fffdff",
+                    "on-secondary-fixed": "#022100",
+                    "on-error": "#690005",
+                    "on-background": "#e2e2e8",
+                    "surface-container-low": "#1a1c20",
+                    "primary-fixed-dim": "#e0b6ff",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#f9ffff",
+                    "on-tertiary-fixed": "#002022"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "max-width": "1440px",
+                    "unit": "8px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Montserrat"],
+                    "headline-sm": ["Montserrat"],
+                    "label-mono": ["JetBrains Mono"],
+                    "display-lg": ["Montserrat"],
+                    "body-lg": ["Inter"],
+                    "button-text": ["Montserrat"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "900"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "label-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "button-text": ["16px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Scrollbar for sleekness */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333539;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9D4EDD;
+        }
+
+        /* Ambient Glow Background Effect */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(157,78,221,0.15) 0%, rgba(15,17,21,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            top: -100px;
+            left: -200px;
+        }
+        .ambient-glow-secondary {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(57,255,20,0.08) 0%, rgba(15,17,21,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            bottom: -150px;
+            right: -100px;
+        }
+    </style>
+</head>
+<body class="bg-charcoal-black text-on-surface min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop relative overflow-x-hidden selection:bg-electric-purple/30 selection:text-white">
+<!-- Atmospheric Background Layers -->
+<div class="ambient-glow"></div>
+<div class="ambient-glow-secondary"></div>
+<!-- Main Content Container -->
+<div class="w-full max-w-2xl bg-deep-slate/80 backdrop-blur-xl border border-glass-border rounded-2xl p-8 md:p-12 relative z-10 shadow-2xl flex flex-col gap-8">
+<!-- Header & Branding -->
+<div class="flex flex-col items-center gap-6 text-center">
+<div class="flex flex-col items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-black tracking-tighter text-electric-purple italic">KontentOS V2</span>
+<div class="flex items-center gap-3">
+<span class="font-label-mono text-label-mono text-cyber-neon-green bg-cyber-neon-green/10 px-3 py-1 rounded-full border border-cyber-neon-green/30">Step 1 of 4</span>
+</div>
+</div>
+<div class="space-y-2">
+<h1 class="font-headline-md text-headline-md text-on-surface">Establish Your Authority</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto">Let's set up the baseline metrics for your creator profile to calibrate our algorithms.</p>
+</div>
+</div>
+<!-- Progress Bar Visual -->
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden border border-glass-border">
+<div class="bg-electric-purple w-1/4 h-full shadow-[0_0_10px_rgba(157,78,221,0.5)]"></div>
+</div>
+<!-- Form Canvas -->
+<form class="flex flex-col gap-8 mt-4">
+<!-- Basic Info Section -->
+<div class="space-y-6">
+<!-- Creator Name -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-2" for="creator-name">
+<span class="material-symbols-outlined text-[18px]">person</span>
+                        Creator Identity
+                    </label>
+<input class="w-full bg-surface border border-glass-border rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-cyber-neon-green focus:shadow-[0_0_15px_rgba(57,255,20,0.15)] transition-all bg-opacity-50" id="creator-name" placeholder="E.g. Marques Brownlee" type="text"/>
+</div>
+<!-- Platform Handles -->
+<div class="flex flex-col gap-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">share</span>
+                        Digital Footprint
+                    </label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Instagram -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline-variant group-focus-within:text-electric-purple transition-colors">
+<span class="font-label-mono text-label-mono">@</span>
+</div>
+<input class="w-full bg-surface border border-glass-border rounded-lg pl-8 pr-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-electric-purple focus:shadow-[0_0_15px_rgba(157,78,221,0.15)] transition-all bg-opacity-50" placeholder="instagram" type="text"/>
+</div>
+<!-- YouTube -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline-variant group-focus-within:text-electric-purple transition-colors">
+<span class="font-label-mono text-label-mono">@</span>
+</div>
+<input class="w-full bg-surface border border-glass-border rounded-lg pl-8 pr-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-electric-purple focus:shadow-[0_0_15px_rgba(157,78,221,0.15)] transition-all bg-opacity-50" placeholder="youtube" type="text"/>
+</div>
+<!-- X (Twitter) -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline-variant group-focus-within:text-electric-purple transition-colors">
+<span class="font-label-mono text-label-mono">@</span>
+</div>
+<input class="w-full bg-surface border border-glass-border rounded-lg pl-8 pr-4 py-3 font-body-md text-body-md text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-electric-purple focus:shadow-[0_0_15px_rgba(157,78,221,0.15)] transition-all bg-opacity-50" placeholder="x_handle" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-glass-border my-2"></div>
+<!-- Target Segment Section (Bento-style selection) -->
+<div class="space-y-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">radar</span>
+                    Primary Audience Segment
+                </label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<!-- Segment Option 1 (Active/Selected State Example) -->
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="segment" type="radio" value="tech"/>
+<div class="h-full bg-primary-container/20 border-2 border-electric-purple rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center transition-all shadow-[0_0_15px_rgba(157,78,221,0.2)]">
+<span class="material-symbols-outlined text-electric-purple text-[24px]">terminal</span>
+<span class="font-label-mono text-label-mono text-on-surface">Tech &amp; Dev</span>
+</div>
+</label>
+<!-- Segment Option 2 -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="segment" type="radio" value="lifestyle"/>
+<div class="h-full bg-surface border border-glass-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center transition-all peer-checked:border-2 peer-checked:border-electric-purple peer-checked:bg-primary-container/20 peer-checked:shadow-[0_0_15px_rgba(157,78,221,0.2)] hover:border-outline hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface peer-checked:text-electric-purple text-[24px]">photo_camera</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-on-surface peer-checked:text-on-surface">Lifestyle</span>
+</div>
+</label>
+<!-- Segment Option 3 -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="segment" type="radio" value="finance"/>
+<div class="h-full bg-surface border border-glass-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center transition-all peer-checked:border-2 peer-checked:border-electric-purple peer-checked:bg-primary-container/20 peer-checked:shadow-[0_0_15px_rgba(157,78,221,0.2)] hover:border-outline hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface peer-checked:text-electric-purple text-[24px]">trending_up</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-on-surface peer-checked:text-on-surface">Finance</span>
+</div>
+</label>
+<!-- Segment Option 4 -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="segment" type="radio" value="edu"/>
+<div class="h-full bg-surface border border-glass-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center transition-all peer-checked:border-2 peer-checked:border-electric-purple peer-checked:bg-primary-container/20 peer-checked:shadow-[0_0_15px_rgba(157,78,221,0.2)] hover:border-outline hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface peer-checked:text-electric-purple text-[24px]">school</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-on-surface peer-checked:text-on-surface">Education</span>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="segment" type="radio" value="entertainment"/>
+<div class="h-full bg-surface border border-glass-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center transition-all peer-checked:border-2 peer-checked:border-electric-purple peer-checked:bg-primary-container/20 peer-checked:shadow-[0_0_15px_rgba(157,78,221,0.2)] hover:border-outline hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface peer-checked:text-electric-purple text-[24px]">theater_comedy</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-on-surface peer-checked:text-on-surface">Entertainment</span>
+</div>
+</label></div>
+</div>
+<!-- Action Area -->
+<div class="mt-8">
+<button class="w-full bg-electric-purple text-on-primary-container font-button-text text-button-text py-4 rounded-xl shadow-[0_0_15px_rgba(157,78,221,0.4)] hover:shadow-[0_0_25px_rgba(157,78,221,0.6)] active:scale-[0.98] transition-all flex justify-center items-center gap-2 group" type="button">
+                    Continue to Workspace
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<p class="text-center font-label-mono text-label-mono text-outline-variant mt-4">
+                    Press <kbd class="bg-surface-container px-2 py-0.5 rounded border border-glass-border font-label-mono text-[11px]">Enter</kbd> to continue
+                </p>
+</div>
+</form>
+</div>
+</body></html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Creator Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#1e2024",
+                      "surface-dim": "#111317",
+                      "tertiary-container": "#00828b",
+                      "tertiary": "#00dbe9",
+                      "primary": "#e0b6ff",
+                      "on-tertiary-container": "#f9ffff",
+                      "deep-slate": "#1A1D23",
+                      "primary-fixed": "#f2daff",
+                      "on-tertiary": "#00363a",
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "tertiary-fixed": "#7df4ff",
+                      "on-primary-container": "#fffdff",
+                      "secondary-fixed-dim": "#2ae500",
+                      "on-primary-fixed": "#2e004e",
+                      "surface-tint": "#e0b6ff",
+                      "glass-border": "rgba(255, 255, 255, 0.12)",
+                      "on-surface-variant": "#d0c2d5",
+                      "surface": "#111317",
+                      "on-secondary-fixed-variant": "#095300",
+                      "on-primary-fixed-variant": "#6a0baa",
+                      "surface-variant": "#333539",
+                      "inverse-primary": "#8433c4",
+                      "charcoal-black": "#0F1115",
+                      "secondary": "#d7ffc5",
+                      "on-error": "#690005",
+                      "on-secondary-fixed": "#022100",
+                      "tertiary-fixed-dim": "#00dbe9",
+                      "surface-container-highest": "#333539",
+                      "surface-container-low": "#1a1c20",
+                      "secondary-container": "#2ff801",
+                      "surface-container-high": "#282a2e",
+                      "surface-container-lowest": "#0c0e12",
+                      "on-secondary": "#053900",
+                      "on-primary": "#4c007d",
+                      "background": "#111317",
+                      "primary-container": "#9d4edd",
+                      "on-background": "#e2e2e8",
+                      "electric-purple": "#9D4EDD",
+                      "error-container": "#93000a",
+                      "outline-variant": "#4d4353",
+                      "hyper-cyan": "#00F0FF",
+                      "secondary-fixed": "#79ff5b",
+                      "on-tertiary-fixed": "#002022",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#0f6d00",
+                      "cyber-neon-green": "#39FF14",
+                      "inverse-on-surface": "#2f3035",
+                      "primary-fixed-dim": "#e0b6ff",
+                      "on-surface": "#e2e2e8",
+                      "inverse-surface": "#e2e2e8",
+                      "outline": "#998d9e",
+                      "on-error-container": "#ffdad6",
+                      "surface-bright": "#37393e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "max-width": "1440px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "margin-desktop": "48px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ],
+                      "button-text": [
+                              "Montserrat"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.charcoal-black');
+            color: theme('colors.on-background');
+        }
+        
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid theme('colors.glass-border');
+        }
+
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+        }
+
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        .material-symbols-outlined.filled {
+             font-variation-settings: 'FILL' 1;
+        }
+
+        /* Custom Scrollbar for feeds */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant'); 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline'); 
+        }
+    </style>
+</head>
+<body class="flex min-h-screen font-body-md antialiased selection:bg-electric-purple selection:text-white">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-full py-8 px-6 gap-y-4 bg-deep-slate/70 backdrop-blur-xl fixed left-0 top-0 h-screen w-[280px] border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] z-50">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter">KontentOS V2</h1>
+<p class="font-body-md text-on-surface-variant mt-1 text-sm">Creator Command Center</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-95" href="#">
+<span class="material-symbols-outlined filled">lightbulb</span>
+                Idea Studio
+            </a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+                Script Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                Auto-Studio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+                Publishing Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+                Growth Intelligence
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Monetization
+            </a>
+</div>
+<div class="mt-auto">
+<button class="w-full py-3 px-4 rounded-lg bg-electric-purple text-white font-button-text text-button-text cyber-glow-primary hover:bg-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Quick Create
+            </button>
+</div>
+</nav>
+<!-- TopAppBar (Shared Component) -->
+<header class="hidden md:flex justify-between items-center px-margin-desktop w-full z-40 bg-surface-dim/80 backdrop-blur-md fixed top-0 right-0 left-[280px] h-16 border-b border-glass-border">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-deep-slate border border-glass-border text-on-surface rounded-full py-1.5 pl-10 pr-4 focus:outline-none focus:border-cyber-neon-green focus:ring-1 focus:ring-cyber-neon-green transition-colors text-sm w-64" placeholder="Search ideas, scripts..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="font-label-mono text-label-mono text-cyber-neon-green flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-cyber-neon-green animate-pulse"></span>
+                Readiness: 98%
+            </div>
+<button class="font-button-text text-button-text text-primary hover:text-hyper-cyan transition-colors">Create</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-glass-border">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A futuristic, hyper-realistic avatar of a digital creator. The avatar has subtle neon accents reflecting off their face in a dark, moody studio environment. High resolution, 8k, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoI6VmvHOU145qal1Lqq0MvOwO9XuRFzvOEHsEVN4Mg8GCG-e4Yi9jD2Fge1IHFm-KYiKqkLr80HIr2RDH5KSn_F3Tcw2jwX8FZzuU7ztC87GmE4Ys7aVAPYyICVuuEfYVoEuuO_Z_gy7Lk7qFy67OB5nmwUJyP3j1jnX8nUwR3MxeDG-brJRWcim_j_4Yp1a-QQcGKLrkN5c4imxQoQOmK2j_GVNsmx0dGkA_4MwlH5QB10DJXS9t"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[280px] pt-20 px-4 md:px-gutter pb-24 md:pb-12 max-w-max-width mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="font-display-lg text-headline-md text-on-surface">Creator Dashboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Your daily performance and priority actions.</p>
+</div>
+<div class="hidden sm:block font-label-mono text-label-mono text-on-surface-variant">
+                Tuesday, Oct 24
+            </div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Priority Module: Create This Today (Span 8) -->
+<section class="lg:col-span-8 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple">target</span>
+                        Create This Today
+                    </h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Idea Card 1 -->
+<div class="glass-panel rounded-xl p-5 hover:border-electric-purple transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="font-label-mono text-label-mono bg-deep-slate border border-cyber-neon-green text-cyber-neon-green px-2 py-1 rounded text-xs">95% Ready</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 text-electric-purple flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<h4 class="font-button-text text-button-text text-on-surface mb-2">"Why Next.js 14 Changes Everything"</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-4 line-clamp-2">Technical deep dive reacting to the latest release, focusing on server actions and partial prerendering.</p>
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-electric-purple w-[95%]"></div>
+</div>
+<span class="font-label-mono text-xs text-on-surface-variant">Script</span>
+</div>
+</div>
+<!-- Idea Card 2 -->
+<div class="glass-panel rounded-xl p-5 hover:border-electric-purple transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="font-label-mono text-label-mono bg-deep-slate border border-hyper-cyan text-hyper-cyan px-2 py-1 rounded text-xs">82% Ready</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 text-hyper-cyan flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">article</span>
+</div>
+<h4 class="font-button-text text-button-text text-on-surface mb-2">Top 5 Productivity Tools for Devs</h4>
+<p class="font-body-md text-sm text-on-surface-variant mb-4 line-clamp-2">A quick listicle format suitable for YouTube Shorts and TikTok. High engagement potential.</p>
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-hyper-cyan w-[82%]"></div>
+</div>
+<span class="font-label-mono text-xs text-on-surface-variant">Outline</span>
+</div>
+</div>
+</div>
+<!-- Trend Radar Chart Area -->
+<div class="glass-panel rounded-xl p-6 mt-2 flex-grow flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-button-text text-button-text text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-hyper-cyan">radar</span>
+                            Niche Velocity Chart
+                        </h4>
+<button class="text-xs font-label-mono text-on-surface-variant hover:text-primary transition-colors">View Full Report</button>
+</div>
+<!-- Abstract Data Viz Placeholder -->
+<div class="flex-grow w-full rounded-lg bg-deep-slate relative overflow-hidden border border-glass-border min-h-[200px] flex items-end px-4 pb-4 gap-2">
+<!-- Simulated Bar Chart -->
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-[30%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">AI Tools</div>
+</div>
+<div class="w-1/6 bg-hyper-cyan/50 rounded-t-sm h-[55%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-hyper-cyan opacity-0 group-hover:opacity-100 transition-opacity">Web Dev</div>
+</div>
+<div class="w-1/6 bg-electric-purple shadow-[0_0_15px_rgba(157,78,221,0.5)] rounded-t-sm h-[90%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">Next.js</div>
+</div>
+<div class="w-1/6 bg-cyber-neon-green/80 shadow-[0_0_10px_rgba(57,255,20,0.3)] rounded-t-sm h-[75%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-cyber-neon-green opacity-0 group-hover:opacity-100 transition-opacity">Rust</div>
+</div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-[40%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Design</div>
+</div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-[20%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-mono text-[10px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">Hardware</div>
+</div>
+<!-- Grid lines overlay -->
+<div class="absolute inset-0 border-b border-glass-border opacity-20 pointer-events-none" style="background-image: linear-gradient(transparent 95%, rgba(255,255,255,0.05) 100%); background-size: 100% 20%;"></div>
+</div>
+</div>
+</section>
+<!-- Sidebar Column (Span 4) -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<!-- Viral Idea Roulette -->
+<div class="glass-panel rounded-xl p-1 relative overflow-hidden cyber-glow-secondary">
+<!-- Animated gradient border effect -->
+<div class="absolute inset-0 bg-gradient-to-br from-cyber-neon-green/20 via-transparent to-electric-purple/20 opacity-50"></div>
+<div class="bg-deep-slate rounded-lg p-5 relative z-10 h-full flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-cyber-neon-green/10 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-cyber-neon-green text-2xl">casino</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Viral Idea Roulette</h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-6">Stuck? Let the algorithm generate a high-opportunity concept based on real-time trends.</p>
+<button class="w-full py-3 px-4 rounded-lg bg-cyber-neon-green text-charcoal-black font-button-text text-button-text hover:bg-secondary-container transition-colors shadow-[0_0_15px_rgba(57,255,20,0.4)] flex items-center justify-center gap-2 mt-auto">
+<span class="material-symbols-outlined">autorenew</span>
+                            Spin for Idea
+                        </button>
+</div>
+</div>
+<!-- Trend Radar Feed -->
+<div class="glass-panel rounded-xl p-5 flex-grow flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple">trending_up</span>
+                        Trend Radar
+                    </h3>
+<div class="flex flex-col gap-3 overflow-y-auto max-h-[350px] pr-2">
+<!-- Feed Item 1 -->
+<div class="bg-surface/50 p-3 rounded-lg border border-glass-border flex items-center gap-3 group hover:border-hyper-cyan transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-deep-slate flex items-center justify-center flex-shrink-0 border border-glass-border">
+<span class="font-label-mono text-hyper-cyan text-sm">94</span>
+</div>
+<div class="flex-grow">
+<h5 class="font-button-text text-sm text-on-surface group-hover:text-hyper-cyan transition-colors line-clamp-1">Vercel Ship 2024 Reactions</h5>
+<p class="font-body-md text-xs text-on-surface-variant">Tech / Web Dev</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</div>
+<!-- Feed Item 2 -->
+<div class="bg-surface/50 p-3 rounded-lg border border-glass-border flex items-center gap-3 group hover:border-cyber-neon-green transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-deep-slate flex items-center justify-center flex-shrink-0 border border-glass-border">
+<span class="font-label-mono text-cyber-neon-green text-sm">88</span>
+</div>
+<div class="flex-grow">
+<h5 class="font-button-text text-sm text-on-surface group-hover:text-cyber-neon-green transition-colors line-clamp-1">"Day in the Life" Revivals</h5>
+<p class="font-body-md text-xs text-on-surface-variant">Lifestyle / Vlog</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</div>
+<!-- Feed Item 3 -->
+<div class="bg-surface/50 p-3 rounded-lg border border-glass-border flex items-center gap-3 group hover:border-primary transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded bg-deep-slate flex items-center justify-center flex-shrink-0 border border-glass-border">
+<span class="font-label-mono text-primary text-sm">76</span>
+</div>
+<div class="flex-grow">
+<h5 class="font-button-text text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-1">Minimalist Desk Setups 2024</h5>
+<p class="font-body-md text-xs text-on-surface-variant">Tech / Aesthetic</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</div>
+<!-- Feed Item 4 -->
+<div class="bg-surface/50 p-3 rounded-lg border border-glass-border flex items-center gap-3 group hover:border-primary transition-colors cursor-pointer opacity-70">
+<div class="w-10 h-10 rounded bg-deep-slate flex items-center justify-center flex-shrink-0 border border-glass-border">
+<span class="font-label-mono text-on-surface-variant text-sm">62</span>
+</div>
+<div class="flex-grow">
+<h5 class="font-button-text text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-1">Mechanical Keyboard Builds</h5>
+<p class="font-body-md text-xs text-on-surface-variant">Hobby / Tech</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Mobile Bottom Nav (Shared Component Logic - Rendered on Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-deep-slate/90 backdrop-blur-xl border-t border-glass-border z-50 px-4 py-2 flex justify-between items-center shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<span class="material-symbols-outlined filled">lightbulb</span>
+<span class="text-[10px] font-label-mono mt-1">Ideas</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-label-mono mt-1">Scripts</span>
+</a>
+<!-- Center FAB alternative for mobile -->
+<button class="w-12 h-12 rounded-full bg-electric-purple text-white flex items-center justify-center cyber-glow-primary -mt-6 border-4 border-charcoal-black">
+<span class="material-symbols-outlined">add</span>
+</button>
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="text-[10px] font-label-mono mt-1">Publish</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-[10px] font-label-mono mt-1">Growth</span>
+</a>
+</nav>
+</body></html>

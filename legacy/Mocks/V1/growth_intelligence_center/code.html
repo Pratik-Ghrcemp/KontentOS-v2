@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KontentOS V2 - Growth Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2024",
+                        "surface-dim": "#111317",
+                        "tertiary-container": "#00828b",
+                        "tertiary": "#00dbe9",
+                        "primary": "#e0b6ff",
+                        "on-tertiary-container": "#f9ffff",
+                        "deep-slate": "#1A1D23",
+                        "primary-fixed": "#f2daff",
+                        "on-tertiary": "#00363a",
+                        "on-tertiary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#7df4ff",
+                        "on-primary-container": "#fffdff",
+                        "secondary-fixed-dim": "#2ae500",
+                        "on-primary-fixed": "#2e004e",
+                        "surface-tint": "#e0b6ff",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                        "on-surface-variant": "#d0c2d5",
+                        "surface": "#111317",
+                        "on-secondary-fixed-variant": "#095300",
+                        "on-primary-fixed-variant": "#6a0baa",
+                        "surface-variant": "#333539",
+                        "inverse-primary": "#8433c4",
+                        "charcoal-black": "#0F1115",
+                        "secondary": "#d7ffc5",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#022100",
+                        "tertiary-fixed-dim": "#00dbe9",
+                        "surface-container-highest": "#333539",
+                        "surface-container-low": "#1a1c20",
+                        "secondary-container": "#2ff801",
+                        "surface-container-high": "#282a2e",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-secondary": "#053900",
+                        "on-primary": "#4c007d",
+                        "background": "#111317",
+                        "primary-container": "#9d4edd",
+                        "on-background": "#e2e2e8",
+                        "electric-purple": "#9D4EDD",
+                        "error-container": "#93000a",
+                        "outline-variant": "#4d4353",
+                        "hyper-cyan": "#00F0FF",
+                        "secondary-fixed": "#79ff5b",
+                        "on-tertiary-fixed": "#002022",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#0f6d00",
+                        "cyber-neon-green": "#39FF14",
+                        "inverse-on-surface": "#2f3035",
+                        "primary-fixed-dim": "#e0b6ff",
+                        "on-surface": "#e2e2e8",
+                        "inverse-surface": "#e2e2e8",
+                        "outline": "#998d9e",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#37393e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "button-text": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "headline-sm": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "900" }],
+                        "button-text": ["16px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Montserrat:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cyber-glow-primary {
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+        .cyber-glow-secondary {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111317;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333539;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d4353;
+        }
+    </style>
+</head>
+<body class="bg-charcoal-black text-on-surface font-body-md min-h-screen overflow-x-hidden flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-screen w-[280px] bg-deep-slate/70 backdrop-blur-xl border-r border-glass-border shadow-[0_0_20px_rgba(157,78,221,0.1)] flex flex-col h-full py-8 px-6 gap-y-4 z-50 hidden md:flex">
+<div class="mb-8">
+<h1 class="font-display-lg text-headline-md text-primary tracking-tighter">KontentOS V2</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Creator Command Center</p>
+</div>
+<div class="flex-1 flex flex-col gap-y-2">
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+                Idea Studio
+            </a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                Script Studio
+            </a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+                Auto-Studio
+            </a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+                Publishing Hub
+            </a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-primary/10 transition-transform scale-95 group" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+                Growth Intelligence
+            </a>
+<a class="flex items-center gap-x-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/50 hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Monetization
+            </a>
+</div>
+<button class="w-full py-3 px-4 rounded-lg bg-electric-purple text-on-primary-container font-button-text text-button-text cyber-glow-primary hover:bg-inverse-primary transition-colors mt-auto">
+            Quick Create
+        </button>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-[280px]">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-[280px] h-16 bg-surface-dim/80 backdrop-blur-md border-b border-glass-border flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full z-40 transition-colors">
+<div class="flex items-center gap-x-4">
+<span class="material-symbols-outlined text-on-surface-variant md:hidden" data-icon="menu">menu</span>
+<span class="font-display-lg text-headline-sm text-primary md:hidden">KontentOS V2</span>
+</div>
+<div class="flex items-center gap-x-6">
+<div class="hidden md:flex items-center px-3 py-1.5 rounded-full bg-deep-slate border border-glass-border">
+<span class="font-label-mono text-label-mono text-hyper-cyan">Readiness: 98%</span>
+</div>
+<button class="px-4 py-2 rounded border border-glass-border text-on-surface font-button-text text-button-text hover:text-hyper-cyan transition-colors">
+                    Create
+                </button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-glass-border">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A futuristic minimalist avatar placeholder featuring glowing purple and neon green geometric lines forming an abstract face silhouette. The background is a deep, dark charcoal color. Lighting is sleek, simulating a high-tech glowing interface. The style is highly polished cyber-glassmorphism suitable for a premium dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQwRZZ9aB0V4r5RT9MC3-pcafjxueFpdgQB1y_gnoOBhAZ3qlCK_QIWF-pbLhBxdzKfI6fHlBl49dePX1V3mMTmHVzloMHSFFRxMXYoc9L7QhthApwu88dFHqPWiJNwUW-Kif6ATrQvxQM2QwWCBRkAHMO7hckljJRWgAjyCxYAjBDYigx3FncsHBSjJJ6RNiXIzc4i5Jp2daWfswxcOMIoaq_ykeoQA832g2CSD1bvs8c068N44Sj"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop mt-16 pb-24 overflow-y-auto">
+<div class="max-w-[1440px] mx-auto space-y-12">
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter mb-2">Growth Intelligence</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Omni-Channel Performance &amp; AI Diagnostics</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-variant/50 border border-glass-border text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-mono text-label-mono">Last 30 Days</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-deep-slate border border-glass-border text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+<span class="font-label-mono text-label-mono">Filters</span>
+</button>
+</div>
+</div>
+<!-- Metrics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Views -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="visibility">visibility</span>
+<h3 class="font-label-mono text-label-mono uppercase tracking-wider">Total Views</h3>
+</div>
+<div class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter">14.2M</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-cyber-neon-green font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            +12.4% vs last period
+                        </div>
+</div>
+<!-- Engagement -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-hyper-cyan/10 rounded-full blur-2xl group-hover:bg-hyper-cyan/20 transition-all"></div>
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-hyper-cyan" data-icon="favorite">favorite</span>
+<h3 class="font-label-mono text-label-mono uppercase tracking-wider">Engagement Rate</h3>
+</div>
+<div class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter">8.7%</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-cyber-neon-green font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            +2.1% vs last period
+                        </div>
+</div>
+<!-- Retention -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-electric-purple/10 rounded-full blur-2xl group-hover:bg-electric-purple/20 transition-all"></div>
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-electric-purple" data-icon="timer">timer</span>
+<h3 class="font-label-mono text-label-mono uppercase tracking-wider">Avg Retention</h3>
+</div>
+<div class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter">42%</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-error font-label-mono text-label-mono">
+<span class="material-symbols-outlined text-sm" data-icon="trending_down">trending_down</span>
+                            -0.5% vs last period
+                        </div>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Chart Section (Left 2/3) -->
+<div class="lg:col-span-2 space-y-6">
+<div class="glass-panel p-6 rounded-xl h-[400px] flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Platform Breakdown</h3>
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1 font-label-mono text-label-mono text-primary"><div class="w-2 h-2 rounded-full bg-primary"></div> Views</span>
+<span class="flex items-center gap-1 font-label-mono text-label-mono text-cyber-neon-green"><div class="w-2 h-2 rounded-full bg-cyber-neon-green"></div> Engagement</span>
+</div>
+</div>
+<!-- Mock Chart Area -->
+<div class="flex-1 relative flex items-end justify-between gap-2 border-b border-glass-border pb-4 px-2">
+<!-- Bars (Mock Data) -->
+<div class="w-full flex justify-between items-end h-full">
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[80%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors cyber-glow-primary relative"><div class="absolute bottom-0 w-full h-[40%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">TikTok</span>
+</div>
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[60%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors relative"><div class="absolute bottom-0 w-full h-[30%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">IG Reels</span>
+</div>
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[90%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors cyber-glow-primary relative"><div class="absolute bottom-0 w-full h-[50%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">YT Shorts</span>
+</div>
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[40%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors relative"><div class="absolute bottom-0 w-full h-[20%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">Twitter</span>
+</div>
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[55%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors relative"><div class="absolute bottom-0 w-full h-[25%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">LinkedIn</span>
+</div>
+<div class="w-1/8 flex flex-col items-center gap-2 group">
+<div class="w-full h-[30%] bg-primary/80 rounded-t-sm group-hover:bg-primary transition-colors relative"><div class="absolute bottom-0 w-full h-[15%] bg-cyber-neon-green/80 rounded-t-sm mix-blend-screen"></div></div>
+<span class="font-label-mono text-[10px] text-on-surface-variant transform -rotate-45">Facebook</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Make 10 More Like This -->
+<div class="glass-panel p-6 rounded-xl">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-electric-purple" data-icon="auto_awesome">auto_awesome</span>
+                                    "Make 10 More Like This"
+                                </h3>
+<button class="bg-electric-purple text-white px-4 py-2 rounded font-button-text text-button-text cyber-glow-primary hover:bg-inverse-primary transition-colors">
+                                    Generate Batch
+                                </button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Thumbnail 1 -->
+<div class="relative group rounded-lg overflow-hidden border border-glass-border hover:border-primary transition-colors cursor-pointer aspect-[9/16]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="A highly stylized YouTube Shorts thumbnail featuring a young tech creator pointing excitedly at a glowing neon green 3D chart trending upwards. The background is a sleek dark cyber-glassmorphism studio with soft purple accent lighting. Bold, high-contrast white text overlays the image." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuALlbeKI3kWbiPfyNeYcVfrIvSioc4Ys4y2Kahrar11JtuNbz0_6mAxQ0dWAKIEOR6s9IknT_gCJqVG5sazjlVNdINCBE_kd5Kdv_FTTtbFzdK52me0585JgQCaz-EhrTuTOXhjcVXug_T4KDpRT42bc7JHwn2llPnD0MDBAoQzTUA-DjlYlgK7j_HuJhds5PyBmxqMFTBIm-nzchSoRl4Q7UZlDYjCKXpBxkHrG-IUCKLxh0uoiBd8')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-charcoal-black via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-3 w-full">
+<div class="font-label-mono text-label-mono text-cyber-neon-green flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 2.4M</div>
+<p class="font-body-md text-xs text-on-surface line-clamp-2">How AI is changing coding forever...</p>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+<!-- Thumbnail 2 -->
+<div class="relative group rounded-lg overflow-hidden border border-glass-border hover:border-primary transition-colors cursor-pointer aspect-[9/16]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="A dynamic TikTok thumbnail showing a futuristic desk setup with a glowing purple mechanical keyboard and multiple curved monitors displaying code. The lighting is dark and moody with intense cyan and purple neon highlights, fitting a premium tech-creator aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5y2WQSatRGzXQ0xNY0w7Ajhkv4m1x3gM9Mc5Q8rv0v2F2ada7749-r1Lx-XbOfX7xiLDcIBggSoEfhYT8ZXiRcgEqjJzStbhRZd0wQKcVW9EqUYuL0NHDTHIBPS8XnN8PJLElDimeVK1758SIbQ_hre6t1BvyLbxJVakjEGQJGvJKuizfLnvAHPHH1jmnaaJXod4KzxcAKM6hjhP7GoH2f9icrPf3ddt9IjlzdZMwOQtWYt-NyhoF')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-charcoal-black via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-3 w-full">
+<div class="font-label-mono text-label-mono text-cyber-neon-green flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 1.8M</div>
+<p class="font-body-md text-xs text-on-surface line-clamp-2">My $10k Desk Setup Tour</p>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+<!-- Thumbnail 3 -->
+<div class="relative group rounded-lg overflow-hidden border border-glass-border hover:border-primary transition-colors cursor-pointer aspect-[9/16]">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="An Instagram Reels thumbnail featuring a minimalist 3D rendering of a smartphone with a glowing app interface hovering above it. The scene is lit with bright electric purple and cyan lights against a deep slate background, emphasizing a high-tech software review vibe." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBcgiiM5DTxat_D0UWOGu_4JH3dPI47xrhRJNkZGxLGKps1vyltqqXpo0b5w0z5adqcM6uGHjrKNmkyyY_Vz9pq5GYk4EtYpBaEaVCW3FAoNxmBOuQIoZLYDQvjGz73m0kQVf7ziWn7UXd3b9-9oRKszlWm-gRpL2uQlg6dId59K242HwOe7Ej4NzEFO3qfDQzWf5dZkIRd8B_c6-j66CRvIGY2kBEf_XaDnfACt5AMMX4rixB4GjPt')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-charcoal-black via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-3 w-full">
+<div class="font-label-mono text-label-mono text-cyber-neon-green flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 1.2M</div>
+<p class="font-body-md text-xs text-on-surface line-clamp-2">Best productivity apps 2024</p>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+<!-- Thumbnail 4 -->
+<div class="relative group rounded-lg overflow-hidden border border-glass-border hover:border-primary transition-colors cursor-pointer aspect-[9/16] hidden md:block">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="A sleek tech thumbnail showing a close up of a person's hands typing rapidly on a futuristic glowing laptop. High contrast lighting with dark charcoal shadows and vibrant green matrix-like reflections on the screen and keys. Professional and polished cyberpunk style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_Dm0KwYPOA55wQNJw1Jl0-8XYJm2fvo837_TeznSj_cPyAKFyaf9yqfIzglkvNBVbhQMM11miw1oBtHurdaLiezGoFmonEs1l0ypOU6wOOJTXynY0Du1i1I9uPMDlBDGvEKCi9AnzRH1KZ7465fM7LpPKyu3Ogp1e7yXFGlE5B8IvXpmL-479NX6tN7yHL9ZdEcOdXSuqTSsjqlkJ8Wwcgo1nzI1YG94qst_3QfncDfbxqWp_mUPu')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-charcoal-black via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-3 w-full">
+<div class="font-label-mono text-label-mono text-cyber-neon-green flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 950K</div>
+<p class="font-body-md text-xs text-on-surface line-clamp-2">Speed coding a SAAS in 24h</p>
+</div>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Diagnostic Card (Right 1/3) -->
+<div class="lg:col-span-1">
+<div class="glass-panel p-6 rounded-xl h-full flex flex-col relative overflow-hidden border-cyber-neon-green/30">
+<div class="absolute top-0 right-0 w-32 h-32 bg-cyber-neon-green/5 rounded-full blur-3xl"></div>
+<div class="flex items-center gap-3 mb-6 border-b border-glass-border pb-4">
+<div class="w-10 h-10 rounded-full bg-cyber-neon-green/20 flex items-center justify-center cyber-glow-secondary">
+<span class="material-symbols-outlined text-cyber-neon-green" data-icon="memory">memory</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">AI Diagnostic</h3>
+<p class="font-label-mono text-label-mono text-cyber-neon-green">Why It Worked</p>
+</div>
+</div>
+<div class="space-y-6 flex-1">
+<div class="space-y-2">
+<h4 class="font-button-text text-button-text text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="bolt">bolt</span>
+                                        Hook Velocity
+                                    </h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Your recent top performers utilized a <span class="text-on-surface font-semibold">pattern interrupt within the first 1.2 seconds</span>. Videos starting with the "Negative Premise" framework saw a 45% higher retention at the 3-second mark.</p>
+<div class="w-full bg-deep-slate h-2 rounded-full overflow-hidden mt-2">
+<div class="bg-primary h-full w-[85%] cyber-glow-primary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<h4 class="font-button-text text-button-text text-hyper-cyan flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+                                        Pacing Density
+                                    </h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Visual cuts occurring every <span class="text-on-surface font-semibold">2.4 seconds</span> correlate strongly with your engagement spikes. Your baseline is 3.1s. Faster pacing in the middle third prevents the typical 50% drop-off.</p>
+<div class="w-full bg-deep-slate h-2 rounded-full overflow-hidden mt-2">
+<div class="bg-hyper-cyan h-full w-[92%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<h4 class="font-button-text text-button-text text-cyber-neon-green flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="sell">sell</span>
+                                        Topic Resonance
+                                    </h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">The keyword cluster <span class="text-cyber-neon-green font-mono text-xs bg-cyber-neon-green/10 px-1 py-0.5 rounded">AI Tools</span> + <span class="text-cyber-neon-green font-mono text-xs bg-cyber-neon-green/10 px-1 py-0.5 rounded">Productivity</span> is currently over-performing your channel average by 3.2x.</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-glass-border">
+<button class="w-full py-3 rounded border border-cyber-neon-green/50 text-cyber-neon-green font-button-text text-button-text hover:bg-cyber-neon-green/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+                                    Apply Insights to Script Studio
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,66 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# testing
+coverage/
+test-results/
+
+# next.js
+.next/
+.next*/
+out/
+build/
+
+# misc
+.DS_Store
+*.pem
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# build output
+dist/
+tsconfig.tsbuildinfo
+
+# local media and screenshots
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# local scratch/debug output
+scratch/
+supabase/.temp/
+
+# one-off local patch scripts
+fix*.py
+fix*.js
+add_*.py
+apply_*.js
+clean_*.py
+debug_*.py
+extract_*.js
+force_*.py
+gen_*.py
+generate_*.js
+hook_*.py
+implement_*.py
+inject_*.js
+manual_*.py
+patch_*.js
+refactor_*.py
+remove_*.py
+update_*.py
+raw_studio_temp.tsx

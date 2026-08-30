@@ -1,0 +1,291 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KontentOS V2 - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#401a08",
+                      "surface-tint": "#c2652a",
+                      "surface-bright": "#faf5ee",
+                      "tertiary": "#8c3c3c",
+                      "surface-container-highest": "#e6e0d6",
+                      "surface-container-high": "#ece6dc",
+                      "surface-container-lowest": "#ffffff",
+                      "error": "#c0392b",
+                      "on-primary-container": "#fbe8d8",
+                      "inverse-surface": "#3a302a",
+                      "surface-container-low": "#f6f0e8",
+                      "inverse-primary": "#f0a878",
+                      "outline-variant": "#d8d0c8",
+                      "on-surface": "#3a302a",
+                      "inverse-on-surface": "#faf5ee",
+                      "on-secondary-fixed": "#2a2420",
+                      "secondary-fixed-dim": "#cec6be",
+                      "surface-container": "#f2ece4",
+                      "on-tertiary-fixed-variant": "#6e3030",
+                      "tertiary-container": "#d47070",
+                      "secondary-fixed": "#eae2da",
+                      "on-tertiary-container": "#3a2020",
+                      "on-secondary-container": "#605850",
+                      "on-surface-variant": "#605850",
+                      "on-error-container": "#7a1a10",
+                      "primary": "#c2652a",
+                      "secondary-container": "#eae2da",
+                      "primary-container": "#e08850",
+                      "on-tertiary-fixed": "#2e1515",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#504840",
+                      "tertiary-fixed-dim": "#e8a0a0",
+                      "primary-fixed-dim": "#f0a878",
+                      "primary-fixed": "#fbe8d8",
+                      "error-container": "#fce4e0",
+                      "secondary": "#78706a",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#ece6dc",
+                      "outline": "#9a9088",
+                      "on-primary-fixed-variant": "#8a4518",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-background": "#3a302a",
+                      "tertiary-fixed": "#fce0e0",
+                      "background": "#faf5ee",
+                      "surface-dim": "#dcd6cc",
+                      "surface": "#faf5ee"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "EB Garamond"
+                      ],
+                      "display": [
+                              "EB Garamond"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Manrope"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+<style>
+          body {
+              font-family: 'Manrope', sans-serif;
+              background-color: #faf5ee; /* bg-surface */
+              color: #3a302a; /* text-on-surface */
+          }
+          h1, h2, h3, h4, h5, h6 {
+              font-family: 'EB Garamond', serif;
+          }
+      </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface dark:bg-surface-dim flex justify-between items-center w-full px-6 py-4 max-w-full mx-auto docked full-width top-0 shadow-sm border-b border-outline-variant/60 fixed z-50">
+<div class="text-2xl font-headline font-bold text-primary dark:text-primary-fixed">KontentOS V2</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant/30" data-alt="A warm-toned close-up portrait of a creative professional in a sunlit studio. Earthy colors, soft natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPs8bCLtYp3fN0ueNzd3R1vjMot931R8elbWasggfKz_td-LxSnu0tBJctoMEVctdCEoPO2P8BC8sWGoMK4TRqSHYcHtcK9P_ViTlWE4K-ljkm3-E1ZYHsibUZY1-A4kTmkJqRI6haOWgHU0o4vG6lGlF4ZqtZ0e7U5bQhWJbQAc_-54F9Dkc5dBneROD6SJCvI1QNrXC1fjoZGM8VQtnv6N11ijJHo-abn1o9gjcoWs7TdNxf0Cyw">
+</div>
+</nav>
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex bg-surface-container-low dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-8 px-4 z-40 border-r border-outline-variant/30">
+<div class="mb-10 px-4">
+<h1 class="font-headline text-2xl font-bold text-primary mb-2">KontentOS V2</h1>
+</div>
+<div class="flex-grow flex flex-col gap-2">
+<!-- Navigation Links -->
+<a class="text-on-primary-fixed-variant font-bold border-r-4 border-primary bg-primary-fixed/30 py-3 px-4 rounded-l-lg flex items-center gap-3 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label text-sm">Account</span>
+</a>
+<a class="text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all py-3 px-4 rounded-lg flex items-center gap-3 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="category">credit_card</span>
+<span class="font-label text-sm">Billing</span>
+</a>
+<a class="text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all py-3 px-4 rounded-lg flex items-center gap-3 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">palette</span>
+<span class="font-label text-sm">Brand Assets</span>
+</a>
+<a class="text-on-surface-variant opacity-70 hover:bg-surface-container-high transition-all py-3 px-4 rounded-lg flex items-center gap-3 cursor-pointer active:opacity-80 mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="brush">logout</span>
+<span class="font-label text-sm">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 pt-20 md:pt-12 px-6 md:px-12 pb-24 max-w-5xl mx-auto w-full">
+<header class="mb-12 flex justify-between items-end border-b border-outline-variant/30 pb-6">
+<div>
+<h2 class="font-headline text-4xl text-on-surface mb-2 tracking-tight">Account Settings</h2>
+<p class="font-body text-on-surface-variant">Manage your profile, preferences, and creator intent.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label text-sm hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm">Save Changes</button>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<!-- Left Column: Primary Profile -->
+<div class="lg:col-span-2 space-y-10">
+<!-- Profile Information Card -->
+<section class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/30 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<h3 class="font-headline text-2xl text-on-surface mb-6 border-b border-outline-variant/20 pb-4">Profile Information</h3>
+<div class="flex items-start gap-6 mb-8">
+<div class="relative group cursor-pointer">
+<img alt="Profile Picture" class="w-24 h-24 rounded-full object-cover border-4 border-surface-bright shadow-sm" data-alt="A warm-toned close-up portrait of a creative professional in a sunlit studio. Earthy colors, soft natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzwlsMnlLnoddcg-wOY3wv_JsHbafIJREO0Pnv1QIZSplfZtRHkiULNJrhpArOKFg5G5nzud7Du-1nx6sAOKzoNYn_8VAaACCpX2Z7f9nFwSQH7wuGXPosQVtIWH2sOorW7DmMGeIe_UwlSY1BDN9k9e3OuKu0en5aUJZau08e1Zb-q_ohBUPiWiaF6FiMQ7h6FyjFi80RQfZvzQDtMhaHl5NKfvET-g8uhHhqpgbM2yDzoMUwAvma">
+<div class="absolute inset-0 bg-inverse-surface/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-surface-bright">edit</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="font-label text-sm text-on-surface-variant mb-1">Public Avatar</p>
+<p class="font-body text-sm text-on-surface-variant mb-3">Recommended size 400x400px. JPG or PNG.</p>
+<button class="text-primary text-sm font-label hover:underline">Upload new image</button>
+</div>
+</div>
+<div class="space-y-5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-1">Display Name</label>
+<input class="w-full bg-surface-bright border border-outline-variant/60 rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body" type="text" value="Elena Rossi">
+</div>
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-1">Creator Handle</label>
+<input class="w-full bg-surface-bright border border-outline-variant/60 rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body" type="text" value="@elenacreates">
+</div>
+</div>
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-1">Bio</label>
+<textarea class="w-full bg-surface-bright border border-outline-variant/60 rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body resize-none" rows="3">Visual storyteller and warm minimalist documenting the intersection of design and slow living.</textarea>
+</div>
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-1">Primary Segment</label>
+<select class="w-full bg-surface-bright border border-outline-variant/60 rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body appearance-none">
+<option>Independent Creator</option>
+<option>Agency</option>
+<option>Brand</option>
+<option>Entertainment</option></select>
+</div>
+</div>
+</section>
+<!-- Creator Intent & Preferences -->
+<section class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/30 shadow-[0_2px_16px_rgba(58,48,42,0.04)]">
+<h3 class="font-headline text-2xl text-on-surface mb-6 border-b border-outline-variant/20 pb-4">Creator Intent</h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-3">Primary Use Case</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="usecase" type="radio">
+<div class="border border-primary bg-primary-fixed/20 rounded-lg p-4 text-center peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary transition-all">
+<span class="material-symbols-outlined block mb-2">stylus</span>
+<span class="font-label text-sm block">Content Creation</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="usecase" type="radio">
+<div class="border border-outline-variant/60 bg-surface-bright rounded-lg p-4 text-center hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary transition-all">
+<span class="material-symbols-outlined block mb-2 text-on-surface-variant peer-checked:text-on-primary">campaign</span>
+<span class="font-label text-sm block text-on-surface-variant peer-checked:text-on-primary">Marketing</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="usecase" type="radio">
+<div class="border border-outline-variant/60 bg-surface-bright rounded-lg p-4 text-center hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary transition-all">
+<span class="material-symbols-outlined block mb-2 text-on-surface-variant peer-checked:text-on-primary">school</span>
+<span class="font-label text-sm block text-on-surface-variant peer-checked:text-on-primary">Education</span>
+</div>
+</label>
+</div>
+</div>
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-3">Content Style</label>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-sm font-label cursor-pointer hover:bg-surface-dim transition-colors">Minimalist</span>
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-sm font-label cursor-pointer">Warm</span>
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-sm font-label cursor-pointer hover:bg-surface-dim transition-colors">Editorial</span>
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-sm font-label cursor-pointer">Lifestyle</span>
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-sm font-label cursor-pointer hover:bg-surface-dim transition-colors">Entertainment</span><span class="border border-dashed border-outline-variant text-on-surface-variant px-3 py-1 rounded-full text-sm font-label cursor-pointer hover:border-primary hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">add</span> Add Style</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Niche & Metadata -->
+<div class="space-y-10">
+<section class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/30 shadow-[0_2px_16px_rgba(58,48,42,0.04)] h-full">
+<h3 class="font-headline text-2xl text-on-surface mb-6 border-b border-outline-variant/20 pb-4">Niche Details</h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-2">Primary Category</label>
+<select class="w-full bg-surface-bright border border-outline-variant/60 rounded-lg px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body appearance-none">
+<option>Design &amp; Architecture</option>
+<option>Photography</option>
+<option>Lifestyle</option>
+<option>Technology</option>
+<option>Entertainment</option></select>
+</div>
+<div>
+<label class="block font-label text-sm text-on-surface-variant mb-2">Audience Focus</label>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="text-primary rounded focus:ring-primary bg-surface-bright border-outline-variant/60 w-4 h-4" type="checkbox">
+<span class="font-body text-sm text-on-surface">Professionals</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="text-primary rounded focus:ring-primary bg-surface-bright border-outline-variant/60 w-4 h-4" type="checkbox">
+<span class="font-body text-sm text-on-surface">Enthusiasts</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-primary rounded focus:ring-primary bg-surface-bright border-outline-variant/60 w-4 h-4" type="checkbox">
+<span class="font-body text-sm text-on-surface">Beginners</span>
+</label>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/20">
+<p class="font-label text-xs text-on-surface-variant uppercase tracking-widest mb-4">Account Status</p>
+<div class="flex items-center justify-between">
+<span class="font-body text-sm text-on-surface">Profile Visibility</span>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface">
+<span class="inline-block h-4 w-4 translate-x-6 rounded-full bg-on-primary transition-transform"></span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-6 px-8 flex justify-between items-center bg-surface-bright dark:bg-surface-dim border-t border-outline-variant/30 mt-auto hidden md:flex absolute bottom-0 left-64 right-0">
+<p class="font-label text-xs uppercase tracking-widest text-on-surface-variant">© 2024 KontentOS V2 — Sun-Baked Simplicity</p>
+<div class="flex gap-6">
+<a class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-tertiary underline transition-all" href="#">Privacy Policy</a>
+<a class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-tertiary underline transition-all" href="#">Terms of Service</a>
+<a class="font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-tertiary underline transition-all" href="#">Creator Guidelines</a>
+</div>
+</footer>
+
+
+</body></html>
