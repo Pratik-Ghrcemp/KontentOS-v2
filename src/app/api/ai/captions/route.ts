@@ -3,6 +3,7 @@ import { generateJson } from '@/lib/ai/provider';
 import { CaptionGenerationRequest } from '@/lib/ai/types';
 import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
+import { buildCreatorSystemPrompt } from '@/lib/ai/creator-dna';
 
 const SYSTEM_PROMPT = `You are an expert video editor and social media content creator specializing in short-form viral content.
 Your task is to generate accurate, engaging, and timestamped captions for a video.
@@ -33,7 +34,8 @@ Total duration must match the video length.`;
     let isMock = true;
 
     try {
-      const result = await generateJson<{ segments: any[] }>(userPrompt, SYSTEM_PROMPT);
+      const activeSystemPrompt = buildCreatorSystemPrompt(SYSTEM_PROMPT, body.creatorProfile);
+      const result = await generateJson<{ segments: any[] }>(userPrompt, activeSystemPrompt);
       data = result.data;
       isMock = result.isMock;
     } catch (aiError: any) {

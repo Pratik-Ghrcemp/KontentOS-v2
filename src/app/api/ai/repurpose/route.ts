@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
 import { generateJson } from '@/lib/ai/provider';
 import { ContentRepurposeRequest } from '@/lib/ai/types';
+import { saveAiEvent } from '@/lib/data/ai-history-service';
 
 export async function POST(request: Request) {
   const userId = await getAuthedUserId(request);
@@ -18,18 +19,34 @@ export async function POST(request: Request) {
     );
 
     if (isMock || !data) {
+      const mockIdeas = [
+        { platform: 'Twitter/X', text: `I just discovered a crazy trick for ${body.sourceText || 'this'}. A thread 🧵👇` },
+        { platform: 'LinkedIn', text: 'Productivity is evolving. Here is how I transformed my workflow, and what you can learn from it.' },
+        { platform: 'YouTube Shorts', text: 'Title Idea: DO THIS to save 10 hours a week! #shorts' }
+      ];
+      await saveAiEvent(
+        { task_type: 'repurpose', preview: mockIdeas[0].text.slice(0, 30) },
+        userId,
+        body,
+        { ideas: mockIdeas }
+      ).catch(() => {});
+
       return NextResponse.json({
         success: true,
         provider: 'mock',
-        ideas: [
-          { platform: 'Twitter/X', text: `I just discovered a crazy trick for ${body.sourceText || 'this'}. A thread 🧵👇` },
-          { platform: 'LinkedIn', text: 'Productivity is evolving. Here is how I transformed my workflow, and what you can learn from it.' },
-          { platform: 'YouTube Shorts', text: 'Title Idea: DO THIS to save 10 hours a week! #shorts' }
-        ]
+        ideas: mockIdeas
       });
     }
 
-    return NextResponse.json({ success: true, provider: 'openai', ideas: (data as { ideas: any }).ideas });
+    const ideas = (data as { ideas: any }).ideas;
+    await saveAiEvent(
+      { task_type: 'repurpose', preview: Array.isArray(ideas) && ideas[0]?.text ? String(ideas[0].text).slice(0, 30) : 'Repurposed ideas' },
+      userId,
+      body,
+      data
+    ).catch(() => {});
+
+    return NextResponse.json({ success: true, provider: 'openai', ideas });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }

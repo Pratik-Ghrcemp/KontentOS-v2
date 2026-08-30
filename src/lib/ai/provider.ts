@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import OpenAI, { toFile } from 'openai';
 
 // Factory to get the correct OpenAI instance (Standard vs Azure)
 export function getOpenAIClient(): OpenAI | null {
@@ -61,3 +61,52 @@ export async function generateJson<T>(
     return { data: null, isMock: true };
   }
 }
+
+export interface WhisperSegment {
+  text: string;
+  start_time: number;
+  end_time: number;
+}
+
+/**
+ * Real Speech-to-Text Transcription using OpenAI Whisper API
+ */
+export async function transcribeAudioBuffer(
+  buffer: Buffer,
+  filename: string = 'audio.mp4',
+  language?: string,
+  prompt?: string
+): Promise<{ segments: WhisperSegment[]; text: string; isMock: boolean }> {
+  const client = getOpenAIClient();
+  if (!client) {
+    return { segments: [], text: '', isMock: true };
+  }
+
+  try {
+    const file = await toFile(buffer, filename);
+    const transcription: any = await client.audio.transcriptions.create({
+      file,
+      model: 'whisper-1',
+      response_format: 'verbose_json',
+      timestamp_granularities: ['segment'],
+      language,
+      prompt
+    });
+
+    const segments: WhisperSegment[] = (transcription.segments || []).map((s: any) => ({
+      text: String(s.text || '').trim(),
+      start_time: Number(s.start || 0),
+      end_time: Number(s.end || 0)
+    }));
+
+    return {
+      segments,
+      text: String(transcription.text || ''),
+      isMock: false
+    };
+  } catch (error) {
+    console.error('Whisper Transcription Error:', error);
+    return { segments: [], text: '', isMock: true };
+  }
+}
+

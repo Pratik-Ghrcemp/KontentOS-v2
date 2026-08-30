@@ -135,7 +135,8 @@ export function buildRenderComposition(request: RenderRequest): RenderCompositio
     });
   }
 
-  const duration = layers.reduce((max, layer) => Math.max(max, layer.endTime || 0), 0);
+  const mediaLayers = layers.filter(l => l.type !== 'watermark');
+  const duration = mediaLayers.reduce((max, layer) => Math.max(max, layer.endTime || 0), 0);
 
   return {
     id: `comp-${Date.now()}`,

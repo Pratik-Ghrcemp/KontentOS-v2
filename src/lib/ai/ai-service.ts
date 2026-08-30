@@ -50,3 +50,24 @@ export async function repurposeContent(request: ContentRepurposeRequest): Promis
   const res = await authedFetch('/api/ai/repurpose', request);
   return res.json();
 }
+
+export async function transcribeMedia(file: Blob, language?: string, prompt?: string): Promise<{ success: boolean; provider: string; text: string; segments: { text: string; start_time: number; end_time: number }[] }> {
+  const { data: { session } } = await supabase.auth.getSession();
+  const formData = new FormData();
+  formData.append('file', file);
+  if (language) formData.append('language', language);
+  if (prompt) formData.append('prompt', prompt);
+
+  const headers: Record<string, string> = {};
+  if (session?.access_token) {
+    headers.Authorization = `Bearer ${session.access_token}`;
+  }
+
+  const res = await fetch('/api/ai/transcribe', {
+    method: 'POST',
+    headers,
+    body: formData
+  });
+
+  return res.json();
+}

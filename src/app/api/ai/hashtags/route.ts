@@ -3,6 +3,7 @@ import { generateJson } from '@/lib/ai/provider';
 import { HashtagSuggestionRequest } from '@/lib/ai/types';
 import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
+import { buildCreatorSystemPrompt } from '@/lib/ai/creator-dna';
 
 const SYSTEM_PROMPT = `You are a social media SEO and discoverability expert specializing in short-form video platforms.
 Your task is to suggest highly relevant, trending hashtags that maximize reach and discoverability.
@@ -32,7 +33,8 @@ The niche tag should be hyper-relevant to the specific topic.`;
     let isMock = true;
 
     try {
-      const result = await generateJson<{ hashtags: string[] }>(userPrompt, SYSTEM_PROMPT);
+      const activeSystemPrompt = buildCreatorSystemPrompt(SYSTEM_PROMPT, body.creatorProfile);
+      const result = await generateJson<{ hashtags: string[] }>(userPrompt, activeSystemPrompt);
       data = result.data;
       isMock = result.isMock;
     } catch (aiError: any) {

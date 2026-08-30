@@ -3,6 +3,7 @@ import { generateJson } from '@/lib/ai/provider';
 import { HookSuggestionRequest } from '@/lib/ai/types';
 import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
+import { buildCreatorSystemPrompt } from '@/lib/ai/creator-dna';
 
 const SYSTEM_PROMPT = `You are a viral short-form content strategist with a proven track record on TikTok, Instagram Reels, and YouTube Shorts.
 Your task is to create irresistible video opening hooks that stop the scroll in the first 3 seconds.
@@ -32,7 +33,8 @@ Style: Short, punchy, scroll-stopping. Do not use hashtags in the hooks.`;
     let isMock = true;
 
     try {
-      const result = await generateJson<{ hooks: string[] }>(userPrompt, SYSTEM_PROMPT);
+      const activeSystemPrompt = buildCreatorSystemPrompt(SYSTEM_PROMPT, body.creatorProfile);
+      const result = await generateJson<{ hooks: string[] }>(userPrompt, activeSystemPrompt);
       data = result.data;
       isMock = result.isMock;
     } catch (aiError: any) {

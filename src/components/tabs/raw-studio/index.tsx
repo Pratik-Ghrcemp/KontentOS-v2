@@ -11,6 +11,7 @@ import { Captions, Download, FileVideo, Music2, PanelRight, Pause, Play,
   Copy, Check, Volume2, MicOff, AlignLeft, AlignCenter, AlignRight, Palette,
   RotateCcw, MousePointer2, CloudUpload, Pencil } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
+import { useAppState } from '@/context/state-context';
 import { supabase, isSupabaseConfigured, isDemoMode } from '@/lib/supabase';
 import { StudioAsset, CaptionSegment, TextOverlay, CaptionStyle, AudioSettings, BrandKit, VideoClip } from './types';
 import { RenderJob, RenderRequest, RenderCaptionMode } from '@/lib/rendering/types';
@@ -494,11 +495,17 @@ export function RawStudio() {
     }
   };
 
+  const { state: appState } = useAppState();
+  const creatorProfile = appState?.creatorProfile;
+
   const handleGenerateCaptions = () => {
     if (!activeAsset) { showToast('No active asset'); return; }
     withAiLoading('captions', 'caption_generation', async () => {
       showToast('AI generating captions...');
-      const res = await generateCaptions({ durationSeconds: Math.round(timelineDuration || 15) });
+      const res = await generateCaptions({
+        durationSeconds: Math.round(timelineDuration || 15),
+        creatorProfile
+      });
       const captionItems = createCaptionTimelineItems(res.segments, captionStyle.preset);
       captionItems.forEach(item => dispatch({ type: 'ADD_ITEM', payload: item }));
       showToast('Captions generated and bound to timeline!');
@@ -510,7 +517,11 @@ export function RawStudio() {
     const cap = editState.items.find(c => c.id === id && c.type === 'caption') as any;
     if (!cap) { showToast('Select a caption block first'); return; }
     withAiLoading(`rewrite-${id}`, 'caption_rewrite', async () => {
-      const res = await rewriteCaption({ text: cap.text, tone: type as CaptionRewriteTone });
+      const res = await rewriteCaption({
+        text: cap.text,
+        tone: type as CaptionRewriteTone,
+        creatorProfile
+      });
       updateCaption(id, { text: res.rewrittenText });
       showToast(`${type} rewrite applied!`);
       return `Rewrote: "${res.rewrittenText.slice(0, 30)}..."`;
@@ -519,7 +530,10 @@ export function RawStudio() {
 
   const loadHooks = () => {
     withAiLoading('hooks', 'hook_suggestion', async () => {
-      const res = await suggestHooks({ topic: projectTitle });
+      const res = await suggestHooks({
+        topic: projectTitle,
+        creatorProfile
+      });
       setSuggestedHooks(res.hooks);
       return 'Generated hook ideas';
     });
@@ -527,7 +541,11 @@ export function RawStudio() {
 
   const loadHashtags = () => {
     withAiLoading('hashtags', 'hashtag_suggestion', async () => {
-      const res = await suggestHashtags({ topic: projectTitle, platform: platformPresets[platformPreset]?.label || 'Custom' });
+      const res = await suggestHashtags({
+        topic: projectTitle,
+        platform: platformPresets[platformPreset]?.label || 'Custom',
+        creatorProfile
+      });
       setSuggestedHashtags(res.hashtags);
       return 'Generated hashtag ideas';
     });
@@ -535,7 +553,10 @@ export function RawStudio() {
 
   const loadCtas = () => {
     withAiLoading('ctas', 'cta_suggestion', async () => {
-      const res = await suggestCtas({ goal: 'Engagement' });
+      const res = await suggestCtas({
+        goal: 'Engagement',
+        creatorProfile
+      });
       setSuggestedCtas(res.ctas);
       return 'Generated CTA ideas';
     });
@@ -543,7 +564,10 @@ export function RawStudio() {
 
   const loadRepurpose = () => {
     withAiLoading('repurpose', 'repurpose', async () => {
-      const res = await repurposeContent({ sourceText: projectTitle });
+      const res = await repurposeContent({
+        sourceText: projectTitle,
+        creatorProfile
+      });
       setRepurposeIdeas(res.ideas);
       return 'Generated repurpose ideas';
     });
@@ -620,6 +644,7 @@ export function RawStudio() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editState.selection, editState.items, dispatch, clearSelection, togglePlay]);
 
   const resetDemo = () => {

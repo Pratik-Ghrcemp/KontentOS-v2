@@ -46,8 +46,9 @@ export async function POST(request: Request) {
             job.status = 'completed';
             job.progress = 100;
             job.completed_at = new Date().toISOString();
+            const downloadUrl = `/api/render-jobs/download?path=${encodeURIComponent(result.fileUrl || '')}&filename=${encodeURIComponent((body.projectTitle || 'render').replace(/[^a-zA-Z0-9_-]/g, '_'))}.mp4`;
             job.result_json = {
-              fileUrl: result.fileUrl || 'rendered-video.mp4',
+              fileUrl: downloadUrl,
               srtUrl: body.captionMode === 'sidecar' ? 'captions.srt' : undefined,
               sizeBytes: result.sizeBytes || 45 * 1024 * 1024,
               durationSeconds: result.durationSeconds || composition.timeline.duration

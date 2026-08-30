@@ -85,7 +85,7 @@ export async function runLocalFfmpegRender(
       logs.push(line.trim());
 
       const progress = parseFfmpegProgress(line, composition.timeline.duration);
-      if (progress !== null && onProgress) {
+      if (progress !== null && typeof onProgress === 'function') {
         onProgress(progress);
       }
     });

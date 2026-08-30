@@ -5,6 +5,7 @@ KontentOS is a professional AI-powered Creator Operating System. Built with Next
 ## Prerequisites
 - Node.js 18+
 - Supabase project
+- FFmpeg for local production renders (auto-installed through `@ffmpeg-installer/ffmpeg`, or set `LOCAL_FFMPEG_PATH`)
 
 ## Getting Started
 
@@ -38,11 +39,19 @@ KontentOS is a professional AI-powered Creator Operating System. Built with Next
 
 ## Production Build
 
-To verify your code before deployment, run the linting and build scripts:
+To verify your code before deployment, run the release gate:
 ```bash
-npm run lint
+npm run verify:release
+```
+
+For faster targeted checks during development:
+```bash
+npm run typecheck
+npm run test:render:phase-g
 npm run build
 ```
+
+Production deployment and rollback notes are in [docs/production-release.md](docs/production-release.md).
 
 ## Legacy Files
 The older Vite/Vanilla JS version is preserved in the `legacy/` directory for reference and should not be modified.

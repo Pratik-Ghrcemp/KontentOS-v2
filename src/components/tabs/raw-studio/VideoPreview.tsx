@@ -1114,6 +1114,7 @@ export function VideoPreview() {
                  { bottom: '16px', right: '16px' })
             }}>
               {typeof brandKit.watermark === 'object' && brandKit.watermark?.logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={brandKit.watermark.logoUrl} alt="Watermark" style={{ height: '24px', objectFit: 'contain' }} />
               ) : (
                 <span style={{ color: '#fff', background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', padding: '0.3rem 0.65rem', fontFamily: brandKit.primaryFont?.family || 'Inter', fontSize: '0.7rem', fontWeight: 700, backdropFilter: 'blur(8px)' }}>
