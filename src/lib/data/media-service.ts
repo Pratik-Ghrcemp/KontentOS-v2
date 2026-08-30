@@ -37,7 +37,7 @@ export async function getMediaAssets(userId: string): Promise<StudioAsset[]> {
   const resolvedAssets = await Promise.all(data.map(async (a: any) => {
     let url = a.storage_path;
     if (a.storage_path && !a.storage_path.startsWith('http') && !a.storage_path.startsWith('blob:')) {
-      const { data: urlData } = await supabase.storage.from('media-assets').createSignedUrl(a.storage_path, 3600);
+      const { data: urlData } = await supabase.storage.from('media-assets').createSignedUrl(a.storage_path, 86400);
       if (urlData?.signedUrl) {
          url = urlData.signedUrl;
       }
@@ -110,8 +110,8 @@ export async function uploadMediaAsset(file: File, userId: string, projectId: st
 
   if (insertError) throw new Error("DB insert failed: " + insertError.message);
 
-  // Fetch signed URL for immediate use
-  const { data: urlData } = await supabase.storage.from('media-assets').createSignedUrl(path, 3600);
+  // Fetch signed URL for immediate use (24h valid)
+  const { data: urlData } = await supabase.storage.from('media-assets').createSignedUrl(path, 86400);
   
   return { ...data, storage_path: urlData?.signedUrl || path, _raw_path: path } as unknown as StudioAsset;
 }

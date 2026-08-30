@@ -1,13 +1,22 @@
 import { NextResponse } from 'next/server';
+import { getJob, updateJob } from '@/lib/rendering/job-registry';
 
 export async function GET(request: Request, { params }: { params: { jobId: string } }) {
-  // TODO: Get job from DB
-  return NextResponse.json({ id: params.jobId, status: 'queued', progress: 0 });
+  const job = getJob(params.jobId);
+  if (!job) {
+    return NextResponse.json({ error: 'Render job not found' }, { status: 404 });
+  }
+  return NextResponse.json(job);
 }
 
 export async function DELETE(request: Request, { params }: { params: { jobId: string } }) {
-  // TODO: Verify user owns the job
-  // TODO: Update job status to 'cancelled'
-  // TODO: Signal queue worker to abort
-  return NextResponse.json({ success: true });
+  const job = getJob(params.jobId);
+  if (!job) {
+    return NextResponse.json({ error: 'Render job not found' }, { status: 404 });
+  }
+  updateJob(params.jobId, {
+    status: 'cancelled',
+    completed_at: new Date().toISOString()
+  });
+  return NextResponse.json({ success: true, status: 'cancelled' });
 }

@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import { RenderRequest, RenderJob } from '@/lib/rendering/types';
 import { buildRenderComposition } from '@/lib/rendering/composition-builder';
 import { runLocalFfmpegRender, checkLocalFfmpegAvailable } from '@/lib/rendering/workers/local-ffmpeg-worker';
-
-// Global server job registry
-const globalJobs: Record<string, RenderJob> = {};
+import { getJob, setJob, updateJob, listJobs } from '@/lib/rendering/job-registry';
 
 export async function POST(request: Request) {
   try {
@@ -25,55 +23,51 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     };
 
-    globalJobs[id] = job;
+    setJob(id, job);
 
     // Trigger async render pipeline in background
     (async () => {
       try {
         const isFfmpegAvailable = await checkLocalFfmpegAvailable();
-        job.status = 'processing';
-        job.progress = 10;
-        job.updated_at = new Date().toISOString();
+        updateJob(id, { status: 'processing', progress: 10 });
 
         if (isFfmpegAvailable) {
           const composition = buildRenderComposition(body);
           const result = await runLocalFfmpegRender(composition, (p) => {
-            job.progress = Math.max(10, Math.min(95, p));
-            job.updated_at = new Date().toISOString();
+            updateJob(id, { progress: Math.max(10, Math.min(95, p)) });
           });
 
           if (result.success) {
-            job.status = 'completed';
-            job.progress = 100;
-            job.completed_at = new Date().toISOString();
             const downloadUrl = `/api/render-jobs/download?path=${encodeURIComponent(result.fileUrl || '')}&filename=${encodeURIComponent((body.projectTitle || 'render').replace(/[^a-zA-Z0-9_-]/g, '_'))}.mp4`;
-            job.result_json = {
-              fileUrl: downloadUrl,
-              srtUrl: body.captionMode === 'sidecar' ? 'captions.srt' : undefined,
-              sizeBytes: result.sizeBytes || 45 * 1024 * 1024,
-              durationSeconds: result.durationSeconds || composition.timeline.duration
-            };
+            updateJob(id, {
+              status: 'completed',
+              progress: 100,
+              completed_at: new Date().toISOString(),
+              result_json: {
+                fileUrl: downloadUrl,
+                srtUrl: body.captionMode === 'sidecar' ? 'captions.srt' : undefined,
+                sizeBytes: result.sizeBytes || 45 * 1024 * 1024,
+                durationSeconds: result.durationSeconds || composition.timeline.duration
+              }
+            });
           } else {
-            job.status = 'failed';
-            job.error_message = result.error || 'FFmpeg render failed';
+            updateJob(id, {
+              status: 'failed',
+              error_message: result.error || 'FFmpeg render failed'
+            });
           }
         } else {
-          // Simulation fallback for environments without local binary
-          setTimeout(() => {
-            job.status = 'completed';
-            job.progress = 100;
-            job.completed_at = new Date().toISOString();
-            job.result_json = {
-              fileUrl: 'rendered-video.mp4',
-              srtUrl: body.captionMode === 'sidecar' ? 'captions.srt' : undefined,
-              sizeBytes: 45 * 1024 * 1024,
-              durationSeconds: 15
-            };
-          }, 2000);
+          // Explicitly fail if FFmpeg is not available
+          updateJob(id, {
+            status: 'failed',
+            error_message: 'Host FFmpeg binary not found or not runnable. Please install FFmpeg on the system.'
+          });
         }
       } catch (err: any) {
-        job.status = 'failed';
-        job.error_message = err.message || 'Render pipeline error';
+        updateJob(id, {
+          status: 'failed',
+          error_message: err.message || 'Render pipeline error'
+        });
       }
     })();
 
@@ -86,8 +80,10 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const jobId = url.searchParams.get('id');
-  if (jobId && globalJobs[jobId]) {
-    return NextResponse.json(globalJobs[jobId]);
+  if (jobId) {
+    const job = getJob(jobId);
+    if (job) return NextResponse.json(job);
+    return NextResponse.json({ error: 'Job not found' }, { status: 404 });
   }
-  return NextResponse.json(Object.values(globalJobs));
+  return NextResponse.json(listJobs());
 }

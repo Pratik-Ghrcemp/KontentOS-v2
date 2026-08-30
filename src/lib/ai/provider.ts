@@ -1,4 +1,9 @@
 import OpenAI, { toFile } from 'openai';
+import { spawnSync } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
+import { getFfmpegExecutablePath } from '../rendering/workers/local-ffmpeg-worker';
 
 // Factory to get the correct OpenAI instance (Standard vs Azure)
 export function getOpenAIClient(): OpenAI | null {
@@ -47,16 +52,17 @@ export async function generateJson<T>(
         { role: 'system', content: systemPrompt },
         { role: 'user', content: prompt }
       ],
-      response_format: { type: 'json_object' }
+      response_format: { type: 'json_object' },
+      temperature: 0.7,
     });
 
     const content = response.choices[0]?.message?.content;
-    if (!content) throw new Error('No content from OpenAI');
+    if (!content) return { data: null, isMock: true };
 
-    const parsed = JSON.parse(content) as T;
+    const parsed: T = JSON.parse(content);
     return { data: parsed, isMock: false };
   } catch (error) {
-    console.error('AI Generation Error:', error);
+    console.error('OpenAI JSON Generation Error:', error);
     // If it fails (e.g. rate limit), return mock flag so the caller can fallback
     return { data: null, isMock: true };
   }
@@ -66,6 +72,44 @@ export interface WhisperSegment {
   text: string;
   start_time: number;
   end_time: number;
+}
+
+/**
+ * Pre-extract lightweight mono MP3 from large video/audio buffers using FFmpeg to stay under Whisper 25MB limit
+ */
+function extractOptimizedAudioBuffer(inputBuffer: Buffer, filename: string): { buffer: Buffer; filename: string } {
+  // If already under 10MB and looks like an audio file, send directly
+  if (inputBuffer.length < 10 * 1024 * 1024 && (filename.endsWith('.mp3') || filename.endsWith('.wav') || filename.endsWith('.m4a'))) {
+    return { buffer: inputBuffer, filename };
+  }
+
+  try {
+    const tempDir = os.tmpdir();
+    const tempInput = path.join(tempDir, `whisper_in_${Date.now()}_${Math.random().toString(36).slice(2)}_${path.basename(filename)}`);
+    const tempOutput = path.join(tempDir, `whisper_out_${Date.now()}_${Math.random().toString(36).slice(2)}.mp3`);
+
+    fs.writeFileSync(tempInput, inputBuffer);
+
+    const ffmpegBin = getFfmpegExecutablePath();
+    const args = ['-y', '-i', tempInput, '-vn', '-acodec', 'libmp3lame', '-b:a', '64k', '-ac', '1', tempOutput];
+    const proc = spawnSync(ffmpegBin, args, { stdio: 'pipe' });
+
+    if (proc.status === 0 && fs.existsSync(tempOutput)) {
+      const extractedBuffer = fs.readFileSync(tempOutput);
+      // Clean up temp files
+      try { fs.unlinkSync(tempInput); } catch (e) {}
+      try { fs.unlinkSync(tempOutput); } catch (e) {}
+      return { buffer: extractedBuffer, filename: 'extracted_audio.mp3' };
+    }
+
+    // Fallback: cleanup and return original
+    try { if (fs.existsSync(tempInput)) fs.unlinkSync(tempInput); } catch (e) {}
+    try { if (fs.existsSync(tempOutput)) fs.unlinkSync(tempOutput); } catch (e) {}
+  } catch (e) {
+    // Non-fatal, fallback to original buffer
+  }
+
+  return { buffer: inputBuffer, filename };
 }
 
 /**
@@ -83,7 +127,10 @@ export async function transcribeAudioBuffer(
   }
 
   try {
-    const file = await toFile(buffer, filename);
+    // Optimize / extract audio if video container or large buffer
+    const { buffer: optimizedBuffer, filename: targetFilename } = extractOptimizedAudioBuffer(buffer, filename);
+    const file = await toFile(optimizedBuffer, targetFilename);
+
     const transcription: any = await client.audio.transcriptions.create({
       file,
       model: 'whisper-1',
@@ -109,4 +156,3 @@ export async function transcribeAudioBuffer(
     return { segments: [], text: '', isMock: true };
   }
 }
-
