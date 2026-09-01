@@ -64,3 +64,16 @@ refactor_*.py
 remove_*.py
 update_*.py
 raw_studio_temp.tsx
+
+# Local Speech Intelligence (whisper.cpp)
+/bin/whisper/*.exe
+/bin/whisper/*.dll
+/bin/whisper/*.so
+/bin/whisper/*.dylib
+/models/whisper/*.bin
+!/bin/whisper/.gitkeep
+!/models/whisper/.gitkeep
+whisper-bin-x64/
+temp/
+*.wav
+*.zip

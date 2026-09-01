@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { generateJson } from '@/lib/ai/provider';
+import { generateStructured } from '@/lib/ai/gateway';
 import { CtaSuggestionRequest } from '@/lib/ai/types';
-import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
 
 const SYSTEM_PROMPT = `You are a conversion-focused social media copywriter who specializes in short-form video CTAs.
@@ -22,28 +21,31 @@ export async function POST(request: Request) {
 
   try {
     const body: CtaSuggestionRequest = await request.json();
-
     const userPrompt = `Write exactly 3 high-converting video CTAs for:
 Goal: "${body.goal || 'increase engagement and followers'}"
 Platform: ${body.platform || 'Instagram Reels / TikTok'}
 Content Type: ${body.contentType || 'educational how-to video'}
-Make each CTA feel distinct — vary the action type (save, share, follow, comment, etc.).`;
+Make each CTA feel distinct - vary the action type (save, share, follow, comment, etc.).`;
 
-    let data: any = null;
-    let isMock = true;
+    const result = await generateStructured<{ ctas: string[] }>({
+      capability: 'cta_generation',
+      schemaName: 'cta_suggestions',
+      prompt: userPrompt,
+      systemPrompt: SYSTEM_PROMPT,
+      creatorProfile: body.creatorProfile,
+      userId,
+      persistEvent: true,
+      responsePreview: (data) => data?.ctas?.[0] || 'CTA suggestions'
+    });
 
-    try {
-      const result = await generateJson<{ ctas: string[] }>(userPrompt, SYSTEM_PROMPT);
-      data = result.data;
-      isMock = result.isMock;
-    } catch (aiError: any) {
-      console.warn('AI CTA generation failed, falling back to mock:', aiError?.message);
-    }
-
-    if (isMock || !data?.ctas) {
+    if (!result.data?.ctas) {
       return NextResponse.json({
         success: true,
         provider: 'mock',
+        degraded: true,
+        fallbackUsed: true,
+        reason: result.reason || result.error || 'No AI provider configured',
+        latencyMs: result.latencyMs,
         ctas: [
           'Save this so you never forget it.',
           'Tag someone who really needs this.',
@@ -52,14 +54,14 @@ Make each CTA feel distinct — vary the action type (save, share, follow, comme
       });
     }
 
-    await saveAiEvent(
-      { task_type: 'cta_suggestion', preview: data.ctas[0] },
-      userId,
-      body,
-      data
-    ).catch(() => {});
-
-    return NextResponse.json({ success: true, provider: 'openai', ctas: data.ctas });
+    return NextResponse.json({
+      success: true,
+      provider: result.provider,
+      degraded: result.degraded,
+      fallbackUsed: result.fallbackUsed,
+      latencyMs: result.latencyMs,
+      ctas: result.data.ctas
+    });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }

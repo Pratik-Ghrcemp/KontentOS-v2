@@ -20,7 +20,7 @@ const templateIdeas = [
 ];
 
 export function IdeaStudio() {
-  const { state, setTab } = useAppState();
+  const { state, setTab, sendIdeaToStudio } = useAppState();
   const { user } = useAuth();
   const [activeFilter, setActiveFilter] = useState('all');
   const [ideas, setIdeas] = useState<any[]>([]);
@@ -90,6 +90,22 @@ export function IdeaStudio() {
     setGenerating(false);
   };
 
+  const handleCreateInStudio = (idea: any) => {
+    const hook = idea.hook_tip || '';
+    const topic = idea.title || 'Untitled content idea';
+    sendIdeaToStudio({
+      id: idea.id,
+      idea: topic,
+      topic,
+      hook,
+      targetAudience: state.creatorProfile.proNiche || state.creatorProfile.selectedVibe,
+      contentGoal: idea.format || 'Short-form video',
+      platform: idea.platform || 'Instagram Reels',
+      suggestedScript: hook ? `${hook}\n\n${topic}` : topic,
+      source: 'idea_studio'
+    });
+  };
+
   return (
     <div className="content-container" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
@@ -140,9 +156,19 @@ export function IdeaStudio() {
               <div style={{ background: 'var(--bg-surface-card)', padding: '0.85rem', borderRadius: '8px', borderLeft: '2px solid var(--accent-primary)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                 <strong style={{ color: 'var(--text-main)' }}>Hook Tip:</strong> {idea.hook_tip}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '0.5rem', borderTop: '1px solid var(--border-subtle)' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-main)' }}>{idea.format}</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--accent-green)', fontWeight: 800 }}>{idea.velocity} Velo</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '0.5rem', borderTop: '1px solid var(--border-subtle)', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-main)' }}>{idea.format}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--accent-green)', fontWeight: 800 }}>{idea.velocity} Velo</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleCreateInStudio(idea)}
+                  className="btn btn-primary"
+                  style={{ padding: '0.42rem 0.75rem', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+                >
+                  Create in Studio
+                </button>
               </div>
             </div>
           ))}

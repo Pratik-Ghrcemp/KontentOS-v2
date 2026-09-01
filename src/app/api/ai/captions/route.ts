@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import { generateJson } from '@/lib/ai/provider';
+import { generateStructured } from '@/lib/ai/gateway';
 import { CaptionGenerationRequest } from '@/lib/ai/types';
-import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
-import { buildCreatorSystemPrompt } from '@/lib/ai/creator-dna';
 
 const SYSTEM_PROMPT = `You are an expert video editor and social media content creator specializing in short-form viral content.
 Your task is to generate accurate, engaging, and timestamped captions for a video.
@@ -23,47 +21,48 @@ export async function POST(request: Request) {
 
   try {
     const body: CaptionGenerationRequest = await request.json();
-
     const userPrompt = `Generate 3 to 5 captioned segments for a ${body.durationSeconds || 30}s short-form video.
 Topic/Context: "${body.context || 'general motivational content'}"
 Platform: ${body.platform || 'TikTok/Instagram Reels'}
 Tone: engaging, direct, punchy.
 Total duration must match the video length.`;
 
-    let data: any = null;
-    let isMock = true;
+    const result = await generateStructured<{ segments: any[] }>({
+      capability: 'caption_generation',
+      schemaName: 'caption_segments',
+      prompt: userPrompt,
+      systemPrompt: SYSTEM_PROMPT,
+      creatorProfile: body.creatorProfile,
+      userId,
+      persistEvent: true,
+      responsePreview: (data) => `${data?.segments?.length || 0} segments generated`
+    });
 
-    try {
-      const activeSystemPrompt = buildCreatorSystemPrompt(SYSTEM_PROMPT, body.creatorProfile);
-      const result = await generateJson<{ segments: any[] }>(userPrompt, activeSystemPrompt);
-      data = result.data;
-      isMock = result.isMock;
-    } catch (aiError: any) {
-      // Rate limit (429) or Auth error (401) — fall through to mock
-      console.warn('AI caption generation failed, falling back to mock:', aiError?.message);
-    }
-
-    if (isMock || !data?.segments) {
+    if (!result.data?.segments) {
       return NextResponse.json({
         success: true,
         provider: 'mock',
+        degraded: true,
+        fallbackUsed: true,
+        reason: result.reason || result.error || 'No AI provider configured',
+        latencyMs: result.latencyMs,
         segments: [
           { text: 'Are you still doing this manually?', start_time: 0, end_time: 2.5 },
           { text: 'There is a smarter way to do it.', start_time: 2.6, end_time: 4.5 },
           { text: 'Let AI handle the heavy lifting.', start_time: 4.6, end_time: 6.5 },
-          { text: 'Save hours every single week.', start_time: 6.6, end_time: 9.0 },
+          { text: 'Save hours every single week.', start_time: 6.6, end_time: 9.0 }
         ]
       });
     }
 
-    await saveAiEvent(
-      { task_type: 'caption_generation', preview: `${data.segments.length} segments generated` },
-      userId,
-      body,
-      data
-    ).catch(() => {});
-
-    return NextResponse.json({ success: true, provider: 'openai', segments: data.segments });
+    return NextResponse.json({
+      success: true,
+      provider: result.provider,
+      degraded: result.degraded,
+      fallbackUsed: result.fallbackUsed,
+      latencyMs: result.latencyMs,
+      segments: result.data.segments
+    });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }

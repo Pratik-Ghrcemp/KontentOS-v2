@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Smartphone, Grid3X3, Image as ImageIcon, Pause, Play, ChevronLeft, ChevronRight, Maximize, RotateCw, Layers } from 'lucide-react';
+import { Smartphone, Grid3X3, Image as ImageIcon, Pause, Play, ChevronLeft, ChevronRight, Maximize, RotateCw, Layers, Sparkles } from 'lucide-react';
 import { useRawStudio } from './RawStudioContext';
 import { TimelineItem } from '@/lib/editing/types';
 import { 
@@ -22,6 +22,7 @@ import { calculateObjectAlignment } from '@/lib/editing/geometry/alignment';
 import { calculateEffectiveVolume, calculateDuckingGain, calculateFadeGain } from '@/lib/editing/audio';
 import { generateCssFilter } from '@/lib/editing/effects';
 import { evaluateInterpolatedProperties } from '@/lib/editing/keyframes';
+import { resolveTextContent } from '@/lib/editing/canonical';
 
 export function VideoPreview() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -91,8 +92,182 @@ export function VideoPreview() {
     clearSelection,
     platformPreset,
     selectedLutId,
-    selectedBgmId
+    selectedBgmId,
+    fileInputRef,
+    handleFilesAdded,
+    drawColor,
+    drawWidth,
+    duration,
+    loadDemoProject
   } = useRawStudio();
+
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [liveStrokePoints, setLiveStrokePoints] = useState<Array<{ x: number; y: number }>>([]);
+  const drawingCanvasRef = useRef<SVGSVGElement | null>(null);
+
+  const handleDrawPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (activeTool !== 'draw') return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const normX = Math.round(((e.clientX - rect.left) / rect.width) * 1000);
+    const normY = Math.round(((e.clientY - rect.top) / rect.height) * 1000);
+
+    setIsDrawing(true);
+    setLiveStrokePoints([{ x: normX, y: normY }]);
+  };
+
+  const handleDrawPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (!isDrawing || activeTool !== 'draw') return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const normX = Math.round(((e.clientX - rect.left) / rect.width) * 1000);
+    const normY = Math.round(((e.clientY - rect.top) / rect.height) * 1000);
+
+    setLiveStrokePoints(prev => {
+      if (prev.length === 0) return [{ x: normX, y: normY }];
+      const last = prev[prev.length - 1];
+      const dist = Math.hypot(normX - last.x, normY - last.y);
+      if (dist < 4) return prev;
+      return [...prev, { x: normX, y: normY }];
+    });
+  };
+
+  const handleDrawPointerUp = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (!isDrawing || activeTool !== 'draw') return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+
+    setIsDrawing(false);
+
+    if (liveStrokePoints.length >= 2) {
+      const first = liveStrokePoints[0];
+      const last = liveStrokePoints[liveStrokePoints.length - 1];
+      const totalSpan = Math.hypot(last.x - first.x, last.y - first.y);
+      if (totalSpan >= 8 || liveStrokePoints.length >= 4) {
+        const durationSec = duration > 0 ? duration : (timelineDuration > 0 ? timelineDuration : 15);
+        const strokeItem = {
+          id: `draw-${crypto.randomUUID()}`,
+          trackId: 'track-text-1',
+          type: 'overlay' as const,
+          start: currentTime,
+          end: Math.min(durationSec, currentTime + 4.0),
+          label: '✏️ Freehand Drawing',
+          content: 'drawing',
+          properties: {
+            x: 0,
+            y: 0,
+            scale: 100,
+            opacity: 100,
+            rotation: 0,
+            strokePoints: liveStrokePoints,
+            strokeColor: drawColor || '#ef4444',
+            strokeWidth: drawWidth || 6,
+            zIndex: 30
+          }
+        };
+        dispatch({ type: 'ADD_ITEM', payload: strokeItem });
+        selectSingle(strokeItem.id);
+      }
+    }
+
+    setLiveStrokePoints([]);
+  };
+
+  const handleDrawPointerCancel = (e: React.PointerEvent<SVGSVGElement>) => {
+    setIsDrawing(false);
+    setLiveStrokePoints([]);
+  };
+
+  // Persistent Web Audio Graph Lifecycle for Preview Voice Cleanup DSP
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const mediaSourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const highpassNodeRef = useRef<BiquadFilterNode | null>(null);
+  const presenceNodeRef = useRef<BiquadFilterNode | null>(null);
+  const compressorNodeRef = useRef<DynamicsCompressorNode | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+
+  useEffect(() => {
+    if (!videoRef.current || typeof window === 'undefined') return;
+    const video = videoRef.current;
+
+    // Only create AudioContext and source node once for this video element
+    if (!audioCtxRef.current) {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioCtx) {
+        try {
+          const ctx = new AudioCtx();
+          audioCtxRef.current = ctx;
+
+          const source = ctx.createMediaElementSource(video);
+          mediaSourceRef.current = source;
+
+          const hp = ctx.createBiquadFilter();
+          hp.type = 'highpass';
+          hp.frequency.value = 80;
+          highpassNodeRef.current = hp;
+
+          const eq = ctx.createBiquadFilter();
+          eq.type = 'peaking';
+          eq.frequency.value = 3000;
+          eq.Q.value = 1.0;
+          eq.gain.value = 3.0;
+          presenceNodeRef.current = eq;
+
+          const comp = ctx.createDynamicsCompressor();
+          comp.threshold.value = -18;
+          comp.ratio.value = 3;
+          comp.attack.value = 0.015;
+          comp.release.value = 0.12;
+          compressorNodeRef.current = comp;
+
+          const gain = ctx.createGain();
+          gainNodeRef.current = gain;
+
+          // Route: Source -> Highpass (80Hz) -> Peaking EQ (3kHz +3dB) -> Compressor -> Gain -> Destination
+          source.connect(hp);
+          hp.connect(eq);
+          eq.connect(comp);
+          comp.connect(gain);
+          gain.connect(ctx.destination);
+        } catch (err) {
+          // Fallback if media already connected or browser policy
+        }
+      }
+    }
+
+    // Dynamically update DSP node parameters when settings change
+    if (audioCtxRef.current && highpassNodeRef.current && presenceNodeRef.current && compressorNodeRef.current && gainNodeRef.current) {
+      if (audioCtxRef.current.state === 'suspended' && isPlaying) {
+        audioCtxRef.current.resume().catch(() => {});
+      }
+
+      const isCleanup = Boolean(audioSettings.voiceCleanup);
+      highpassNodeRef.current.frequency.value = isCleanup ? 80 : 10;
+      presenceNodeRef.current.gain.value = isCleanup ? 3.0 : 0.0;
+      compressorNodeRef.current.ratio.value = isCleanup ? 3 : 1;
+
+      const primaryScale = Math.max(0, Math.min(2.0, (audioSettings.primaryVol ?? 100) / 100));
+      gainNodeRef.current.gain.value = primaryScale;
+    }
+  }, [audioSettings.voiceCleanup, audioSettings.primaryVol, isPlaying, videoRef]);
 
   const effectiveZoom = previewZoom === 'fit' || previewZoom === 'fill' ? 1 : (Number(previewZoom) / 100 || 1);
 
@@ -911,12 +1086,66 @@ export function VideoPreview() {
               onEnded={() => setIsPlaying(false)}
             />
           ) : (
-            <div className="studio-video-placeholder" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-muted)', padding: '2rem', textAlign: 'center' }}>
+            <div
+              className="studio-video-placeholder hover-bg-high"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: 'var(--text-muted)',
+                padding: '2rem',
+                textAlign: 'center',
+                cursor: 'pointer'
+              }}
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files?.length) {
+                  handleFilesAdded(e.dataTransfer.files);
+                }
+              }}
+            >
               <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'rgba(99, 102, 241, 0.12)', border: '1px solid rgba(99, 102, 241, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
                 <ImageIcon size={32} color="var(--accent-primary)" />
               </div>
               <strong style={{ fontSize: '1.05rem', color: 'var(--text-main)' }}>Drop or Select Media to Start</strong>
               <span style={{ fontSize: '0.85rem', marginTop: '0.4rem', color: 'var(--text-muted)', maxWidth: '220px' }}>Upload MP4 or MKV from the Assets panel to begin editing</span>
+              
+              <div 
+                style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>— OR FOR FAST EVALUATION —</div>
+                <button
+                  type="button"
+                  data-testid="empty-state-load-demo-btn"
+                  onClick={loadDemoProject}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25))',
+                    border: '1px solid rgba(168, 85, 247, 0.5)',
+                    color: '#f8fafc',
+                    borderRadius: '24px',
+                    padding: '8px 18px',
+                    fontSize: '0.86rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(99, 102, 241, 0.3)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <Sparkles size={16} color="#c084fc" />
+                  <span>✨ Load Showcase Demo Reel (1-Click)</span>
+                </button>
+              </div>
             </div>
           )}
 
@@ -962,12 +1191,61 @@ export function VideoPreview() {
           )}
 
           {/* Text Overlays with Persistent Selection Outline & Rotation Handle Stem */}
+          {/* Text & Drawing Overlays with Persistent Selection Outline */}
           {activeTexts.map((textItem) => {
             const isSelected = editState.selection.includes(textItem.id);
             const isSingleTextSelected = isSelected && editState.selection.length === 1;
             const props = evaluateInterpolatedProperties(textItem, currentTime);
             const textRot = props.rotation || 0;
             const textOpacity = typeof props.opacity === 'number' ? (props.opacity > 1 ? props.opacity / 100 : props.opacity) : 1.0;
+            const hasStrokes = Boolean(props.strokePoints && Array.isArray(props.strokePoints) && props.strokePoints.length > 0);
+
+            if (hasStrokes) {
+              const isNorm = props.strokePoints.some((pt: any) => pt.x > 80 || pt.y > 80);
+              const strokeScale = Math.max(0.1, (props.scale ?? 100) / 100);
+              return (
+                <div
+                  key={textItem.id}
+                  onPointerDown={(e) => {
+                    if (activeTool === 'select') handleTextPointerDown(e, textItem);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    transform: `translate(${props.x || 0}px, ${props.y || 0}px) scale(${strokeScale}) rotate(${textRot}deg)`,
+                    transformOrigin: 'center center',
+                    pointerEvents: activeTool === 'select' ? 'auto' : 'none',
+                    opacity: textOpacity,
+                    border: isSelected ? '2px solid var(--accent-primary)' : 'none',
+                    zIndex: props.zIndex ?? 20
+                  }}
+                >
+                  <svg
+                    viewBox={isNorm ? "0 0 1000 1000" : undefined}
+                    preserveAspectRatio={isNorm ? "none" : undefined}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'visible',
+                      pointerEvents: 'none'
+                    }}
+                  >
+                    <path
+                      d={`M ${props.strokePoints.map((pt: any) => isNorm ? `${pt.x} ${pt.y}` : `${pt.x + 80} ${pt.y + 50}`).join(' L ')}`}
+                      stroke={props.strokeColor || '#ef4444'}
+                      strokeWidth={props.strokeWidth || 6}
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </svg>
+                </div>
+              );
+            }
+
             return (
               <div
                 key={textItem.id}
@@ -990,20 +1268,7 @@ export function VideoPreview() {
                   zIndex: props.zIndex ?? 20
                 }}
               >
-                {props.strokePoints && Array.isArray(props.strokePoints) && props.strokePoints.length > 0 ? (
-                  <svg style={{ width: '160px', height: '100px', overflow: 'visible', pointerEvents: 'none' }}>
-                    <path
-                      d={`M ${props.strokePoints.map((pt: any) => `${pt.x + 80} ${pt.y + 50}`).join(' L ')}`}
-                      stroke={props.strokeColor || '#ef4444'}
-                      strokeWidth={props.strokeWidth || 6}
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                ) : (
-                  textItem.content || textItem.label || 'Text Overlay'
-                )}
+                {resolveTextContent(textItem) || 'Text Overlay'}
                 {isSingleTextSelected && (
                   <>
                     <div style={{ position: 'absolute', top: '-6px', left: '-6px', width: '10px', height: '10px', background: '#fff', border: '2px solid var(--accent-primary)', borderRadius: '50%', cursor: 'nwse-resize', pointerEvents: 'auto' }} onPointerDown={(e) => handleTextCornerDrag(e, textItem, 'top-left')} />
@@ -1025,6 +1290,42 @@ export function VideoPreview() {
               </div>
             );
           })}
+
+          {/* INTERACTIVE DRAWING CANVAS LAYER */}
+          {activeTool === 'draw' && (
+            <svg
+              ref={drawingCanvasRef}
+              className="studio-drawing-active-canvas"
+              viewBox="0 0 1000 1000"
+              preserveAspectRatio="none"
+              onPointerDown={handleDrawPointerDown}
+              onPointerMove={handleDrawPointerMove}
+              onPointerUp={handleDrawPointerUp}
+              onPointerCancel={handleDrawPointerCancel}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 45,
+                cursor: 'crosshair',
+                pointerEvents: 'auto',
+                touchAction: 'none'
+              }}
+            >
+              {liveStrokePoints.length > 0 && (
+                <path
+                  d={`M ${liveStrokePoints.map(pt => `${pt.x} ${pt.y}`).join(' L ')}`}
+                  stroke={drawColor || '#ef4444'}
+                  strokeWidth={drawWidth || 6}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              )}
+            </svg>
+          )}
 
           {/* ONE COMBINED GROUP BOUNDING BOX for Multi-Selection with 4 Group Corner Resize Handles */}
           {hasGroupSelection && groupBounds && (

@@ -9,6 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:render:phase-g": "tsx src/lib/rendering/phase_g_product_hardening.test.ts",
+    "test:phase-25e": "tsx src/lib/ai/phase_25_final_end_to_end_audit.ts",
+    "test:demo-readiness": "node scratch/test_demo_readiness.js",
     "verify:release": "npm run typecheck && npm run test:render:phase-g && npm run build"
   },
   "dependencies": {

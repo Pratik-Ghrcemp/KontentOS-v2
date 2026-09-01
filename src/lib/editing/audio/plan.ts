@@ -76,7 +76,9 @@ export function generateSilenceCutPlan(
   const totalTimeSaved = Number(
     cutIntervals.reduce((sum, c) => sum + c.duration, 0).toFixed(3)
   );
-  const originalDuration = editState.duration;
+  const originalDuration = typeof editState.duration === 'number'
+    ? editState.duration
+    : ((editState as any).timeline?.duration || (editState.items?.length > 0 ? Math.max(...editState.items.map(i => i.end)) : 0));
   const newCompositionDuration = Math.max(0, Number((originalDuration - totalTimeSaved).toFixed(3)));
 
   const shiftMap: TimelineShiftMap = {

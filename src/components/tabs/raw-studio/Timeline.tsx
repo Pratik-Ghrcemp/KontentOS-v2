@@ -10,6 +10,7 @@ import { createTimelineItemFromAsset } from '@/lib/editing/factory';
 import { calculateTrimLeft, calculateTrimRight } from '@/lib/editing/timeline';
 import { generateFallbackPeaks } from '@/lib/editing/audio';
 import { StudioAsset } from './types';
+import { GhostTimelineOverlay } from './GhostTimelineOverlay';
 
 const parseDurationSeconds = (duration: string) => {
   const [minutes, seconds] = duration.split(':').map(Number);
@@ -29,6 +30,14 @@ export function Timeline() {
     selectedBgmId,
     editState,
     dispatch,
+    ghostProposals,
+    selectedGhostIds,
+    storyboardPlan,
+    selectedBeatIds,
+    audioProposals,
+    selectedAudioIds,
+    visualProposals,
+    selectedVisualIds,
     selectedClipId,
     setSelectedClipId,
     selectSingle,
@@ -517,6 +526,28 @@ export function Timeline() {
                       </div>
                     )
                   })}
+
+                  {/* Non-destructive Ghost Timeline Overlay */}
+                  {((ghostProposals && ghostProposals.length > 0) || (storyboardPlan && storyboardPlan.beats.length > 0) || (selectedAudioIds && selectedAudioIds.size > 0) || (selectedVisualIds && selectedVisualIds.size > 0)) && (
+                    <GhostTimelineOverlay
+                      proposals={ghostProposals.filter(p => !p.targetTrackId || p.targetTrackId === track.id || (p.kind === 'zoom' && track.type === 'video') || (p.kind === 'headline' && track.type === 'text') || p.kind === 'cut')}
+                      selectedIds={selectedGhostIds}
+                      storyboardPlan={track.type === 'video' || track.type === 'text' ? storyboardPlan : null}
+                      selectedBeatIds={selectedBeatIds}
+                      audioProposals={track.type === 'audio' ? audioProposals : undefined}
+                      selectedAudioIds={selectedAudioIds}
+                      visualProposals={
+                        track.type === 'video' 
+                          ? visualProposals.filter(v => v.type !== 'kinetic_title')
+                          : track.type === 'text'
+                          ? visualProposals.filter(v => v.type === 'kinetic_title')
+                          : []
+                      }
+                      selectedVisualIds={selectedVisualIds}
+                      timelineDuration={timelineDuration > 0 ? timelineDuration : (storyboardPlan?.estimatedTotalDuration || 30)}
+                      onSeek={seekTo}
+                    />
+                  )}
                 </div>
               </div>
             )

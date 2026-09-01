@@ -1,26 +1,28 @@
 import { supabase, isSupabaseConfigured, isDemoMode } from '@/lib/supabase';
 import { StudioAsset, AssetType } from '@/components/tabs/raw-studio/types';
 import { getMediaMetadata, sanitizeFileName } from '@/lib/utils/media';
-import { storeMediaBlob, getMediaBlob } from './indexed-db-media';
+import { storeMediaBlob, getMediaBlob, deleteMediaBlob } from './indexed-db-media';
 
 export async function getMediaAssets(userId: string): Promise<StudioAsset[]> {
   if (isDemoMode() || !isSupabaseConfigured()) {
-    const data = localStorage.getItem('demo_project_data');
-    if (data) {
-       const parsed = JSON.parse(data);
-       if (parsed.assets && Array.isArray(parsed.assets)) {
-         const restored = await Promise.all(parsed.assets.map(async (a: any) => {
-           try {
-             const blob = await getMediaBlob(a.id);
-             if (blob) {
-               return { ...a, storage_path: URL.createObjectURL(blob), previewUrl: URL.createObjectURL(blob) };
-             }
-           } catch (e) {}
-           return a;
-         }));
-         return restored;
-       }
-    }
+    try {
+      const data = localStorage.getItem('demo_project_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (parsed.assets && Array.isArray(parsed.assets)) {
+          const restored = await Promise.all(parsed.assets.map(async (a: any) => {
+            try {
+              const blob = await getMediaBlob(a.id);
+              if (blob) {
+                return { ...a, storage_path: URL.createObjectURL(blob), previewUrl: URL.createObjectURL(blob) };
+              }
+            } catch (e) {}
+            return a;
+          }));
+          return restored;
+        }
+      }
+    } catch (e) {}
     return [];
   }
   const { data, error } = await supabase.from('media_assets')
@@ -77,11 +79,13 @@ export async function uploadMediaAsset(file: File, userId: string, projectId: st
       created_at: new Date().toISOString()
     } as StudioAsset;
 
-    let raw = localStorage.getItem('demo_project_data');
-    let data = raw ? JSON.parse(raw) : {};
-    if (!data.assets) data.assets = [];
-    data.assets.push(mockAsset);
-    localStorage.setItem('demo_project_data', JSON.stringify(data));
+    try {
+      let raw = localStorage.getItem('demo_project_data');
+      let data = raw ? JSON.parse(raw) : {};
+      if (!data.assets) data.assets = [];
+      data.assets.push(mockAsset);
+      localStorage.setItem('demo_project_data', JSON.stringify(data));
+    } catch (e) {}
     
     // Store binary blob in IndexedDB for refresh persistence
     storeMediaBlob(assetId, file, mockAsset).catch(e => console.warn('IndexedDB save skipped:', e));
@@ -117,13 +121,18 @@ export async function uploadMediaAsset(file: File, userId: string, projectId: st
 }
 
 export async function deleteMediaAsset(assetId: string, rawPath?: string): Promise<void> {
+  // Always clean up IndexedDB binary blob
+  deleteMediaBlob(assetId).catch(err => console.warn('Failed to delete media blob from IndexedDB:', err));
+
   if (isDemoMode() || !isSupabaseConfigured()) {
-    let raw = localStorage.getItem('demo_project_data');
-    let data = raw ? JSON.parse(raw) : {};
-    if (data.assets) {
-       data.assets = data.assets.filter((a: any) => a.id !== assetId);
-       localStorage.setItem('demo_project_data', JSON.stringify(data));
-    }
+    try {
+      let raw = localStorage.getItem('demo_project_data');
+      let data = raw ? JSON.parse(raw) : {};
+      if (data.assets) {
+         data.assets = data.assets.filter((a: any) => a.id !== assetId);
+         localStorage.setItem('demo_project_data', JSON.stringify(data));
+      }
+    } catch (e) {}
     return;
   }
   
@@ -131,6 +140,29 @@ export async function deleteMediaAsset(assetId: string, rawPath?: string): Promi
     await supabase.storage.from('media-assets').remove([rawPath]);
   }
   await supabase.from('media_assets').delete().eq('id', assetId);
+}
+
+export async function updateMediaAssetTitle(assetId: string, newTitle: string): Promise<void> {
+  const trimmedTitle = newTitle.trim();
+  if (!trimmedTitle) return;
+
+  if (isDemoMode() || !isSupabaseConfigured()) {
+    try {
+      const raw = localStorage.getItem('demo_project_data');
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.assets) {
+          data.assets = data.assets.map((a: any) => 
+            a.id === assetId ? { ...a, title: trimmedTitle, fileName: trimmedTitle, file_name: trimmedTitle } : a
+          );
+          localStorage.setItem('demo_project_data', JSON.stringify(data));
+        }
+      }
+    } catch (e) {}
+    return;
+  }
+
+  await supabase.from('media_assets').update({ file_name: trimmedTitle }).eq('id', assetId);
 }
 
 export async function saveMediaAsset(asset: any): Promise<void> {
@@ -144,3 +176,4 @@ export async function saveMediaAsset(asset: any): Promise<void> {
     duration_seconds: asset.duration_seconds
   });
 }
+

@@ -14,6 +14,9 @@ export interface Database {
           id: string
           user_id: string
           title: string
+          status: string | null
+          scheduled_for: string | null
+          platforms_targeted: string[] | null
           platform_preset: string
           settings: Json
           created_at: string
@@ -23,6 +26,9 @@ export interface Database {
           id?: string
           user_id?: string
           title: string
+          status?: string | null
+          scheduled_for?: string | null
+          platforms_targeted?: string[] | null
           platform_preset?: string
           settings?: Json
           created_at?: string
@@ -47,6 +53,33 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['media_assets']['Row'], 'id' | 'created_at'> & { id?: string }
         Update: Partial<Database['public']['Tables']['media_assets']['Insert']>
+      }
+      ai_ideas: {
+        Row: {
+          id: string
+          user_id: string
+          category: string | null
+          badge: string | null
+          badge_color: string | null
+          title: string
+          hook_tip: string | null
+          format: string | null
+          velocity: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          category?: string | null
+          badge?: string | null
+          badge_color?: string | null
+          title: string
+          hook_tip?: string | null
+          format?: string | null
+          velocity?: string | null
+          created_at?: string | null
+        }
+        Update: Partial<Database['public']['Tables']['ai_ideas']['Insert']>
       }
       caption_segments: {
         Row: {
@@ -107,6 +140,21 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['ai_generation_events']['Row'], 'id' | 'created_at'> & { id?: string }
         Update: Partial<Database['public']['Tables']['ai_generation_events']['Insert']>
+      }
+      audit_reports: {
+        Row: {
+          id: string
+          project_id: string | null
+          user_id: string
+          diagnostic_score: number | null
+          retention_3s: number | null
+          total_views: number | null
+          issues: Json
+          ai_coach_tip: string | null
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['audit_reports']['Row'], 'id' | 'created_at'> & { id?: string; created_at?: string }
+        Update: Partial<Database['public']['Tables']['audit_reports']['Insert']>
       }
     }
   }

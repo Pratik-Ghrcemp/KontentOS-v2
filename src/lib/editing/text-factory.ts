@@ -56,6 +56,7 @@ export function createTextTimelineItem(
     label: content,
     content,
     properties: {
+      text: content,
       x,
       y,
       scale: 100,
@@ -75,27 +76,39 @@ export function createTextTimelineItem(
  */
 export function createCaptionTimelineItems(
   segments: Array<{ id?: string; text: string; start_time: number; end_time: number; style?: string }>,
-  preset = 'kinetic'
+  preset = 'hormozi'
 ): TimelineItem[] {
+  const isHormozi = preset === 'hormozi';
+  const isNeon = preset === 'neon';
+  const isMinimal = preset === 'minimal';
+
+  const defaultColor = isHormozi ? '#facc15' : (isNeon ? '#06b6d4' : '#ffffff');
+  const defaultFontSize = isHormozi ? 48 : (isNeon ? 44 : 36);
+  const defaultBg = isNeon ? '#06b6d4' : '#000000';
+  const defaultBgOpacity = isMinimal ? 0 : (isNeon ? 0.3 : (isHormozi ? 0.85 : 0.7));
+
   return segments.map((seg, idx) => ({
     id: `caption-${seg.id || idx}-${crypto.randomUUID()}`,
-    trackId: 'track-caption-1',
+    trackId: 'track-text-1',
     type: 'caption',
     start: seg.start_time,
     end: seg.end_time,
     sourceIn: 0,
     sourceOut: Math.max(0.2, seg.end_time - seg.start_time),
-    label: seg.text,
+    label: `Caption: ${seg.text.slice(0, 20)}`,
     content: seg.text,
     properties: {
       x: 0,
-      y: 260,
+      y: 180,
       scale: 100,
       rotation: 0,
       opacity: 100,
       preset,
-      fontSize: 32,
-      color: '#ffffff',
+      fontSize: defaultFontSize,
+      color: defaultColor,
+      fontColor: defaultColor,
+      backgroundColor: defaultBg,
+      backgroundOpacity: defaultBgOpacity,
       highlightColor: '#f59e0b',
       fontFamily: 'Inter',
       fontWeight: '700'

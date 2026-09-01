@@ -95,6 +95,28 @@ export interface RawStudioState {
   // AI
   aiLoading: Record<string, boolean>;
   aiHistory: AiGenerationEvent[];
+  ghostProposals: import('@/lib/ai/proposal-types').AiProposal[];
+  setGhostProposals: React.Dispatch<React.SetStateAction<import('@/lib/ai/proposal-types').AiProposal[]>>;
+  selectedGhostIds: Set<string>;
+  setSelectedGhostIds: React.Dispatch<React.SetStateAction<Set<string>>>;
+  storyboardPlan: import('@/lib/ai/storyboard-types').StoryboardPlan | null;
+  setStoryboardPlan: React.Dispatch<React.SetStateAction<import('@/lib/ai/storyboard-types').StoryboardPlan | null>>;
+  selectedBeatIds: Set<string>;
+  setSelectedBeatIds: React.Dispatch<React.SetStateAction<Set<string>>>;
+  activeBeatIndex: number | null;
+  setActiveBeatIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  audioProposals: import('@/lib/ai/audio/types').AudioProposalPool;
+  setAudioProposals: React.Dispatch<React.SetStateAction<import('@/lib/ai/audio/types').AudioProposalPool>>;
+  selectedAudioIds: Set<string>;
+  setSelectedAudioIds: React.Dispatch<React.SetStateAction<Set<string>>>;
+  playingAudioId: string | null;
+  setPlayingAudioId: React.Dispatch<React.SetStateAction<string | null>>;
+  visualProposals: import('@/lib/ai/visual/types').VisualAssetProposal[];
+  setVisualProposals: React.Dispatch<React.SetStateAction<import('@/lib/ai/visual/types').VisualAssetProposal[]>>;
+  selectedVisualIds: Set<string>;
+  setSelectedVisualIds: React.Dispatch<React.SetStateAction<Set<string>>>;
+  previewVisualModalAsset: import('@/lib/ai/visual/types').VisualAssetProposal | null;
+  setPreviewVisualModalAsset: React.Dispatch<React.SetStateAction<import('@/lib/ai/visual/types').VisualAssetProposal | null>>;
   socialCaption: string;
   setSocialCaption: React.Dispatch<React.SetStateAction<string>>;
   suggestedHooks: string[];
@@ -129,6 +151,15 @@ export interface RawStudioState {
   handleExport: () => void;
   cancelExport: () => void;
 
+  // Phase 25: Autonomous Multi-Platform Publishing
+  platformPackages: import('@/lib/publishing/types').PlatformPackage[];
+  setPlatformPackages: React.Dispatch<React.SetStateAction<import('@/lib/publishing/types').PlatformPackage[]>>;
+  selectedPlatformIds: Set<import('@/lib/publishing/types').PublishingPlatform>;
+  setSelectedPlatformIds: React.Dispatch<React.SetStateAction<Set<import('@/lib/publishing/types').PublishingPlatform>>>;
+  packageOverrides: Record<string, Partial<import('@/lib/publishing/types').PlatformPackage>>;
+  setPackageOverrides: React.Dispatch<React.SetStateAction<Record<string, Partial<import('@/lib/publishing/types').PlatformPackage>>>>;
+  providerCallCount: number;
+
   // UI
   showToast: (msg: string) => void;
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -136,6 +167,7 @@ export interface RawStudioState {
   handleFileSelected: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleFilesAdded: (files: FileList | File[]) => void;
   resetDemo: () => void;
+  loadDemoProject: () => void;
 }
 
 // ─── Context ─────────────────────────────────────────────────

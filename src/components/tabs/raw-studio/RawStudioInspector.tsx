@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Download, RefreshCw, CheckCircle, Copy, Upload, FileVideo, Music2,
-  Sparkles, Type, Trash2, Zap, Hash, RotateCcw, SlidersHorizontal, Plus, Search, Scissors, X, Layers, Pencil
+  Sparkles, Type, Trash2, Zap, Hash, RotateCcw, SlidersHorizontal, Plus, Search, Scissors, X, Layers, Pencil, Paintbrush
 } from 'lucide-react';
 import { useRawStudio } from './RawStudioContext';
+import { HookInspectorCard } from './HookInspectorCard';
+import { AiIntelligencePanel } from './AiIntelligencePanel';
+import { StoryboardDeck } from './StoryboardDeck';
+import { GenerativeAudioDeck } from './GenerativeAudioDeck';
+import { VisualDeck } from './VisualDeck';
+import { PublishingDeck } from './PublishingDeck';
 import { platformPresets } from '@/lib/rendering/presets';
 import { formatTime, isPlayablePath } from './utils';
 import { mockMusic, mockGraphicElements } from './mock-data';
@@ -12,6 +18,9 @@ import { createTimelineItemFromAsset } from '@/lib/editing/factory';
 import { createTextTimelineItem, createCaptionTimelineItems } from '@/lib/editing/text-factory';
 import { DEFAULT_BRAND_KITS } from '@/lib/editing/brand-kit';
 import { filterAssets } from '@/lib/editing/assets/filter';
+import { resolveTextContent } from '@/lib/editing/canonical';
+import { deleteMediaAsset, updateMediaAssetTitle } from '@/lib/data/media-service';
+import { STRUCTURAL_TEMPLATES, saveCustomTemplate, getCustomTemplates, deleteCustomTemplate, CustomTemplate } from '@/lib/editing/templates';
 import { 
   detectSilenceIntervals, 
   extractPeaksFromAudioBuffer, 
@@ -19,6 +28,9 @@ import {
   SilenceRemovalEditPlan,
   generateFallbackPeaks
 } from '@/lib/editing/audio';
+import { detectFillerWords, FillerWordInterval } from '@/lib/editing/speech/filler-words';
+import { getWhisperInstallationStatusClient, transcribeMedia } from '@/lib/ai/ai-service';
+
 
 const CINEMATIC_LUTS = [
   { id: 'studio_enhance', name: '⚡ 4K Studio Clarity', category: 'Auto-Enhance', color: '#0ea5e9' },
@@ -33,6 +45,410 @@ const CINEMATIC_LUTS = [
   { id: 'noir_classic', name: 'Dramatic Noir B&W', category: 'Monochrome', color: '#000000' },
   { id: 'none', name: 'Raw / Natural Unfiltered', category: 'Original', color: '#64748b' }
 ];
+
+function SmartCutPanel() {
+  const { editState, dispatch, showToast, seekTo, activeAsset, assets } = useRawStudio();
+  const [activeTab, setActiveTab] = useState<'silence' | 'filler'>('silence');
+  const [amplitudeThreshold, setAmplitudeThreshold] = useState(0.02);
+  const [minSilenceDuration, setMinSilenceDuration] = useState(0.4);
+  const [paddingDuration, setPaddingDuration] = useState(0.05);
+  const [fillerLanguage, setFillerLanguage] = useState<'auto' | 'en' | 'hi'>('auto');
+  
+  const [detectedSilences, setDetectedSilences] = useState<Array<{ id: string; start: number; end: number; duration: number; enabled: boolean }>>([]);
+  const [detectedFillers, setDetectedFillers] = useState<Array<{ id: string; word: string; start: number; end: number; duration: number; enabled: boolean }>>([]);
+  const [isScanning, setIsScanning] = useState(false);
+
+  const videoClips = useMemo(() => editState.items.filter(i => i.type === 'video'), [editState.items]);
+  const primaryClip = videoClips[0];
+  const captions = useMemo(() => editState.items.filter(i => i.type === 'caption'), [editState.items]);
+
+  // Scan Silences & Dead Air using real decoded audio
+  const handleScanSilences = async () => {
+    if (!primaryClip) {
+      showToast('Add a video to the timeline first');
+      return;
+    }
+    setIsScanning(true);
+    try {
+      const clipDuration = primaryClip.end - primaryClip.start;
+      let peaks: number[] = [];
+      let mediaSource: Blob | File | null = null;
+      let mediaUrl = (primaryClip as any).sourceUrl || (primaryClip.properties as any)?.sourceUrl || '';
+
+      const asset = activeAsset || assets.find(a => a.id === primaryClip.id || a.previewUrl === mediaUrl);
+      if (asset) {
+        mediaSource = (asset as any).file || (asset as any).blob || null;
+        if (!mediaSource && asset.previewUrl && asset.previewUrl.startsWith('blob:')) {
+          try {
+            mediaSource = await fetch(asset.previewUrl).then(r => r.blob());
+          } catch (e) {}
+        }
+        if (!mediaSource) {
+          try {
+            const { getMediaBlob } = await import('@/lib/data/indexed-db-media');
+            const stored = await getMediaBlob(asset.id);
+            if (stored) mediaSource = stored;
+          } catch (e) {}
+        }
+        if (!mediaUrl && asset.previewUrl) {
+          mediaUrl = asset.previewUrl;
+        }
+      }
+
+      if (typeof window !== 'undefined' && (window.AudioContext || (window as any).webkitAudioContext)) {
+        try {
+          let arrayBuffer: ArrayBuffer | null = null;
+          if (mediaSource) {
+            arrayBuffer = await mediaSource.arrayBuffer();
+          } else if (mediaUrl) {
+            const res = await fetch(mediaUrl);
+            arrayBuffer = await res.arrayBuffer();
+          }
+
+          if (arrayBuffer && arrayBuffer.byteLength > 0) {
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+            const numSamples = Math.max(200, Math.round(clipDuration * 50));
+            const waveform = extractPeaksFromAudioBuffer(audioBuffer, numSamples);
+            peaks = waveform.peaks;
+          }
+        } catch (audioErr: any) {
+          console.warn('Web Audio decoding failed for clip, checking fallback:', audioErr);
+        }
+      }
+
+      if (peaks.length === 0) {
+        showToast('No extractable audio stream found in media file.');
+        setDetectedSilences([]);
+        return;
+      }
+
+      const intervals = detectSilenceIntervals(
+        { peaks, duration: clipDuration, sampleRate: 44100 },
+        { amplitudeThreshold, minSilenceDuration, paddingDuration }
+      );
+
+      if (intervals.length === 0) {
+        showToast(`No silence pauses found above ${minSilenceDuration}s threshold. Try adjusting threshold.`);
+        setDetectedSilences([]);
+        return;
+      }
+
+      const items = intervals.map(int => ({
+        id: int.id,
+        start: Number((primaryClip.start + int.start).toFixed(2)),
+        end: Number((primaryClip.start + int.end).toFixed(2)),
+        duration: int.duration,
+        enabled: true
+      }));
+
+      setDetectedSilences(items);
+      showToast(`Found ${items.length} silent pause regions!`);
+    } catch (e: any) {
+      showToast('Silence detection failed: ' + e.message);
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  // Scan Filler Words
+  const handleScanFillers = () => {
+    if (captions.length === 0) {
+      showToast('Generate captions first to scan filler words');
+      return;
+    }
+    setIsScanning(true);
+    try {
+      const languages: ('en' | 'hi' | 'hinglish')[] = 
+        fillerLanguage === 'hi' ? ['hi', 'hinglish'] : fillerLanguage === 'en' ? ['en'] : ['en', 'hi', 'hinglish'];
+      
+      const found = detectFillerWords(
+        captions.map(c => ({ id: c.id, start_time: c.start, end_time: c.end, text: c.label || '' })),
+        { languages }
+      );
+
+      const items = found.map(f => ({
+        id: f.id,
+        word: f.word,
+        start: f.start,
+        end: f.end,
+        duration: f.duration,
+        enabled: true
+      }));
+
+      setDetectedFillers(items);
+      showToast(`Found ${items.length} filler words`);
+    } catch (e: any) {
+      showToast('Filler scan failed: ' + e.message);
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  const totalTimeSaved = useMemo(() => {
+    const sTime = detectedSilences.filter(s => s.enabled).reduce((sum, s) => sum + s.duration, 0);
+    const fTime = detectedFillers.filter(f => f.enabled).reduce((sum, f) => sum + f.duration, 0);
+    return Number((sTime + fTime).toFixed(2));
+  }, [detectedSilences, detectedFillers]);
+
+  const activeCutCount = useMemo(() => {
+    return detectedSilences.filter(s => s.enabled).length + detectedFillers.filter(f => f.enabled).length;
+  }, [detectedSilences, detectedFillers]);
+
+  // Apply Cuts Atomically to Timeline
+  const handleApplySmartCuts = () => {
+    if (!primaryClip) {
+      showToast('No clip selected to apply cuts');
+      return;
+    }
+
+    const allCuts = [
+      ...detectedSilences.filter(s => s.enabled).map(s => ({ id: s.id, start: s.start, end: s.end, duration: s.duration })),
+      ...detectedFillers.filter(f => f.enabled).map(f => ({ id: f.id, start: f.start, end: f.end, duration: f.duration }))
+    ];
+
+    if (allCuts.length === 0) {
+      showToast('No cuts selected');
+      return;
+    }
+
+    // Sort cuts chronologically
+    allCuts.sort((a, b) => a.start - b.start);
+
+    const plan = generateSilenceCutPlan(allCuts as any, editState, { targetClipId: primaryClip.id });
+    dispatch({ type: 'APPLY_SILENCE_CUT_PLAN', payload: plan });
+
+    setDetectedSilences([]);
+    setDetectedFillers([]);
+    showToast(`⚡ Applied ${allCuts.length} cuts! Saved ${plan.totalTimeSaved.toFixed(1)}s`);
+  };
+
+  return (
+    <div className="studio-panel-stack animate-fade-in" style={{ padding: '1.5rem', overflowY: 'auto', height: '100%' }}>
+      <div style={{ marginBottom: '1.25rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Scissors size={20} color="var(--accent-primary)" /> Smart Editing AI
+        </h3>
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
+          Automatically detect and ripple-cut silent pauses and filler words without losing speech clarity.
+        </p>
+      </div>
+
+      {/* Sub-Tabs */}
+      <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--bg-surface-low)', padding: '4px', borderRadius: '8px', marginBottom: '1.25rem' }}>
+        <button
+          type="button"
+          onClick={() => setActiveTab('silence')}
+          style={{
+            flex: 1, padding: '6px', fontSize: '0.8rem', fontWeight: 600, border: 'none', borderRadius: '6px', cursor: 'pointer',
+            background: activeTab === 'silence' ? 'var(--accent-primary)' : 'transparent',
+            color: activeTab === 'silence' ? '#ffffff' : 'var(--text-muted)'
+          }}
+        >
+          🔇 Pauses & Silence
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('filler')}
+          style={{
+            flex: 1, padding: '6px', fontSize: '0.8rem', fontWeight: 600, border: 'none', borderRadius: '6px', cursor: 'pointer',
+            background: activeTab === 'filler' ? 'var(--accent-primary)' : 'transparent',
+            color: activeTab === 'filler' ? '#ffffff' : 'var(--text-muted)'
+          }}
+        >
+          🗣️ Filler Words
+        </button>
+      </div>
+
+      {activeTab === 'silence' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {/* Controls */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '4px' }}>
+              <span>Min Pause Duration</span>
+              <span style={{ fontWeight: 600 }}>{minSilenceDuration}s</span>
+            </div>
+            <input
+              type="range"
+              min="0.2"
+              max="1.5"
+              step="0.1"
+              value={minSilenceDuration}
+              onChange={e => setMinSilenceDuration(parseFloat(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '4px' }}>
+              <span>Speech Safety Padding</span>
+              <span style={{ fontWeight: 600 }}>{(paddingDuration * 1000).toFixed(0)}ms</span>
+            </div>
+            <input
+              type="range"
+              min="0.02"
+              max="0.1"
+              step="0.01"
+              value={paddingDuration}
+              onChange={e => setPaddingDuration(parseFloat(e.target.value))}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          <button
+            className="btn btn-primary"
+            disabled={isScanning || !primaryClip}
+            onClick={handleScanSilences}
+            style={{ width: '100%', padding: '0.6rem', fontSize: '0.85rem' }}
+          >
+            {isScanning ? 'Scanning Audio Waves...' : '🔍 Scan Dead Air & Pauses'}
+          </button>
+
+          {/* Silence List */}
+          {detectedSilences.length > 0 && (
+            <div style={{ marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 600, marginBottom: '6px' }}>
+                <span>Detected Pauses ({detectedSilences.length})</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const allOn = detectedSilences.every(s => s.enabled);
+                    setDetectedSilences(prev => prev.map(s => ({ ...s, enabled: !allOn })));
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Toggle All
+                </button>
+              </div>
+
+              <div style={{ maxHeight: '180px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                {detectedSilences.map(silence => (
+                  <div
+                    key={silence.id}
+                    onClick={() => seekTo(silence.start)}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '6px 10px', borderRadius: '6px', background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-subtle)', cursor: 'pointer', fontSize: '0.8rem'
+                    }}
+                  >
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', margin: 0 }}>
+                      <input
+                        type="checkbox"
+                        checked={silence.enabled}
+                        onChange={e => {
+                          e.stopPropagation();
+                          setDetectedSilences(prev => prev.map(s => s.id === silence.id ? { ...s, enabled: e.target.checked } : s));
+                        }}
+                      />
+                      <span>[{silence.start}s – {silence.end}s]</span>
+                    </label>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--accent-primary)', fontWeight: 600 }}>-{silence.duration}s</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'filler' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '4px' }}>Spoken Language Dictionary</label>
+            <select
+              value={fillerLanguage}
+              onChange={e => setFillerLanguage(e.target.value as any)}
+              className="select-input"
+              style={{ width: '100%', padding: '6px', fontSize: '0.8rem', background: 'var(--bg-surface)', borderRadius: '6px', border: '1px solid var(--border-subtle)', color: 'var(--text-main)' }}
+            >
+              <option value="auto">Auto Detect (English + Hindi/Hinglish)</option>
+              <option value="en">English (um, uh, like, basically...)</option>
+              <option value="hi">Hindi (मतलब, तो फिर, अह...)</option>
+            </select>
+          </div>
+
+          <button
+            className="btn btn-primary"
+            disabled={isScanning || captions.length === 0}
+            onClick={handleScanFillers}
+            style={{ width: '100%', padding: '0.6rem', fontSize: '0.85rem' }}
+          >
+            {isScanning ? 'Scanning Transcript...' : '🗣️ Scan Filler Words'}
+          </button>
+
+          {/* Filler List */}
+          {detectedFillers.length > 0 && (
+            <div style={{ marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 600, marginBottom: '6px' }}>
+                <span>Detected Fillers ({detectedFillers.length})</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const allOn = detectedFillers.every(f => f.enabled);
+                    setDetectedFillers(prev => prev.map(f => ({ ...f, enabled: !allOn })));
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Toggle All
+                </button>
+              </div>
+
+              <div style={{ maxHeight: '180px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                {detectedFillers.map(filler => (
+                  <div
+                    key={filler.id}
+                    onClick={() => seekTo(filler.start)}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '6px 10px', borderRadius: '6px', background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-subtle)', cursor: 'pointer', fontSize: '0.8rem'
+                    }}
+                  >
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', margin: 0 }}>
+                      <input
+                        type="checkbox"
+                        checked={filler.enabled}
+                        onChange={e => {
+                          e.stopPropagation();
+                          setDetectedFillers(prev => prev.map(f => f.id === filler.id ? { ...f, enabled: e.target.checked } : f));
+                        }}
+                      />
+                      <span style={{ fontWeight: 600 }}>"{filler.word}"</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>at {filler.start}s</span>
+                    </label>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--accent-rose)', fontWeight: 600 }}>-{filler.duration}s</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Summary & Apply */}
+      {activeCutCount > 0 && (
+        <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'rgba(14, 165, 233, 0.08)', borderRadius: '8px', border: '1px solid var(--accent-primary)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>⚡ Total Selected Cuts:</span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-primary)' }}>{activeCutCount} cuts</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            <span>Estimated Time Saved:</span>
+            <span style={{ fontWeight: 600, color: 'var(--accent-primary)' }}>~{totalTimeSaved}s</span>
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={handleApplySmartCuts}
+            style={{ width: '100%', padding: '0.7rem', fontSize: '0.85rem', fontWeight: 700 }}
+          >
+            ✂️ Apply Smart Cuts to Timeline
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function RawStudioInspector() {
 
@@ -68,6 +484,7 @@ export function RawStudioInspector() {
     fileInputRef,
     handleFilesAdded,
     assets,
+    setAssets,
     setActiveAsset,
     handleGenerateCaptions,
     aiLoading,
@@ -111,6 +528,24 @@ export function RawStudioInspector() {
 
   const [assetSearchQuery, setAssetSearchQuery] = useState('');
   const [assetTypeFilter, setAssetTypeFilter] = useState<'all' | 'video' | 'audio' | 'image'>('all');
+  const [elementsTab, setElementsTab] = useState<'visual' | 'stickers' | 'presets' | 'templates'>('visual');
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [editingAssetId, setEditingAssetId] = useState<string | null>(null);
+  const [editingAssetTitle, setEditingAssetTitle] = useState('');
+  const [deletingAsset, setDeletingAsset] = useState<any | null>(null);
+  const logoInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [whisperDiag, setWhisperDiag] = useState<any>(null);
+  const [captionLanguage, setCaptionLanguage] = useState<'auto' | 'en' | 'hi'>('auto');
+  const [transcriptionStage, setTranscriptionStage] = useState<'idle' | 'preparing' | 'extracting' | 'transcribing' | 'synchronizing'>('idle');
+  const transcriptionAbortRef = React.useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    getWhisperInstallationStatusClient().then(res => {
+      if (res && res.success) {
+        setWhisperDiag(res);
+      }
+    }).catch(() => {});
+  }, [activeTool]);
 
   const filteredAssets = useMemo(() => {
     return filterAssets(assets, { query: assetSearchQuery, type: assetTypeFilter });
@@ -243,7 +678,7 @@ export function RawStudioInspector() {
               />
               <button className="btn btn-secondary" style={{ width: '100%', marginTop: '0.5rem' }} onClick={() => { navigator.clipboard.writeText(socialCaption); showToast('Caption copied!'); }}>Copy Post Caption</button>
             </div>
-            <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }} onClick={handleExport} disabled={!activeAsset}>
+            <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }} onClick={handleExport} disabled={!activeAsset && assets.length === 0 && !editState.items.some(i => i.type === 'video')}>
               <Download size={20} style={{ marginRight: '8px' }} /> Start Export
             </button>
             
@@ -351,7 +786,7 @@ export function RawStudioInspector() {
     );
   }
 
-  if (selectedClipId) {
+  if (activeTool === 'select' && selectedClipId) {
     const selectedItem = editState.items.find(item => item.id === selectedClipId);
     const itemType = selectedItem?.type || (
       selectedClipId.startsWith('clip-') ? 'video' :
@@ -581,136 +1016,667 @@ export function RawStudioInspector() {
           </div>
         </div>
 
-        <div className="studio-asset-list">
-          {filteredAssets.length === 0 && <div className="studio-empty" style={{ padding: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>No matching assets found.</div>}
-          {filteredAssets.map((asset) => (
-            <div
-              key={asset.id}
-              className={`studio-asset-row ${activeAsset?.id === asset.id ? 'active' : ''}`}
-              style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '8px', padding: '0.75rem', background: activeAsset?.id === asset.id ? 'var(--bg-surface-high)' : 'var(--bg-surface-low)', borderRadius: '8px', cursor: 'pointer' }}
-              onClick={() => setActiveAsset(asset)}
-              draggable
-              onDragStart={(e) => e.dataTransfer.setData('application/json', JSON.stringify(asset))}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                <span style={{ fontWeight: 500, fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {asset.projects?.title || (asset as any).title || asset.fileName || 'Media'}
-                </span>
-                {asset.asset_type === 'audio' ? <Music2 size={14} color="var(--text-muted)"/> : <FileVideo size={14} color="var(--text-muted)"/>}
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{formatTime(Number(asset.duration_seconds) || 0)}</span>
-                <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: '0.75rem' }} onClick={(e) => { 
-                  e.stopPropagation(); 
-                  const newClip = createTimelineItemFromAsset(asset, { startTime: currentTime });
-                  dispatch({ type: 'ADD_ITEM', payload: newClip });
-                  selectSingle(newClip.id);
-                  setDuration(Math.max(duration, newClip.end));
-                  showToast('Added asset to timeline'); 
-                }}>+ Add</button>
+        {/* Asset Delete Confirmation Modal */}
+        {deletingAsset && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999
+          }}>
+            <div style={{
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '12px',
+              padding: '1.5rem',
+              maxWidth: '380px',
+              width: '90%',
+              boxShadow: 'var(--shadow-neo-raised-lg)'
+            }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.75rem' }}>
+                Delete Asset?
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                Are you sure you want to delete <strong>{deletingAsset.title || deletingAsset.fileName || 'this asset'}</strong>?
+                {(() => {
+                  const clipCount = editState.items.filter(i => 
+                    i.assetId === deletingAsset.id || 
+                    i.properties?.sourcePath === deletingAsset.storage_path ||
+                    i.id.includes(deletingAsset.id)
+                  ).length;
+                  return clipCount > 0 
+                    ? ` This asset is used by ${clipCount} timeline clip(s). Deleting it will also remove those clips.`
+                    : ' This action cannot be undone.';
+                })()}
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                <button
+                  className="btn btn-secondary"
+                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                  onClick={() => setDeletingAsset(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn"
+                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', background: 'var(--accent-rose)', color: '#fff', border: 'none', fontWeight: 600 }}
+                  onClick={async () => {
+                    const target = deletingAsset;
+                    const clips = editState.items.filter(i => 
+                      i.assetId === target.id || 
+                      i.properties?.sourcePath === target.storage_path ||
+                      i.id.includes(target.id)
+                    );
+                    clips.forEach(c => dispatch({ type: 'DELETE_ITEM', payload: { id: c.id } }));
+                    if (activeAsset?.id === target.id) setActiveAsset(null);
+                    await deleteMediaAsset(target.id, target._raw_path);
+                    setAssets(prev => prev.filter(a => a.id !== target.id));
+                    setDeletingAsset(null);
+                    showToast(`Deleted asset${clips.length > 0 ? ` and removed ${clips.length} clip(s)` : ''}`);
+                  }}
+                >
+                  Delete Asset
+                </button>
               </div>
             </div>
-          ))}
+          </div>
+        )}
+
+        <div className="studio-asset-list">
+          {filteredAssets.length === 0 && <div className="studio-empty" style={{ padding: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>No matching assets found.</div>}
+          {filteredAssets.map((asset) => {
+            const isEditing = editingAssetId === asset.id;
+            const assetName = (asset as any).title || asset.fileName || (asset as any).file_name || asset.projects?.title || 'Media';
+            return (
+              <div
+                key={asset.id}
+                className={`studio-asset-row ${activeAsset?.id === asset.id ? 'active' : ''}`}
+                style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '8px', padding: '0.75rem', background: activeAsset?.id === asset.id ? 'var(--bg-surface-high)' : 'var(--bg-surface-low)', borderRadius: '8px', cursor: 'pointer' }}
+                onClick={() => setActiveAsset(asset)}
+                draggable
+                onDragStart={(e) => e.dataTransfer.setData('application/json', JSON.stringify(asset))}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '8px' }}>
+                  {isEditing ? (
+                    <div style={{ display: 'flex', gap: '4px', flex: 1 }} onClick={e => e.stopPropagation()}>
+                      <input
+                        type="text"
+                        value={editingAssetTitle}
+                        onChange={e => setEditingAssetTitle(e.target.value)}
+                        autoFocus
+                        onKeyDown={async e => {
+                          if (e.key === 'Enter') {
+                            const trimmed = editingAssetTitle.trim();
+                            if (trimmed) {
+                              await updateMediaAssetTitle(asset.id, trimmed);
+                              setAssets(prev => prev.map(a => a.id === asset.id ? { ...a, title: trimmed, fileName: trimmed, file_name: trimmed, projects: a.projects ? { ...a.projects, title: trimmed } : undefined } : a));
+                              showToast('Renamed asset');
+                            }
+                            setEditingAssetId(null);
+                          } else if (e.key === 'Escape') {
+                            setEditingAssetId(null);
+                          }
+                        }}
+                        style={{ flex: 1, padding: '2px 6px', fontSize: '0.85rem', background: 'var(--bg-surface-lowest)', border: '1px solid var(--accent-primary)', borderRadius: '4px', color: 'var(--text-main)' }}
+                      />
+                      <button
+                        className="btn btn-primary"
+                        style={{ padding: '2px 8px', fontSize: '0.75rem' }}
+                        onClick={async () => {
+                          const trimmed = editingAssetTitle.trim();
+                          if (trimmed) {
+                            await updateMediaAssetTitle(asset.id, trimmed);
+                            setAssets(prev => prev.map(a => a.id === asset.id ? { ...a, title: trimmed, fileName: trimmed, file_name: trimmed, projects: a.projects ? { ...a.projects, title: trimmed } : undefined } : a));
+                            showToast('Renamed asset');
+                          }
+                          setEditingAssetId(null);
+                        }}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden', flex: 1 }}>
+                      <span style={{ fontWeight: 500, fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {assetName}
+                      </span>
+                      <button
+                        aria-label="Rename asset"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingAssetId(asset.id);
+                          setEditingAssetTitle(assetName);
+                        }}
+                        style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center' }}
+                      >
+                        <Pencil size={12} />
+                      </button>
+                    </div>
+                  )}
+                  {asset.asset_type === 'audio' ? <Music2 size={14} color="var(--text-muted)"/> : <FileVideo size={14} color="var(--text-muted)"/>}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{formatTime(Number(asset.duration_seconds) || 0)}</span>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      className="btn btn-secondary"
+                      style={{ padding: '2px 8px', fontSize: '0.75rem' }}
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        const newClip = createTimelineItemFromAsset(asset, { startTime: currentTime });
+                        dispatch({ type: 'ADD_ITEM', payload: newClip });
+                        selectSingle(newClip.id);
+                        setDuration(Math.max(duration, newClip.end));
+                        showToast('Added asset to timeline'); 
+                      }}
+                    >
+                      + Add
+                    </button>
+                    <button
+                      aria-label="Delete asset"
+                      className="btn btn-secondary"
+                      style={{ padding: '2px 6px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeletingAsset(asset);
+                      }}
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
+  }
+
+  if (activeTool === 'smart-cut') {
+    return <SmartCutPanel />;
+  }
+
+  if (activeTool === 'hooks') {
+    return <HookInspectorCard />;
+  }
+
+  if (activeTool === 'suggestions') {
+    return <AiIntelligencePanel />;
+  }
+
+  if (activeTool === 'storyboard') {
+    return <StoryboardDeck />;
   }
 
   if (activeTool === 'captions') {
+    const captionItems = editState.items.filter(i => i.type === 'caption');
+
+    const handleApplyCaptionPreset = (presetKey: 'hormozi' | 'neon' | 'minimal' | 'boxed') => {
+      setCaptionStyle(prev => ({ ...prev, preset: presetKey }));
+      captionItems.forEach(cap => {
+        let newColor = '#ffffff';
+        let newBg = '#000000';
+        let newBgOpacity = 0.7;
+        let newFontSize = 38;
+
+        if (presetKey === 'hormozi') {
+          newColor = '#facc15';
+          newBgOpacity = 0.85;
+          newFontSize = 48;
+        } else if (presetKey === 'neon') {
+          newColor = '#06b6d4';
+          newBg = '#06b6d4';
+          newBgOpacity = 0.3;
+          newFontSize = 44;
+        } else if (presetKey === 'minimal') {
+          newColor = '#ffffff';
+          newBgOpacity = 0;
+          newFontSize = 32;
+        }
+
+        dispatch({
+          type: 'UPDATE_PROPERTIES',
+          payload: {
+            id: cap.id,
+            properties: {
+              ...(cap.properties || {}),
+              preset: presetKey,
+              color: newColor,
+              fontSize: newFontSize,
+              backgroundColor: newBg,
+              backgroundOpacity: newBgOpacity
+            }
+          }
+        });
+      });
+      showToast(`Applied '${presetKey}' caption style preset`);
+    };
+
+    const handleClearAllCaptions = () => {
+      captionItems.forEach(c => dispatch({ type: 'DELETE_ITEM', payload: { id: c.id } }));
+      showToast('Cleared all captions from timeline');
+    };
+
+    const handleAddManualCaption = () => {
+      const newItem = createTextTimelineItem('standard', {
+        content: 'New Subtitle',
+        startTime: currentTime,
+        duration: 2.5
+      });
+      // Override to caption type
+      (newItem as any).type = 'caption';
+      newItem.trackId = 'track-text-1';
+      newItem.label = 'Caption: New Subtitle';
+      dispatch({ type: 'ADD_ITEM', payload: newItem });
+      selectSingle(newItem.id);
+      showToast('Added subtitle block at playhead');
+    };
+
+    const handleCancelTranscription = () => {
+      if (transcriptionAbortRef.current) {
+        transcriptionAbortRef.current.abort();
+        transcriptionAbortRef.current = null;
+      }
+      setTranscriptionStage('idle');
+      showToast('Transcription cancelled');
+    };
+
+    const handleTriggerCaptions = async () => {
+      if (!activeAsset) {
+        showToast('Please select an active video asset first');
+        return;
+      }
+
+      let mediaSource: Blob | File | null = (activeAsset as any).file || (activeAsset as any).blob || null;
+      if (!mediaSource && activeAsset.previewUrl && activeAsset.previewUrl.startsWith('blob:')) {
+        try {
+          mediaSource = await fetch(activeAsset.previewUrl).then(r => r.blob());
+        } catch (e) {}
+      }
+      if (!mediaSource) {
+        try {
+          const { getMediaBlob } = await import('@/lib/data/indexed-db-media');
+          const stored = await getMediaBlob(activeAsset.id);
+          if (stored) mediaSource = stored;
+        } catch (e) {}
+      }
+
+      if (!mediaSource) {
+        showToast('Could not load media file for local Whisper transcription');
+        return;
+      }
+
+      const controller = new AbortController();
+      transcriptionAbortRef.current = controller;
+      setTranscriptionStage('preparing');
+
+      try {
+        await new Promise(r => setTimeout(r, 150));
+        setTranscriptionStage('extracting');
+        await new Promise(r => setTimeout(r, 200));
+        setTranscriptionStage('transcribing');
+
+        const res = await transcribeMedia(
+          mediaSource,
+          captionLanguage,
+          undefined,
+          Math.round(timelineDuration || 15),
+          controller.signal
+        );
+
+        if (controller.signal.aborted) return;
+
+        if (res.error && res.error.includes('cancelled')) {
+          showToast('Transcription cancelled');
+          return;
+        }
+
+        if (res.segments && res.segments.length > 0) {
+          setTranscriptionStage('synchronizing');
+          // Clear existing captions
+          const existing = editState.items.filter(i => i.type === 'caption');
+          existing.forEach(c => dispatch({ type: 'DELETE_ITEM', payload: { id: c.id } }));
+
+          const captionItems = createCaptionTimelineItems(res.segments, captionStyle.preset);
+          captionItems.forEach(item => dispatch({ type: 'ADD_ITEM', payload: item }));
+
+          if (captionItems.length > 0) {
+            selectSingle(captionItems[0].id);
+          }
+          showToast(`Generated ${captionItems.length} captions synchronized to timeline!`);
+        } else {
+          showToast(res.error || 'No speech segments detected in media');
+        }
+      } catch (err: any) {
+        if (controller.signal.aborted || err.message?.includes('cancelled')) {
+          showToast('Transcription cancelled');
+        } else {
+          showToast('Transcription failed: ' + (err.message || 'Unknown error'));
+        }
+      } finally {
+        transcriptionAbortRef.current = null;
+        setTranscriptionStage('idle');
+      }
+    };
+
     return (
-      <div className="studio-panel-stack animate-fade-in" style={{ padding: '0.5rem 1rem', background: 'var(--bg-main)', height: '100%', overflowY: 'auto' }}>
+      <div className="studio-panel-stack animate-fade-in" style={{ padding: '1rem', background: 'var(--bg-main)', height: '100%', overflowY: 'auto' }}>
         
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>Captions</h2>
-          <div style={{ width: '38px', height: '22px', background: 'var(--accent-primary)', borderRadius: '12px', position: 'relative', cursor: 'pointer' }}>
-             <div style={{ width: '18px', height: '18px', background: 'white', borderRadius: '50%', position: 'absolute', top: '2px', right: '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>Auto Captions</h2>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              {captionItems.length > 0 ? `${captionItems.length} synchronized phrases` : 'Speech-to-Text Intelligence'}
+            </div>
           </div>
+          {captionItems.length > 0 && (
+            <button
+              className="btn btn-secondary"
+              style={{ fontSize: '0.75rem', padding: '4px 8px', color: 'var(--accent-rose)' }}
+              onClick={handleClearAllCaptions}
+            >
+              Clear All
+            </button>
+          )}
         </div>
 
-        {/* Auto Generate Button */}
-        <button className="btn btn-primary" style={{ width: '100%', padding: '0.85rem', borderRadius: '10px', fontWeight: 600, fontSize: '0.9rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(99,102,241,0.2)', cursor: 'pointer', border: 'none' }} onClick={handleGenerateCaptions} disabled={aiLoading['captions']}>
-          <span style={{ fontSize: '18px', fontWeight: 400 }}>+</span> Auto Generate Captions
+        {/* Honest Setup Diagnostic Banner */}
+        {whisperDiag && (
+          <div style={{
+            background: whisperDiag.isReady ? 'rgba(16, 185, 129, 0.08)' : 'rgba(245, 158, 11, 0.08)',
+            border: `1px solid ${whisperDiag.isReady ? 'rgba(16, 185, 129, 0.25)' : 'rgba(245, 158, 11, 0.25)'}`,
+            borderRadius: '10px',
+            padding: '0.85rem',
+            marginBottom: '1.25rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: whisperDiag.isReady ? '#10b981' : '#f59e0b', fontWeight: 600, fontSize: '0.85rem' }}>
+              <span>🎙️ Local Whisper Engine: {whisperDiag.isReady ? 'READY (100% Offline)' : 'Setup Required'}</span>
+            </div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '3px', marginBottom: '0.75rem', fontFamily: 'monospace' }}>
+              <div>FFmpeg: {whisperDiag.ffmpegInstalled ? '✓ Detected' : '✗ Missing'}</div>
+              <div>Whisper Binary: {whisperDiag.whisperBinaryInstalled ? `✓ Detected (${whisperDiag.whisperExecutable})` : '✗ Missing'}</div>
+              <div>Model Weights: {whisperDiag.whisperModelInstalled ? `✓ Detected (${whisperDiag.model})` : '✗ Missing'}</div>
+            </div>
+            <button
+              className="btn btn-secondary"
+              style={{ width: '100%', fontSize: '0.75rem', padding: '5px' }}
+              onClick={() => {
+                getWhisperInstallationStatusClient().then(res => {
+                  if (res && res.success) {
+                    setWhisperDiag(res);
+                    if (res.isReady) showToast('Local Whisper.cpp engine detected & ready!');
+                    else showToast('Whisper binary or model missing in folders.');
+                  }
+                });
+              }}
+            >
+              Check Installation
+            </button>
+          </div>
+        )}
+
+        {/* Spoken Language Selector */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
+            SPOKEN LANGUAGE
+          </label>
+          <select
+            className="form-control"
+            style={{ width: '100%', fontSize: '0.8rem', padding: '0.45rem', borderRadius: '6px', background: 'var(--bg-surface)', border: '1px solid var(--border-subtle)', color: 'var(--text-main)' }}
+            value={captionLanguage}
+            onChange={(e) => setCaptionLanguage(e.target.value as any)}
+            title="Auto Detect is recommended for mixed Hindi-English speech."
+          >
+            <option value="auto">Auto Detect (Recommended for mixed Hindi-English)</option>
+            <option value="en">English (en)</option>
+            <option value="hi">Hindi (हिन्दी - hi)</option>
+          </select>
+        </div>
+
+        {/* Multi-Stage Progress vs Primary Action Button */}
+        {transcriptionStage !== 'idle' ? (
+          <div style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '10px',
+            padding: '0.85rem',
+            marginBottom: '1.25rem'
+          }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={14} className="animate-spin text-accent" />
+              <span>Speech Intelligence in Progress</span>
+            </div>
+            <div style={{ fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '0.75rem' }}>
+              <div style={{ color: transcriptionStage === 'preparing' ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
+                {transcriptionStage === 'preparing' ? '●' : '✓'} Preparing media buffer
+              </div>
+              <div style={{ color: transcriptionStage === 'extracting' ? 'var(--accent-primary)' : transcriptionStage === 'transcribing' || transcriptionStage === 'synchronizing' ? 'var(--text-muted)' : 'var(--text-muted)' }}>
+                {transcriptionStage === 'extracting' ? '● Extracting 16kHz audio...' : transcriptionStage === 'transcribing' || transcriptionStage === 'synchronizing' ? '✓ Audio extracted' : '○ Extracting 16kHz audio'}
+              </div>
+              <div style={{ color: transcriptionStage === 'transcribing' ? 'var(--accent-primary)' : transcriptionStage === 'synchronizing' ? 'var(--text-muted)' : 'var(--text-muted)' }}>
+                {transcriptionStage === 'transcribing' ? '● AI is transcribing speech... (This may take a moment)' : transcriptionStage === 'synchronizing' ? '✓ Speech transcribed' : '○ AI speech transcription'}
+              </div>
+              <div style={{ color: transcriptionStage === 'synchronizing' ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
+                {transcriptionStage === 'synchronizing' ? '● Synchronizing timeline captions...' : '○ Synchronizing timeline captions'}
+              </div>
+            </div>
+            <button
+              className="btn btn-secondary"
+              style={{ width: '100%', fontSize: '0.75rem', padding: '5px', color: 'var(--accent-rose)' }}
+              onClick={handleCancelTranscription}
+            >
+              Cancel Transcription
+            </button>
+          </div>
+        ) : (
+          <button
+            className="btn btn-primary"
+            style={{
+              width: '100%',
+              padding: '0.85rem',
+              borderRadius: '10px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              marginBottom: '1.25rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: 'var(--shadow-glow)',
+              cursor: 'pointer',
+              border: 'none'
+            }}
+            onClick={handleTriggerCaptions}
+            disabled={Boolean(aiLoading['captions']) || transcriptionStage !== 'idle'}
+          >
+            <Sparkles size={16} />
+            {captionItems.length > 0 ? 'Regenerate Captions' : 'Auto Generate Captions'}
+          </button>
+        )}
+
+        {/* Caption Style Presets */}
+        <h4 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700 }}>
+          CAPTION STYLE PRESETS
+        </h4>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '1.5rem' }}>
+          {[
+            { key: 'hormozi', name: 'Alex Hormozi', color: '#facc15', desc: 'Yellow + Black Stroke' },
+            { key: 'neon', name: 'Neon Glow', color: '#06b6d4', desc: 'Cyan Cyberpunk Glow' },
+            { key: 'minimal', name: 'Minimalist', color: '#ffffff', desc: 'Clean Transparent' },
+            { key: 'boxed', name: 'Classic Boxed', color: '#ffffff', desc: 'High Contrast Pill' }
+          ].map(p => {
+            const isSelected = captionStyle.preset === p.key;
+            return (
+              <div
+                key={p.key}
+                className="card hover-border"
+                style={{
+                  padding: '0.65rem',
+                  cursor: 'pointer',
+                  border: isSelected ? '2px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  borderRadius: '8px',
+                  background: isSelected ? 'rgba(99, 102, 241, 0.08)' : 'var(--bg-surface)',
+                  transition: 'all 0.15s ease'
+                }}
+                onClick={() => handleApplyCaptionPreset(p.key as any)}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: p.color }} />
+                  <span style={{ fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-main)' }}>{p.name}</span>
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{p.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Save Style to Brand Kit Button */}
+        <button
+          className="btn btn-secondary"
+          style={{ width: '100%', padding: '0.6rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '1.25rem' }}
+          onClick={() => {
+            const activeColor = captionItems[0]?.properties?.color || '#facc15';
+            const activePreset = captionItems[0]?.properties?.preset || 'hormozi';
+            const activeFont = captionItems[0]?.properties?.fontFamily || 'Inter';
+            const activeFontSize = captionItems[0]?.properties?.fontSize || 48;
+
+            setBrandKit((prev: any) => ({
+              ...prev,
+              captionStyle: {
+                preset: activePreset,
+                fontFamily: activeFont,
+                fontSize: activeFontSize,
+                color: activeColor,
+                fontColor: activeColor
+              }
+            }));
+            showToast(`Saved '${activePreset}' caption styling to Brand Kit!`);
+          }}
+        >
+          <Paintbrush size={14} /> Save Style to Brand Kit
         </button>
-        
-        {/* Style & Appearance */}
-        <h4 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700 }}>STYLE & APPEARANCE</h4>
-        <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-subtle)', borderRadius: '12px', padding: '1rem', marginBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-          
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <select className="form-select" style={{ flex: 2, background: 'var(--bg-base)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '8px 10px', fontSize: '0.85rem', outline: 'none' }}>
-              <option>Poppins</option>
-            </select>
-            <select className="form-select" style={{ flex: 1, background: 'var(--bg-base)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '8px 10px', fontSize: '0.85rem', outline: 'none' }}>
-              <option>Bold</option>
-            </select>
-          </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', flex: 1, background: 'var(--bg-base)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '6px' }}>
-               <span style={{ padding: '0 8px', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>Aa</span>
-               <span style={{ padding: '0 8px', fontSize: '0.9rem', fontWeight: 500 }}>48</span>
-               <div style={{ flex: 1 }} />
-               <button style={{ background: 'none', border: 'none', padding: '4px 8px', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '1rem' }}>-</button>
-               <span style={{ color: 'var(--border-subtle)', fontSize: '0.8rem' }}>~</span>
-               <button style={{ background: 'none', border: 'none', padding: '4px 8px', cursor: 'pointer', color: 'var(--text-main)', fontSize: '1rem' }}>+</button>
-            </div>
-            
-            <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-base)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '4px' }}>
-              <button style={{ background: 'none', border: 'none', padding: '6px 10px', cursor: 'pointer', color: 'var(--text-muted)' }}><span style={{fontSize: '14px'}}>≡</span></button>
-              <button style={{ background: 'var(--bg-surface-low)', border: 'none', padding: '6px 10px', cursor: 'pointer', color: 'var(--accent-primary)', borderRadius: '6px' }}><span style={{fontSize: '14px', fontWeight: 'bold'}}>≡</span></button>
-              <button style={{ background: 'none', border: 'none', padding: '6px 10px', cursor: 'pointer', color: 'var(--text-muted)' }}><span style={{fontSize: '14px'}}>≡</span></button>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '0.5rem', padding: '0.5rem 0.75rem', background: 'var(--bg-base)', borderRadius: '24px', border: '1px solid var(--border-subtle)', width: 'fit-content' }}>
-            {['#ffffff', '#000000', '#facc15', '#ec4899', '#06b6d4'].map((color, i) => (
-              <div key={i} style={{ width: '22px', height: '22px', borderRadius: '50%', background: color, border: '1px solid var(--border-subtle)', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }} />
-            ))}
-            <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'transparent', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-               <span style={{ fontSize: '12px' }}>✒️</span>
-            </div>
-          </div>
+        {/* Interactive Transcript Segments List */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+          <h4 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700, margin: 0 }}>
+            TRANSCRIPT PHRASES ({captionItems.length})
+          </h4>
+          <button
+            className="btn btn-secondary"
+            style={{ fontSize: '0.72rem', padding: '2px 8px' }}
+            onClick={handleAddManualCaption}
+          >
+            + Add Phrase
+          </button>
         </div>
 
-        {/* AI Suggestions */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-          <h4 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700, margin: 0 }}>AI SUGGESTIONS</h4>
-          <span style={{ fontSize: '0.75rem', color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: 600 }}>See all</span>
-        </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
-          <div style={{ padding: '0.85rem', border: '1px solid var(--border-subtle)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', background: 'var(--bg-surface)', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '1.3rem' }}>🔥</span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>Gradient & Highlighted Text</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Make your key words pop</div>
-            </div>
+        {captionItems.length === 0 ? (
+          <div style={{ padding: '2rem 1rem', textAlign: 'center', border: '1px dashed var(--border-subtle)', borderRadius: '10px', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+            No captions on timeline yet. Click "Auto Generate Captions" or "+ Add Phrase" above.
           </div>
-          <div style={{ padding: '0.85rem', border: '1px solid var(--border-subtle)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', background: 'var(--bg-surface)', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '1.3rem' }}>✨</span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>Trending Hashtag Style</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Boost engagement instantly</div>
-            </div>
-          </div>
-          <div style={{ padding: '0.85rem', border: '1px solid var(--border-subtle)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', background: 'var(--bg-surface)', boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '1.3rem' }}>💬</span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>Dynamic Text Blocks</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Perfect for short videos</div>
-            </div>
-          </div>
-        </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.5rem' }}>
+            {captionItems.map((cap) => {
+              const isSelected = selectedClipId === cap.id || editState.selection.includes(cap.id);
+              const currentContent = resolveTextContent(cap);
 
-        {/* Brand Kit */}
-        <h4 style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700 }}>SAVE STYLE TO BRAND KIT</h4>
-        <button style={{ width: '100%', padding: '0.85rem', borderRadius: '10px', border: '1px dashed var(--text-muted)', background: 'transparent', color: 'var(--text-main)', fontSize: '0.9rem', fontWeight: 600, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-          <span style={{ fontSize: '18px', fontWeight: 400 }}>+</span> Add to Brand Kit
-        </button>
+              return (
+                <div
+                  key={cap.id}
+                  className="card hover-border"
+                  style={{
+                    padding: '0.75rem',
+                    border: isSelected ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                    background: isSelected ? 'rgba(99, 102, 241, 0.04)' : 'var(--bg-surface)',
+                    borderRadius: '8px',
+                    boxShadow: 'var(--shadow-neo-raised-sm)'
+                  }}
+                  onClick={() => selectSingle(cap.id)}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                    <button
+                      style={{
+                        background: 'rgba(99, 102, 241, 0.12)',
+                        border: 'none',
+                        color: 'var(--accent-primary)',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        seekTo(cap.start);
+                      }}
+                      title="Seek playhead to phrase start"
+                    >
+                      ⏱️ {formatTime(cap.start)} - {formatTime(cap.end)}
+                    </button>
+                    <button
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--text-muted)',
+                        cursor: 'pointer',
+                        padding: '2px 4px'
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        dispatch({ type: 'DELETE_ITEM', payload: { id: cap.id } });
+                      }}
+                      title="Delete phrase"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+
+                  <textarea
+                    value={currentContent}
+                    onChange={(e) => {
+                      const newText = e.target.value;
+                      updateCaption(cap.id, { text: newText });
+                      dispatch({
+                        type: 'UPDATE_PROPERTIES',
+                        payload: {
+                          id: cap.id,
+                          properties: {
+                            ...(cap.properties || {}),
+                            content: newText,
+                            text: newText
+                          }
+                        }
+                      });
+                    }}
+                    rows={2}
+                    className="form-control"
+                    style={{
+                      width: '100%',
+                      background: 'var(--bg-base)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: '6px',
+                      padding: '6px 8px',
+                      fontSize: '0.82rem',
+                      color: 'var(--text-main)',
+                      resize: 'none',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
+
   if (activeTool === 'elements') {
     const magicStyles = [
       {
@@ -758,38 +1724,188 @@ export function RawStudioInspector() {
     };
 
     return (
-      <div className="studio-panel-stack animate-fade-in" style={{ paddingRight: '4px' }}>
-         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>1-Click Magic Presets</h4>
-         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-           {magicStyles.map((style) => (
-             <div key={style.id} className="card hover-border" style={{ padding: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', transition: 'all 0.2s' }} onClick={() => applyMagicStyle(style)} >
-               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', gap: '8px' }}>
-                 <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{style.name}</span>
-                 <span className="badge badge-purple" style={{ fontSize: '0.65rem', flexShrink: 0 }}>{style.tag}</span>
-               </div>
-               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>{style.desc}</div>
-             </div>
-           ))}
-         </div>
+      <div className="studio-panel-stack animate-fade-in" style={{ padding: '1.5rem', overflowY: 'auto', height: '100%' }}>
+        {/* Segmented Sub-Tab Switcher */}
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '1.25rem', background: 'var(--bg-surface-low)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+          {(['visual', 'stickers', 'presets', 'templates'] as const).map(tab => (
+            <button
+              key={tab}
+              className={`btn ${elementsTab === tab ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '6px 8px', fontSize: '0.75rem', textTransform: 'capitalize', flex: 1, fontWeight: elementsTab === tab ? 600 : 400 }}
+              onClick={() => setElementsTab(tab)}
+            >
+              {tab === 'visual' ? '🎨 AI Visuals' : tab === 'stickers' ? '✨ Stickers' : tab === 'presets' ? '⚡ Presets' : '📐 Templates'}
+            </button>
+          ))}
+        </div>
 
-         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Structural Templates</h4>
-         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-           {[
-             { name: "Viral Hook-Body-CTA", desc: "Calibrated 3-part layout for high retention." },
-             { name: "Educational Breakdown", desc: "Optimized for step-by-step tutorials." },
-             { name: "Product Showcase / Demo", desc: "Highlight features with a strong CTA." },
-             { name: "Quick Tips / Myth Buster", desc: "Fast-paced myth vs reality style." }
-           ].map((tmpl, idx) => (
-             <div key={idx} className="card hover-border" style={{ padding: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', transition: 'all 0.2s' }} onClick={() => showToast(`Applied ${tmpl.name} template`)} >
-               <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '2px' }}>{tmpl.name}</div>
-               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tmpl.desc}</div>
-             </div>
-           ))}
-         </div>
-         
-         <button className="btn btn-primary" style={{ width: '100%', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: 'var(--shadow-glow)', fontWeight: 600 }} onClick={() => showToast('Current settings saved as template!')}>
-           <CheckCircle size={16} /> Save Current Settings as Template
-         </button>
+        {elementsTab === 'visual' && (
+          <VisualDeck />
+        )}
+
+        {elementsTab === 'stickers' && (
+          <div>
+            <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>Graphic Elements & Stickers</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              {mockGraphicElements.map(el => (
+                <div
+                  key={el.id}
+                  className="card hover-border"
+                  style={{
+                    padding: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--bg-surface-low)',
+                    borderRadius: '10px',
+                    transition: 'all 0.2s'
+                  }}
+                  onClick={() => {
+                    const newItem = {
+                      id: `overlay-${crypto.randomUUID()}`,
+                      trackId: 'track-text-1',
+                      type: 'overlay' as const,
+                      start: currentTime,
+                      end: Math.min(timelineDuration > 0 ? timelineDuration : 15, currentTime + 3.0),
+                      label: `${el.symbol} ${el.name}`,
+                      content: el.symbol,
+                      properties: {
+                        x: 0,
+                        y: 0,
+                        scale: 120,
+                        opacity: 100,
+                        rotation: 0,
+                        color: el.color,
+                        fontSize: 48,
+                        zIndex: 15
+                      }
+                    };
+                    dispatch({ type: 'ADD_ITEM', payload: newItem });
+                    selectSingle(newItem.id);
+                    showToast(`Added ${el.name} overlay`);
+                  }}
+                >
+                  <span style={{ fontSize: '2rem' }}>{el.symbol}</span>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-main)', textAlign: 'center' }}>{el.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {elementsTab === 'presets' && (
+          <div>
+            <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>1-Click Magic Presets</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
+              {magicStyles.map((style) => (
+                <div key={style.id} className="card hover-border" style={{ padding: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', transition: 'all 0.2s' }} onClick={() => applyMagicStyle(style)} >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', gap: '8px' }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{style.name}</span>
+                    <span className="badge badge-purple" style={{ fontSize: '0.65rem', flexShrink: 0 }}>{style.tag}</span>
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>{style.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {elementsTab === 'templates' && (
+          <div>
+            <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Structural Templates</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.5rem' }}>
+              {Object.values(STRUCTURAL_TEMPLATES).map((tmpl) => (
+                <div
+                  key={tmpl.id}
+                  className="card hover-border"
+                  style={{ padding: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', transition: 'all 0.2s' }}
+                  onClick={() => {
+                    const totalDur = duration > 0 ? duration : (timelineDuration > 0 ? timelineDuration : 15);
+                    const items = tmpl.generateItems(totalDur, 0);
+                    items.forEach(item => {
+                      dispatch({ type: 'ADD_ITEM', payload: item });
+                    });
+                    if (items.length > 0) {
+                      selectSingle(items[0].id);
+                      const maxEnd = Math.max(...items.map(i => i.end));
+                      setDuration(Math.max(duration, maxEnd));
+                    }
+                    showToast(`Applied '${tmpl.name}' (${items.length} layers added to timeline)`);
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)' }}>{tmpl.name}</span>
+                    <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: '4px', background: 'rgba(99, 102, 241, 0.15)', color: 'var(--accent-primary)', fontWeight: 600 }}>{tmpl.badge}</span>
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.35 }}>{tmpl.description}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Custom Saved Templates */}
+            {getCustomTemplates().length > 0 && (
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>My Saved Templates</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                  {getCustomTemplates().map((ct) => (
+                    <div
+                      key={ct.id}
+                      className="card hover-border"
+                      style={{ padding: '0.85rem', cursor: 'pointer', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', transition: 'all 0.2s' }}
+                      onClick={() => {
+                        ct.items.forEach(item => {
+                          const reIdItem = { ...item, id: `${item.type}-${crypto.randomUUID()}` };
+                          dispatch({ type: 'ADD_ITEM', payload: reIdItem });
+                        });
+                        showToast(`Applied custom template '${ct.name}' (${ct.items.length} layers)`);
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                        <span style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)' }}>{ct.name}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.15)', color: 'var(--accent-emerald)', fontWeight: 600 }}>{ct.badge}</span>
+                          <button
+                            aria-label="Delete custom template"
+                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '2px' }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteCustomTemplate(ct.id);
+                              showToast(`Deleted custom template '${ct.name}'`);
+                            }}
+                          >
+                            <Trash2 size={13} color="var(--accent-rose)" />
+                          </button>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.35 }}>{ct.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <button 
+              className="btn btn-primary" 
+              style={{ width: '100%', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: 'var(--shadow-glow)', fontWeight: 600 }} 
+              onClick={() => {
+                const currentItems = editState.items;
+                if (currentItems.length === 0) {
+                  showToast('Add layers to timeline before saving as template');
+                  return;
+                }
+                const tmplName = projectTitle && projectTitle !== 'Untitled Reel' ? projectTitle : `Template ${new Date().toLocaleDateString()}`;
+                saveCustomTemplate(tmplName, currentItems);
+                showToast(`Saved '${tmplName}' as reusable template!`);
+              }}
+            >
+              <CheckCircle size={16} /> Save Current Settings as Template
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -833,7 +1949,7 @@ export function RawStudioInspector() {
         )}
 
         {textItems.map((txt) => {
-          const textContent = txt.label || txt.properties?.text || 'Text Overlay';
+          const textContent = resolveTextContent(txt);
           return (
             <div key={txt.id} style={{ background: 'var(--bg-surface-low)', padding: '0.75rem', borderRadius: '8px', marginBottom: '0.5rem' }}>
               <input
@@ -943,7 +2059,23 @@ export function RawStudioInspector() {
     );
   }
 
+  if (activeTool === 'visual') {
+    return (
+      <div className="studio-panel-stack animate-fade-in" style={{ padding: '1rem', overflowY: 'auto', height: '100%' }}>
+        <VisualDeck />
+      </div>
+    );
+  }
+
   if (activeTool === 'audio') {
+    return (
+      <div className="studio-panel-stack animate-fade-in" style={{ padding: '1rem', overflowY: 'auto', height: '100%' }}>
+        <GenerativeAudioDeck />
+      </div>
+    );
+  }
+
+  if (activeTool === 'legacy_audio_controls') {
     const selectedTargetId = editState.selection[0] || selectedClipId;
     const selectedTargetClip = editState.items.find(i => i.id === selectedTargetId && (i.type === 'video' || i.type === 'audio'));
 
@@ -1174,10 +2306,25 @@ export function RawStudioInspector() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'var(--text-main)' }}>
-              Voice Cleanup <input type="checkbox" checked={audioSettings.voiceCleanup} onChange={e => setAudioSettings(s => ({...s, voiceCleanup: e.target.checked}))} style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px' }} />
+              <div>
+                <div>Voice Cleanup</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>80Hz Highpass • 3kHz Presence EQ • Dynamics Compressor</div>
+              </div>
+              <input type="checkbox" checked={audioSettings.voiceCleanup} onChange={e => setAudioSettings(s => ({...s, voiceCleanup: e.target.checked}))} style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px' }} />
             </label>
             <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'var(--text-main)' }}>
-              Auto Ducking (Speech Reactive) <input type="checkbox" checked={audioSettings.autoDuck} onChange={e => setAudioSettings(s => ({...s, autoDuck: e.target.checked}))} style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px' }} />
+              <div>
+                <div>Background Denoise</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Adaptive Spectral Denoising (Export Enhanced)</div>
+              </div>
+              <input type="checkbox" checked={audioSettings.noiseReduction} onChange={e => setAudioSettings(s => ({...s, noiseReduction: e.target.checked}))} style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px' }} />
+            </label>
+            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'var(--text-main)' }}>
+              <div>
+                <div>Auto Ducking</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Speech-Reactive Sidechain Compression</div>
+              </div>
+              <input type="checkbox" checked={audioSettings.autoDuck} onChange={e => setAudioSettings(s => ({...s, autoDuck: e.target.checked}))} style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px' }} />
             </label>
           </div>
         </div>
@@ -1323,62 +2470,6 @@ export function RawStudioInspector() {
     );
   }
 
-  if (activeTool === 'elements') {
-    return (
-      <div className="studio-panel-stack animate-fade-in" style={{ padding: '1.5rem', overflowY: 'auto', height: '100%' }}>
-        <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>Graphic Elements & Stickers</h4>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-          {mockGraphicElements.map(el => (
-            <div
-              key={el.id}
-              className="card hover-border"
-              style={{
-                padding: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                cursor: 'pointer',
-                border: '1px solid var(--border-subtle)',
-                background: 'var(--bg-surface-low)',
-                borderRadius: '10px',
-                transition: 'all 0.2s'
-              }}
-              onClick={() => {
-                const newItem = {
-                  id: `overlay-${crypto.randomUUID()}`,
-                  trackId: 'track-text-1',
-                  type: 'overlay' as const,
-                  start: currentTime,
-                  end: Math.min(timelineDuration > 0 ? timelineDuration : 15, currentTime + 3.0),
-                  label: `${el.symbol} ${el.name}`,
-                  content: el.symbol,
-                  properties: {
-                    x: 0,
-                    y: 0,
-                    scale: 120,
-                    opacity: 100,
-                    rotation: 0,
-                    color: el.color,
-                    fontSize: 48,
-                    zIndex: 15
-                  }
-                };
-                dispatch({ type: 'ADD_ITEM', payload: newItem });
-                selectSingle(newItem.id);
-                showToast(`Added ${el.name} overlay`);
-              }}
-            >
-              <span style={{ fontSize: '2rem' }}>{el.symbol}</span>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-main)', textAlign: 'center' }}>{el.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   if (activeTool === 'draw') {
     const drawColors = ['#ef4444', '#3b82f6', '#10b981', '#eab308', '#a855f7', '#ffffff', '#000000'];
     return (
@@ -1422,51 +2513,124 @@ export function RawStudioInspector() {
             step="1"
             value={drawWidth}
             onChange={e => setDrawWidth(Number(e.target.value))}
-            style={{ width: '100%', marginBottom: '1rem' }}
+            style={{ width: '100%', marginBottom: '1.25rem' }}
           />
 
-          <button
-            className="btn btn-primary"
-            style={{ width: '100%', padding: '0.75rem', fontSize: '0.85rem', fontWeight: 600, background: 'var(--accent-rose)', border: 'none' }}
-            onClick={() => {
-              const sampleStrokePoints = [
-                { x: -60, y: -20 }, { x: -20, y: 30 }, { x: 20, y: -30 }, { x: 60, y: 20 }
-              ];
-              const newItem = {
-                id: `draw-${crypto.randomUUID()}`,
-                trackId: 'track-text-1',
-                type: 'overlay' as const,
-                start: currentTime,
-                end: Math.min(timelineDuration > 0 ? timelineDuration : 15, currentTime + 4.0),
-                label: `✏️ Freehand Drawing`,
-                content: 'drawing',
-                properties: {
-                  x: 0,
-                  y: 0,
-                  scale: 100,
-                  opacity: 100,
-                  rotation: 0,
-                  strokePoints: sampleStrokePoints,
-                  strokeColor: drawColor,
-                  strokeWidth: drawWidth,
-                  zIndex: 15
-                }
-              };
-              dispatch({ type: 'ADD_ITEM', payload: newItem });
-              selectSingle(newItem.id);
-              showToast('Added Freehand Drawing Overlay to Timeline');
-            }}
-          >
-            ✏️ Add Preset Drawing Overlay
-          </button>
+          <div style={{
+            background: 'var(--bg-surface-lowest)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '6px',
+            padding: '10px',
+            marginBottom: '1rem',
+            fontSize: '0.78rem',
+            color: 'var(--text-muted)',
+            lineHeight: 1.4
+          }}>
+            ✏️ <strong>Live Canvas Drawing Active:</strong> Click and drag your mouse or stylus directly over the video canvas to draw in real time.
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button
+              className="btn btn-secondary"
+              style={{ width: '100%', padding: '0.65rem', fontSize: '0.8rem', fontWeight: 600 }}
+              onClick={() => {
+                const sampleStrokePoints = [
+                  { x: 200, y: 400 }, { x: 400, y: 600 }, { x: 600, y: 400 }, { x: 800, y: 600 }
+                ];
+                const newItem = {
+                  id: `draw-${crypto.randomUUID()}`,
+                  trackId: 'track-text-1',
+                  type: 'overlay' as const,
+                  start: currentTime,
+                  end: Math.min(timelineDuration > 0 ? timelineDuration : 15, currentTime + 4.0),
+                  label: `✏️ Freehand Drawing`,
+                  content: 'drawing',
+                  properties: {
+                    x: 0,
+                    y: 0,
+                    scale: 100,
+                    opacity: 100,
+                    rotation: 0,
+                    strokePoints: sampleStrokePoints,
+                    strokeColor: drawColor,
+                    strokeWidth: drawWidth,
+                    zIndex: 25
+                  }
+                };
+                dispatch({ type: 'ADD_ITEM', payload: newItem });
+                selectSingle(newItem.id);
+                showToast('Added Freehand Drawing Overlay to Timeline');
+              }}
+            >
+              ✏️ Add Preset Drawing Overlay
+            </button>
+
+            {(() => {
+              const drawingClips = editState.items.filter(i => i.type === 'overlay' && (i.properties?.strokePoints?.length ?? 0) > 0);
+              if (drawingClips.length === 0) return null;
+              return (
+                <button
+                  className="btn btn-secondary"
+                  style={{ width: '100%', padding: '0.5rem', fontSize: '0.78rem', color: 'var(--accent-rose)' }}
+                  onClick={() => {
+                    drawingClips.forEach(clip => dispatch({ type: 'DELETE_ITEM', payload: { id: clip.id } }));
+                    showToast(`Cleared ${drawingClips.length} drawing overlay(s)`);
+                  }}
+                >
+                  🗑️ Clear All Drawings ({drawingClips.length})
+                </button>
+              );
+            })()}
+          </div>
         </div>
       </div>
     );
   }
 
   if (activeTool === 'brand') {
+    const currentLogoUrl = typeof brandKit.watermark === 'object' ? brandKit.watermark?.logoUrl : undefined;
+
+    const handleLogoFileChange = (file: File) => {
+      const allowedMime = ['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp'];
+      if (!allowedMime.includes(file.type)) {
+        showToast('Invalid file format. Please upload PNG, JPEG, SVG, or WebP.');
+        return;
+      }
+      const MAX_SIZE_MB = 5;
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        showToast(`Logo file exceeds ${MAX_SIZE_MB}MB limit.`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const logoUrl = e.target?.result as string;
+        setBrandKit(s => ({
+          ...s,
+          watermark: {
+            ...(typeof s.watermark === 'object' ? s.watermark : DEFAULT_BRAND_KITS.minimal_neo.watermark),
+            logoUrl
+          }
+        }));
+        showToast('Brand logo uploaded successfully');
+      };
+      reader.readAsDataURL(file);
+    };
+
     return (
       <div className="studio-panel-stack animate-fade-in" style={{ padding: '1.5rem', overflowY: 'auto', height: '100%' }}>
+        <input
+          type="file"
+          ref={logoInputRef}
+          accept="image/png,image/jpeg,image/svg+xml,image/webp"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              handleLogoFileChange(e.target.files[0]);
+              e.target.value = '';
+            }
+          }}
+        />
+
         <div className="card hover-border" style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-neo-raised-sm)', marginBottom: '1rem' }}>
           <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Brand Kit Preset</h4>
           <select className="form-select" value={brandKit.id || 'minimal_neo'} onChange={e => setBrandKit(DEFAULT_BRAND_KITS[e.target.value] || DEFAULT_BRAND_KITS.minimal_neo)} style={{ marginBottom: '1.5rem', width: '100%', fontSize: '0.85rem' }}>
@@ -1490,6 +2654,39 @@ export function RawStudioInspector() {
             <option value="Orbitron">Orbitron Cyber</option>
             <option value="Montserrat">Montserrat Bold</option>
           </select>
+
+          <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Watermark Logo</h4>
+          {currentLogoUrl ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem', padding: '8px', background: 'var(--bg-surface-low)', borderRadius: '6px' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={currentLogoUrl} alt="Brand Logo" style={{ height: '32px', maxWidth: '80px', objectFit: 'contain', background: '#000', borderRadius: '4px', padding: '2px' }} />
+              <div style={{ flex: 1, fontSize: '0.75rem', color: 'var(--text-muted)' }}>Custom Logo Active</div>
+              <button
+                className="btn btn-secondary"
+                style={{ padding: '2px 8px', fontSize: '0.75rem', color: 'var(--accent-rose)' }}
+                onClick={() => {
+                  setBrandKit(s => ({
+                    ...s,
+                    watermark: {
+                      ...(typeof s.watermark === 'object' ? s.watermark : DEFAULT_BRAND_KITS.minimal_neo.watermark),
+                      logoUrl: undefined
+                    }
+                  }));
+                  showToast('Removed custom logo');
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ) : (
+            <button
+              className="btn btn-secondary"
+              style={{ width: '100%', padding: '0.65rem', marginBottom: '1.5rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+              onClick={() => logoInputRef.current?.click()}
+            >
+              <Upload size={14} /> Upload Brand Logo (PNG/SVG, max 5MB)
+            </button>
+          )}
 
           <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Watermark Position</h4>
           <select className="form-select" value={typeof brandKit.watermark === 'object' ? brandKit.watermark?.position : 'bottom-right'} onChange={e => setBrandKit(s => ({ ...s, watermark: { ...(typeof s.watermark === 'object' ? s.watermark : DEFAULT_BRAND_KITS.minimal_neo.watermark), position: e.target.value as any } }))} style={{ width: '100%', fontSize: '0.85rem' }}>
@@ -1535,11 +2732,32 @@ export function RawStudioInspector() {
             </span>
           </div>
         </div>
-        <button className="btn btn-secondary" style={{ width: '100%', marginTop: '1.5rem', color: 'var(--accent-rose)' }} onClick={resetDemo}>
-          <RotateCcw size={16} style={{marginRight: '6px'}}/> Reset Demo Project
-        </button>
+        {showResetConfirm ? (
+          <div className="card" style={{ padding: '1rem', marginTop: '1.5rem', border: '1px solid var(--accent-rose)', background: 'rgba(244, 63, 94, 0.08)', borderRadius: '8px' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--accent-rose)', marginBottom: '6px' }}>⚠️ Confirm Project Reset?</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '12px', lineHeight: 1.4 }}>
+              This will clear the current timeline, remove temporary media, and restore the default state.
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.75rem' }} onClick={() => setShowResetConfirm(false)}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" style={{ flex: 1, fontSize: '0.75rem', background: 'var(--accent-rose)', border: 'none' }} onClick={() => { setShowResetConfirm(false); resetDemo(); }}>
+                Yes, Reset
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button className="btn btn-secondary" style={{ width: '100%', marginTop: '1.5rem', color: 'var(--accent-rose)' }} onClick={() => setShowResetConfirm(true)}>
+            <RotateCcw size={16} style={{marginRight: '6px'}}/> Reset Demo Project
+          </button>
+        )}
       </div>
     );
+  }
+
+  if (activeTool === 'publish') {
+    return <PublishingDeck />;
   }
 
   return (

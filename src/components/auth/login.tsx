@@ -32,11 +32,6 @@ export function LoginScreen() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!configured) {
-      setMessage({ text: 'Supabase environment variables are missing. Add them to .env.local and restart the dev server.', type: 'error' });
-      return;
-    }
-
     setLoading(true);
     setMessage(null);
 
@@ -45,7 +40,7 @@ export function LoginScreen() {
       handleAuthResult(error, 'Magic link sent. Check your email to continue.');
     } else if (mode === 'signup') {
       const { error } = await signUpWithEmail(email, password);
-      handleAuthResult(error, 'Account created. Confirm your email if Supabase email confirmation is enabled.');
+      handleAuthResult(error, 'Account created successfully.');
     } else {
       const { error } = await signInWithEmail(email, password);
       handleAuthResult(error, 'Signed in successfully.');
@@ -133,7 +128,7 @@ export function LoginScreen() {
             <input
               type="email"
               required
-              placeholder="creator@example.com"
+              placeholder="admin@kontentos.ai or your email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -147,7 +142,7 @@ export function LoginScreen() {
                   type={showPassword ? 'text' : 'password'}
                   required
                   minLength={6}
-                  placeholder="Minimum 6 characters"
+                  placeholder="admin123 or minimum 6 chars"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -158,9 +153,9 @@ export function LoginScreen() {
             </label>
           )}
 
-          <button type="submit" disabled={!configured || loading} className="auth-submit">
+          <button type="submit" disabled={loading} className="auth-submit">
             <KeyRound size={16} />
-            {loading ? 'Working...' : mode === 'signup' ? 'Create account' : mode === 'magic' ? 'Send magic link' : 'Sign in'}
+            {loading ? 'Signing in...' : mode === 'signup' ? 'Create account' : mode === 'magic' ? 'Send magic link' : 'Sign in'}
           </button>
         </form>
 
@@ -169,10 +164,6 @@ export function LoginScreen() {
             {message.text}
           </div>
         )}
-
-        <p className="auth-note">
-          Google and magic links require matching Supabase Site URL and Redirect URLs.
-        </p>
       </section>
     </div>
   );

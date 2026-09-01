@@ -1,6 +1,6 @@
 import { CreatorBrainContext } from './creator-dna';
 
-export type AiProvider = 'openai' | 'azure-openai' | 'anthropic' | 'mock';
+export type AiProvider = 'gemini' | 'openai' | 'azure-openai' | 'ollama' | 'anthropic' | 'mock';
 export type AiTaskType = 'caption_generation' | 'caption_rewrite' | 'hook_suggestion' | 'hashtag_suggestion' | 'cta_suggestion' | 'repurpose' | 'speech_transcription';
 export type AiJobStatus = 'idle' | 'loading' | 'success' | 'error';
 export type CaptionRewriteTone = 'punchy' | 'pro' | 'emotional' | 'hinglish';

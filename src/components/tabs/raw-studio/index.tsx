@@ -9,7 +9,7 @@ import { Captions, Download, FileVideo, Music2, PanelRight, Pause, Play,
   Type, Eye, ChevronLeft, ChevronRight, Hash, Image as ImageIcon,
   MessageSquareShare, Briefcase, Smile, Zap, RefreshCw, Smartphone, Split,
   Copy, Check, Volume2, MicOff, AlignLeft, AlignCenter, AlignRight, Palette,
-  RotateCcw, MousePointer2, CloudUpload, Pencil } from 'lucide-react';
+  RotateCcw, MousePointer2, CloudUpload, Pencil, Clapperboard, Share2 } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import { useAppState } from '@/context/state-context';
 import { supabase, isSupabaseConfigured, isDemoMode } from '@/lib/supabase';
@@ -41,6 +41,11 @@ import { DEFAULT_BRAND_KITS } from '@/lib/editing/brand-kit';
 
 const toolRail = [
     { id: 'select', label: 'Select', icon: MousePointer2 },
+    { id: 'smart-cut', label: 'Smart Cut', icon: Scissors },
+    { id: 'hooks', label: 'AI Hooks', icon: Zap },
+    { id: 'suggestions', label: 'AI Smart Edits', icon: Sparkles },
+    { id: 'storyboard', label: 'AI Storyboard', icon: Clapperboard },
+    { id: 'publish', label: 'Publish', icon: Share2 },
     { id: 'text', label: 'Text', icon: Type },
     { id: 'captions', label: 'Captions', icon: Captions },
     { id: 'elements', label: 'Elements', icon: LayoutTemplate },
@@ -71,6 +76,13 @@ export function RawStudio() {
   const [historyState, dispatch] = useReducer(historyReducer, { past: [], present: initialEditState, future: [] });
   const editState = historyState.present;
   const timelineDuration = editState.duration; // Ground truth sequence duration
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).__kontentos_dispatch = dispatch;
+      (window as any).__kontentos_history = historyState;
+    }
+  }, [dispatch, historyState]);
   
   // Captions (Legacy support pointers mapping to Engine)
   const [loadingCaptions, setLoadingCaptions] = useState(false);
@@ -83,6 +95,24 @@ export function RawStudio() {
   const [selectedLutId, setSelectedLutId] = useState('none');
   const [drawColor, setDrawColor] = useState('#ef4444');
   const [drawWidth, setDrawWidth] = useState(6);
+  const [ghostProposals, setGhostProposals] = useState<import('@/lib/ai/proposal-types').AiProposal[]>([]);
+  const [selectedGhostIds, setSelectedGhostIds] = useState<Set<string>>(new Set());
+  const [storyboardPlan, setStoryboardPlan] = useState<import('@/lib/ai/storyboard-types').StoryboardPlan | null>(null);
+  const [selectedBeatIds, setSelectedBeatIds] = useState<Set<string>>(new Set());
+  const [activeBeatIndex, setActiveBeatIndex] = useState<number | null>(null);
+  const [audioProposals, setAudioProposals] = useState<import('@/lib/ai/audio/types').AudioProposalPool>({ voiceovers: [], sfx: [], bgm: [] });
+  const [selectedAudioIds, setSelectedAudioIds] = useState<Set<string>>(new Set());
+  const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
+  const [visualProposals, setVisualProposals] = useState<import('@/lib/ai/visual/types').VisualAssetProposal[]>([]);
+  const [selectedVisualIds, setSelectedVisualIds] = useState<Set<string>>(new Set());
+  const [previewVisualModalAsset, setPreviewVisualModalAsset] = useState<import('@/lib/ai/visual/types').VisualAssetProposal | null>(null);
+  
+  // Phase 25 Publishing State
+  const [platformPackages, setPlatformPackages] = useState<import('@/lib/publishing/types').PlatformPackage[]>([]);
+  const [selectedPlatformIds, setSelectedPlatformIds] = useState<Set<import('@/lib/publishing/types').PublishingPlatform>>(new Set());
+  const [packageOverrides, setPackageOverrides] = useState<Record<string, Partial<import('@/lib/publishing/types').PlatformPackage>>>({});
+  const providerCallCount = 0;
+
   const selectedClipId = editState.selection.length === 1 ? editState.selection[0] : null;
 
   const selectSingle = useCallback((id: string) => {
@@ -244,6 +274,16 @@ export function RawStudio() {
           if (s.drawWidth) setDrawWidth(s.drawWidth);
           if (s.exportQuality) setExportQuality(s.exportQuality);
           if (s.exportCaptionMode) setExportCaptionMode(s.exportCaptionMode);
+          if (s.assets && Array.isArray(s.assets) && s.assets.length > 0) {
+            setAssets(s.assets);
+            setActiveAsset(s.assets[0]);
+          }
+          if (s.ghostProposals && Array.isArray(s.ghostProposals)) {
+            setGhostProposals(s.ghostProposals);
+          }
+          if (s.selectedGhostIds && Array.isArray(s.selectedGhostIds)) {
+            setSelectedGhostIds(new Set(s.selectedGhostIds));
+          }
         }
       } catch (e) {
         console.warn('Could not restore local studio state', e);
@@ -271,7 +311,8 @@ export function RawStudio() {
     if (isDemoMode() || !isSupabaseConfigured()) {
       const s = {
         editState, captionStyle, brandKit, platformPreset, projectTitle, exportHistory, aiHistory, socialCaption, selectedBgmId, projectId, user,
-        audioSettings, activeEffects, selectedLutId, drawColor, drawWidth, exportQuality, exportCaptionMode
+        audioSettings, activeEffects, selectedLutId, drawColor, drawWidth, exportQuality, exportCaptionMode,
+        assets, ghostProposals, selectedGhostIds: Array.from(selectedGhostIds)
       };
       localStorage.setItem('kontentos_demo_state', JSON.stringify(s));
     } else if (user?.id && projectId) {
@@ -295,7 +336,7 @@ export function RawStudio() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [editState, captionStyle, brandKit, platformPreset, projectTitle, exportHistory, socialCaption, aiHistory, selectedBgmId, projectId, user, audioSettings, activeEffects, selectedLutId, drawColor, drawWidth, exportQuality, exportCaptionMode]);
+  }, [editState, captionStyle, brandKit, platformPreset, projectTitle, exportHistory, socialCaption, aiHistory, selectedBgmId, projectId, user, audioSettings, activeEffects, selectedLutId, drawColor, drawWidth, exportQuality, exportCaptionMode, assets, ghostProposals, selectedGhostIds]);
 
   const videoSrc = activeAsset?.previewUrl || (isPlayablePath(activeAsset?.storage_path) ? activeAsset?.storage_path : '');
   const activeAssetId = activeAsset?.id;
@@ -351,67 +392,81 @@ export function RawStudio() {
   const skip = (s: number) => seekTo(currentTime + s);
 
   const handleFilesAdded = async (files: FileList | File[]) => {
-    const file = Array.from(files).find(item => item.type.startsWith('video/') || /\.(mp4|mov|m4v|webm|mkv)$/i.test(item.name));
-    if (!file) {
-      showToast('Please choose an MP4, MOV, M4V, WebM, or MKV video');
-      return;
-    }
-
-    if (file.size > 50 * 1024 * 1024) {
-      showToast('File exceeds 50MB limit. Please upload a smaller video.');
-      return;
-    }
+    const fileList = Array.from(files);
+    if (!fileList.length) return;
 
     setUploadingAssets(true);
-    const previewUrl = URL.createObjectURL(file);
-    previewUrlsRef.current.push(previewUrl);
-    const assetId = `local-${crypto.randomUUID()}`;
-    const fallbackDuration = 0;
-    
-    const localAsset: StudioAsset = {
-      id: assetId,
-      user_id: user?.id,
-      asset_type: 'raw_video',
-      storage_path: `local-preview/${file.name}`,
-      previewUrl,
-      fileName: file.name,
-      mime_type: file.type,
-      file_size: file.size,
-      duration_seconds: fallbackDuration,
-      projects: { title: file.name.replace(/\.[^.]+$/, '') },
-    };
-
-    // Save in IndexedDB for session refresh persistence
-    import('@/lib/data/indexed-db-media').then(({ storeMediaBlob }) => {
-      storeMediaBlob(assetId, file, localAsset).catch(e => console.warn('IndexedDB save skipped:', e));
-    });
-    setAssets(prev => [localAsset, ...prev]);
-    setActiveAsset(localAsset);
-    setCurrentTime(0);
-    setDuration(fallbackDuration);
-    setIsPlaying(false);
-
-    const initialClip = createTimelineItemFromAsset(localAsset, {
-      startTime: 0,
-      customDuration: fallbackDuration
-    });
-    const clipId = initialClip.id;
-
-    dispatch({ type: 'ADD_ITEM', payload: initialClip });
-    selectSingle(clipId);
-    setActiveTool('upload');
-    showToast('Media asset added to preview & timeline');
+    const addedAssets: StudioAsset[] = [];
+    let firstVideoClip: any = null;
 
     try {
-      const metadata = await getMediaMetadata(file);
-      const realDuration = Number.isFinite(metadata.duration) && metadata.duration ? metadata.duration : fallbackDuration;
-      setDuration(realDuration);
-      setAssets(prev => prev.map(asset => (
-        asset.id === assetId
-          ? { ...asset, duration_seconds: realDuration, width: metadata.width, height: metadata.height }
-          : asset
-      )));
-      dispatch({ type: 'TRIM_ITEM', payload: { id: clipId, newStart: 0, newEnd: realDuration } });
+      for (const file of fileList) {
+        const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|m4v|webm|mkv)$/i.test(file.name);
+        const isAudio = file.type.startsWith('audio/') || /\.(mp3|wav|ogg|aac|m4a|flac)$/i.test(file.name);
+        const isImage = file.type.startsWith('image/') || /\.(png|jpg|jpeg|webp|svg)$/i.test(file.name);
+
+        if (!isVideo && !isAudio && !isImage) {
+          showToast(`Skipped unsupported file: ${file.name}`);
+          continue;
+        }
+
+        if (file.size > 100 * 1024 * 1024) {
+          showToast(`File ${file.name} exceeds 100MB limit.`);
+          continue;
+        }
+
+        const previewUrl = URL.createObjectURL(file);
+        previewUrlsRef.current.push(previewUrl);
+        const assetId = `local-${crypto.randomUUID()}`;
+        const assetType = isVideo ? 'raw_video' : isAudio ? 'audio' : 'image';
+
+        const localAsset: StudioAsset & { file?: File; blob?: Blob } = {
+          id: assetId,
+          user_id: user?.id,
+          asset_type: assetType as any,
+          storage_path: `local-preview/${file.name}`,
+          previewUrl,
+          fileName: file.name,
+          mime_type: file.type,
+          file_size: file.size,
+          duration_seconds: 0,
+          projects: { title: file.name.replace(/\.[^.]+$/, '') },
+          file,
+          blob: file
+        };
+
+        // Save in IndexedDB for session refresh persistence
+        import('@/lib/data/indexed-db-media').then(({ storeMediaBlob }) => {
+          storeMediaBlob(assetId, file, localAsset).catch(e => console.warn('IndexedDB save skipped:', e));
+        });
+
+        addedAssets.push(localAsset);
+
+        // If no active asset, activate the first video or media
+        if (isVideo && (!activeAsset || addedAssets.length === 1)) {
+          setActiveAsset(localAsset);
+          firstVideoClip = createTimelineItemFromAsset(localAsset, { startTime: 0, customDuration: 0 });
+        }
+
+        // Asynchronously extract and update metadata
+        getMediaMetadata(file).then(metadata => {
+          const realDuration = Number.isFinite(metadata.duration) && metadata.duration ? metadata.duration : (isImage ? 4 : 0);
+          setAssets(prev => prev.map(a => a.id === assetId ? { ...a, duration_seconds: realDuration, width: metadata.width, height: metadata.height } : a));
+          if (firstVideoClip && firstVideoClip.assetId === assetId) {
+            setDuration(realDuration);
+            dispatch({ type: 'TRIM_ITEM', payload: { id: firstVideoClip.id, newStart: 0, newEnd: realDuration } });
+          }
+        }).catch(() => {});
+      }
+
+      if (addedAssets.length > 0) {
+        setAssets(prev => [...addedAssets, ...prev]);
+        if (firstVideoClip) {
+          dispatch({ type: 'ADD_ITEM', payload: firstVideoClip });
+          selectSingle(firstVideoClip.id);
+        }
+        showToast(`Added ${addedAssets.length} asset${addedAssets.length > 1 ? 's' : ''} to Project Media`);
+      }
     } finally {
       setUploadingAssets(false);
     }
@@ -497,18 +552,110 @@ export function RawStudio() {
 
   const { state: appState } = useAppState();
   const creatorProfile = appState?.creatorProfile;
+  const importedIdeaIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const idea = appState?.studioIdeaContext;
+    if (!idea) return;
+    const ideaKey = `${idea.id || idea.idea}-${idea.createdAt}`;
+    if (importedIdeaIdRef.current === ideaKey) return;
+    importedIdeaIdRef.current = ideaKey;
+
+    const hookText = idea.hook || idea.suggestedScript || idea.idea;
+    const scriptText = idea.suggestedScript || `${hookText}\n\n${idea.idea}`;
+    const topic = idea.topic || idea.idea || 'Studio Idea';
+    const targetDuration = idea.contentGoal?.includes('15') ? 15 : idea.contentGoal?.includes('60') ? 60 : 30;
+    const hookDuration = Math.min(6, Math.max(3, Math.round(targetDuration * 0.25)));
+    const bodyDuration = Math.max(6, targetDuration - hookDuration - 5);
+    const now = Date.now();
+    const beats = [
+      {
+        id: `idea-hook-${now}`,
+        beatIndex: 0,
+        role: 'hook' as const,
+        title: 'Hook',
+        spokenText: hookText,
+        estimatedStartTime: 0,
+        estimatedDuration: hookDuration,
+        visualIntent: `Open with a strong creator-facing hook for ${topic}`,
+        brollKeywords: [topic, creatorProfile?.proNiche || 'creator workflow', 'attention hook'],
+        suggestedHeadline: hookText.slice(0, 72),
+        transitionType: 'cut' as const,
+        confidence: 92,
+        isApproved: true,
+      },
+      {
+        id: `idea-script-${now}`,
+        beatIndex: 1,
+        role: 'solution' as const,
+        title: 'Script Body',
+        spokenText: scriptText,
+        estimatedStartTime: hookDuration,
+        estimatedDuration: bodyDuration,
+        visualIntent: `Show practical examples and visual proof points for ${topic}`,
+        brollKeywords: [creatorProfile?.proSubNiche || 'workflow', 'dashboard', 'before after'],
+        suggestedHeadline: topic.slice(0, 72),
+        transitionType: 'zoom_in' as const,
+        confidence: 88,
+        isApproved: true,
+      },
+      {
+        id: `idea-cta-${now}`,
+        beatIndex: 2,
+        role: 'call_to_action' as const,
+        title: 'CTA',
+        spokenText: creatorProfile?.customCatchphrase || 'Save this and try it in your next video.',
+        estimatedStartTime: hookDuration + bodyDuration,
+        estimatedDuration: Math.max(3, targetDuration - hookDuration - bodyDuration),
+        visualIntent: `End with a clear save, follow, or try-this-next action for ${idea.platform || 'short-form video'}`,
+        brollKeywords: ['call to action', 'save button', 'creator result'],
+        suggestedHeadline: 'Try this today',
+        transitionType: 'cut' as const,
+        confidence: 86,
+        isApproved: true,
+      },
+    ];
+
+    setProjectTitle(topic);
+    setStoryboardPlan({
+      id: `idea-plan-${now}`,
+      title: topic,
+      topic,
+      targetDuration,
+      estimatedTotalDuration: targetDuration,
+      tone: creatorProfile?.mode === 'pro' ? 'educational' : 'energetic',
+      formatPreset: idea.platform?.toLowerCase().includes('youtube') ? 'youtube-shorts' : 'instagram-reels',
+      beats,
+      provider: 'idea-studio-bridge',
+      createdAt: new Date().toISOString(),
+    });
+    setSelectedBeatIds(new Set(beats.map(beat => beat.id)));
+    setActiveBeatIndex(0);
+    setActiveTool('storyboard');
+    showToast('Idea imported into Studio storyboard');
+  }, [appState?.studioIdeaContext, creatorProfile]);
 
   const handleGenerateCaptions = () => {
     if (!activeAsset) { showToast('No active asset'); return; }
     withAiLoading('captions', 'caption_generation', async () => {
-      showToast('AI generating captions...');
+      showToast('Transcribing speech & generating captions...');
       const res = await generateCaptions({
         durationSeconds: Math.round(timelineDuration || 15),
         creatorProfile
       });
+
+      // Clear existing captions to prevent duplicate stacking on regeneration
+      const existingCaptions = editState.items.filter(i => i.type === 'caption');
+      existingCaptions.forEach(c => dispatch({ type: 'DELETE_ITEM', payload: { id: c.id } }));
+
       const captionItems = createCaptionTimelineItems(res.segments, captionStyle.preset);
       captionItems.forEach(item => dispatch({ type: 'ADD_ITEM', payload: item }));
-      showToast('Captions generated and bound to timeline!');
+
+      if (captionItems.length > 0) {
+        selectSingle(captionItems[0].id);
+      }
+
+      showToast(`Generated ${captionItems.length} captions synchronized to timeline!`);
       return `Generated ${captionItems.length} caption segments`;
     });
   };
@@ -613,6 +760,19 @@ export function RawStudio() {
         if (editState.selection.length > 0) {
           clearSelection();
         }
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        if (e.shiftKey) {
+          dispatch({ type: 'REDO' });
+          showToast('Redo action');
+        } else {
+          dispatch({ type: 'UNDO' });
+          showToast('Undo action');
+        }
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) {
+        e.preventDefault();
+        dispatch({ type: 'REDO' });
+        showToast('Redo action');
       } else if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.code)) {
         if (editState.selection.length > 0) {
           e.preventDefault();
@@ -649,12 +809,138 @@ export function RawStudio() {
 
   const resetDemo = () => {
     localStorage.removeItem('kontentos_demo_state');
-    window.location.reload();
+    import('@/lib/data/indexed-db-media').then(({ clearMediaBlobs }) => {
+      clearMediaBlobs().catch(() => {});
+    });
+    setAssets([]);
+    setActiveAsset(null);
+    dispatch({ type: 'SET_STATE', payload: initialEditState });
+    setCurrentTime(0);
+    setDuration(0);
+    setIsPlaying(false);
+    showToast('Project reset to default state');
   };
 
+  const loadDemoProject = useCallback(() => {
+    const demoAsset: StudioAsset = {
+      id: 'demo-creator-asset-1',
+      asset_type: 'raw_video',
+      storage_path: '/test_spoken_video.mp4',
+      previewUrl: '/test_spoken_video.mp4',
+      fileName: 'KontentOS_Creator_Pitch.mp4',
+      duration_seconds: 6.0,
+      file_size: 2132177
+    };
+
+    setAssets([demoAsset]);
+    setActiveAsset(demoAsset);
+    setProjectTitle('KontentOS Showcase Reel');
+    setDuration(6.0);
+
+    const videoItem: import('@/lib/editing/types').TimelineItem = {
+      id: 'item-demo-video-1',
+      trackId: 'track-video-main',
+      type: 'video',
+      start: 0,
+      end: 6.0,
+      sourceIn: 0,
+      sourceOut: 6.0,
+      assetId: demoAsset.id,
+      label: 'Speaker Track (9:16)',
+      properties: { opacity: 1, scale: 1, x: 0, y: 0, rotation: 0 }
+    };
+
+    const textItem: import('@/lib/editing/types').TimelineItem = {
+      id: 'item-demo-title-1',
+      trackId: 'track-overlay-1',
+      type: 'text',
+      start: 0.2,
+      end: 3.0,
+      content: '🚀 The Future of Content Creation',
+      label: 'Kinetic Hook Card',
+      properties: { opacity: 1, scale: 1, x: 0, y: -220, rotation: 0, fontSize: 32, color: '#facc15' }
+    };
+
+    const caption1: import('@/lib/editing/types').TimelineItem = {
+      id: 'item-demo-cap-1',
+      trackId: 'track-overlay-1',
+      type: 'caption',
+      start: 0,
+      end: 2.8,
+      content: 'KontentOS is the AI Creator Operating System.',
+      label: 'Caption 1',
+      properties: { fontSize: 26, color: '#ffffff', opacity: 1, scale: 1, x: 0, y: 180, rotation: 0 }
+    };
+
+    const caption2: import('@/lib/editing/types').TimelineItem = {
+      id: 'item-demo-cap-2',
+      trackId: 'track-overlay-1',
+      type: 'caption',
+      start: 2.8,
+      end: 6.0,
+      content: 'Automate editing, platform packaging, and distribution in seconds.',
+      label: 'Caption 2',
+      properties: { fontSize: 26, color: '#ffffff', opacity: 1, scale: 1, x: 0, y: 180, rotation: 0 }
+    };
+
+    dispatch({
+      type: 'SET_STATE',
+      payload: {
+        duration: 6.0,
+        tracks: [
+          { id: 'track-overlay-1', label: 'Overlays', type: 'text', locked: false, muted: false, visible: true, color: '#a855f7' },
+          { id: 'track-video-main', label: 'Main Video', type: 'video', locked: false, muted: false, visible: true, color: '#6366f1' },
+          { id: 'track-audio-main', label: 'Audio / SFX', type: 'audio', locked: false, muted: false, visible: true, color: '#10b981' }
+        ],
+        items: [textItem, videoItem, caption1, caption2],
+        selection: []
+      }
+    });
+
+    setGhostProposals([
+      {
+        id: 'ghost-prop-1',
+        kind: 'hook',
+        title: 'Viral Question Hook',
+        startTime: 0,
+        endTime: 2.5,
+        confidence: 94,
+        reasoning: 'Question hooks increase 3-second retention by 38% for tech topics.',
+        source: 'heuristic',
+        status: 'proposed',
+        targetTrackId: 'track-overlay-1',
+        data: {
+          text: 'Stop Wasting 5 Hours Editing Reels!',
+          color: '#facc15',
+          stylePreset: 'kinetic'
+        }
+      },
+      {
+        id: 'ghost-prop-2',
+        kind: 'zoom',
+        title: 'Dynamic Punch-in on Key Takeaway',
+        startTime: 2.8,
+        endTime: 5.4,
+        confidence: 89,
+        reasoning: 'Punch-in reframes subject on strong value statement.',
+        source: 'heuristic',
+        status: 'proposed',
+        targetTrackId: 'track-video-main',
+        data: {
+          scale: 1.15
+        }
+      }
+    ]);
+
+    setSelectedGhostIds(new Set(['ghost-prop-1']));
+    setActiveTool('suggestions');
+    showToast('✨ Showcase Demo Project Loaded (1-Click Ready)');
+  }, [dispatch]);
+
   const handleExport = async () => {
-    if (!activeAsset) {
-      showToast('No active asset selected!');
+    const targetAsset = activeAsset || assets[0] || (editState.items.find(i => i.type === 'video') as any);
+    if (!targetAsset) {
+      showToast('No video or media asset found in project!');
       return;
     }
     if (activeJob && (activeJob.status === 'processing' || activeJob.status === 'queued')) {
@@ -663,7 +949,8 @@ export function RawStudio() {
     }
     
     const request = buildRenderRequestFromEditState(editState, {
-      mediaAssetId: activeAsset.id,
+      projectId,
+      mediaAssetId: targetAsset.id,
       platformPresetId: platformPreset,
       quality: exportQuality,
       captionMode: exportCaptionMode,
@@ -734,14 +1021,24 @@ export function RawStudio() {
     splitSelectedClip, deleteSelectedClip,
     trackStates, toggleTrackLock, toggleTrackMute,
     
-    aiLoading, aiHistory, socialCaption, setSocialCaption,
+    aiLoading, aiHistory,
+    ghostProposals, setGhostProposals, selectedGhostIds, setSelectedGhostIds,
+    storyboardPlan, setStoryboardPlan, selectedBeatIds, setSelectedBeatIds,
+    activeBeatIndex, setActiveBeatIndex,
+    audioProposals, setAudioProposals, selectedAudioIds, setSelectedAudioIds,
+    playingAudioId, setPlayingAudioId,
+    visualProposals, setVisualProposals, selectedVisualIds, setSelectedVisualIds,
+    previewVisualModalAsset, setPreviewVisualModalAsset,
+    platformPackages, setPlatformPackages, selectedPlatformIds, setSelectedPlatformIds,
+    packageOverrides, setPackageOverrides, providerCallCount,
+    socialCaption, setSocialCaption,
     suggestedHooks, suggestedHashtags, suggestedCtas, repurposeIdeas,
     handleGenerateCaptions, applyRewrite, loadHooks, loadHashtags, loadCtas, loadRepurpose,
     projectId, projectTitle, setProjectTitle: (t: string) => setProjectTitle(t), autosaveStatus,
     exportModal, setExportModal, platformPreset, setPlatformPreset,
     exportQuality, setExportQuality, exportCaptionMode, setExportCaptionMode,
     activeJob, setActiveJob, exportHistory, handleExport, cancelExport,
-    showToast, videoRef, fileInputRef, handleFileSelected, handleFilesAdded, resetDemo,
+    showToast, videoRef, fileInputRef, handleFileSelected, handleFilesAdded, resetDemo, loadDemoProject,
   };
 
   return (
@@ -750,7 +1047,7 @@ export function RawStudio() {
       {/* Toast Notification */}
       <Toast message={toast} />
 
-      <input ref={fileInputRef} type="file" accept="video/mp4,video/quicktime,video/x-m4v,video/webm,video/x-matroska,.mkv" hidden onChange={handleFileSelected} />
+      <input ref={fileInputRef} type="file" multiple accept="video/*,audio/*,image/*,.mp4,.mov,.m4v,.webm,.mkv,.mp3,.wav,.ogg,.aac,.m4a,.png,.jpg,.jpeg,.webp" hidden onChange={handleFileSelected} />
 
       <RawStudioToolbar 
         projectTitle={projectTitle}

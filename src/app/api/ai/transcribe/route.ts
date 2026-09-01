@@ -1,7 +1,23 @@
 import { NextResponse } from 'next/server';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
 import { transcribeAudioBuffer } from '@/lib/ai/provider';
+import { getWhisperInstallationStatus } from '@/lib/ai/local-whisper-worker';
 import { saveAiEvent } from '@/lib/data/ai-history-service';
+import { isDemoMode } from '@/lib/supabase';
+
+const MAX_UPLOAD_BYTES = 100 * 1024 * 1024; // 100MB
+
+/**
+ * Diagnostic status endpoint to check local whisper.cpp installation state.
+ */
+export async function GET(request: Request) {
+  try {
+    const status = await getWhisperInstallationStatus();
+    return NextResponse.json({ success: true, ...status });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   const userId = await getAuthedUserId(request);
@@ -9,61 +25,82 @@ export async function POST(request: Request) {
     return NextResponse.json(UNAUTHORIZED_BODY, { status: 401 });
   }
 
+  // Early rejection before parsing formData or loading memory
+  const contentLength = request.headers.get('content-length');
+  if (contentLength && parseInt(contentLength, 10) > MAX_UPLOAD_BYTES) {
+    return NextResponse.json({
+      success: false,
+      error: `Media file exceeds maximum upload limit (${MAX_UPLOAD_BYTES / (1024 * 1024)}MB). Please trim before transcribing.`
+    }, { status: 413 });
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as Blob | null;
     const language = (formData.get('language') as string) || undefined;
     const prompt = (formData.get('prompt') as string) || undefined;
+    const rawDuration = formData.get('duration') as string | null;
+    const durationSeconds = rawDuration ? parseFloat(rawDuration) : undefined;
 
     if (!file) {
       return NextResponse.json({ error: 'Missing audio/video file' }, { status: 400 });
+    }
+
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return NextResponse.json({
+        success: false,
+        error: `Media file exceeds maximum upload limit (${MAX_UPLOAD_BYTES / (1024 * 1024)}MB). Please trim before transcribing.`
+      }, { status: 413 });
     }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const filename = (file as any).name || 'input-audio.mp4';
 
-    const { segments, text, isMock } = await transcribeAudioBuffer(buffer, filename, language, prompt);
+    const result = await transcribeAudioBuffer(
+      buffer,
+      filename,
+      language,
+      prompt,
+      durationSeconds,
+      request.signal
+    );
 
-    if (isMock || segments.length === 0) {
-      // Deterministic fallback timed segments if Whisper API key is unset
-      const fallbackSegments = [
-        { text: 'Are you still doing this manually?', start_time: 0, end_time: 2.5 },
-        { text: 'There is a smarter way to do it.', start_time: 2.6, end_time: 4.5 },
-        { text: 'Let AI handle the heavy lifting.', start_time: 4.6, end_time: 6.5 },
-        { text: 'Save hours every single week.', start_time: 6.6, end_time: 9.0 }
-      ];
-
-      await saveAiEvent(
-        { task_type: 'speech_transcription', preview: '4 fallback transcript segments' },
-        userId,
-        { filename, language },
-        { segments: fallbackSegments, isFallback: true }
-      ).catch(() => {});
-
+    if (result.error) {
       return NextResponse.json({
-        success: true,
-        provider: 'mock',
-        text: 'Are you still doing this manually? There is a smarter way to do it...',
-        segments: fallbackSegments
-      });
+        success: false,
+        error: result.error
+      }, { status: 502 });
+    }
+
+    if (result.isMock || result.segments.length === 0) {
+      return NextResponse.json({
+        success: false,
+        error: result.error || 'No speech segments detected in media file. Please check that the video has an audible voice track.'
+      }, { status: 422 });
     }
 
     await saveAiEvent(
-      { task_type: 'speech_transcription', preview: `${segments.length} transcribed segments` },
+      { task_type: 'speech_transcription', preview: `${result.segments.length} transcribed segments` },
       userId,
       { filename, language },
-      { text: text.slice(0, 100), segmentCount: segments.length }
+      { text: result.text.slice(0, 100), segmentCount: result.segments.length }
     ).catch(() => {});
 
     return NextResponse.json({
       success: true,
-      provider: 'openai',
-      text,
-      segments
+      provider: result.provider || 'local_whisper_cpp',
+      text: result.text,
+      segments: result.segments
     });
-  } catch (err: any) {
-    console.error('Transcription API Error:', err);
-    return NextResponse.json({ error: err?.message || 'Transcription failed' }, { status: 500 });
+  } catch (error: any) {
+    if (request.signal?.aborted || error.message?.includes('cancelled')) {
+      return NextResponse.json({ success: false, error: 'Transcription cancelled' }, { status: 499 });
+    }
+    console.error('Transcription API Route Error:', error);
+    return NextResponse.json({
+      success: false,
+      error: error.message || 'Transcription processing failed'
+    }, { status: 500 });
   }
 }

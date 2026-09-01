@@ -94,6 +94,10 @@ export type EditAction =
   | { type: 'UPDATE_PROPERTIES'; payload: { id: string; properties: Record<string, any> }; meta?: { isTransient?: boolean } }
   | { type: 'BATCH_UPDATE_PROPERTIES'; payload: Array<{ id: string; properties: Record<string, any> }>; meta?: { isTransient?: boolean } }
   | { type: 'APPLY_SILENCE_CUT_PLAN'; payload: import('./audio/plan').SilenceRemovalEditPlan }
+  | { type: 'APPLY_AI_SUGGESTIONS'; payload: import('./proposal-compiler').ApplyAiSuggestionsPlan }
+  | { type: 'APPLY_STORYBOARD'; payload: import('./storyboard-compiler').ApplyStoryboardPlan }
+  | { type: 'APPLY_AUDIO_ASSETS'; payload: { newItems: TimelineItem[] } }
+  | { type: 'APPLY_VISUAL_ASSETS'; payload: { newItems: TimelineItem[] } }
   | { type: 'ADD_MARKER'; payload: TimelineMarker }
   | { type: 'DELETE_MARKER'; payload: { id: string } }
   | { type: 'ADD_KEYFRAME'; payload: { itemId: string; keyframe: Keyframe } }

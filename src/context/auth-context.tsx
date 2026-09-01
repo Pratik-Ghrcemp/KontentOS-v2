@@ -53,10 +53,10 @@ const deriveHandle = (email?: string) => {
 const demoUser = {
   id: 'demo-user',
   aud: 'authenticated',
-  app_metadata: {},
+  app_metadata: { role: 'owner' },
   created_at: new Date(0).toISOString(),
-  email: 'creator@example.com',
-  user_metadata: { full_name: 'Demo Creator', name: 'Demo Creator' },
+  email: 'creator@kontentos.ai',
+  user_metadata: { full_name: 'Demo Creator', name: 'Demo Creator', role: 'owner' },
 } as User;
 
 const demoProfile: UserProfile = {
@@ -66,14 +66,14 @@ const demoProfile: UserProfile = {
   role: 'owner',
   theme: 'light',
   is_pro: true,
-  watermark_enabled: true,
+  watermark_enabled: false,
   onboarding_completed: true,
 };
 
 const demoSession = {
-  access_token: 'demo-access-token',
+  access_token: 'demo-session-token',
   refresh_token: 'demo-refresh-token',
-  expires_in: 3600,
+  expires_in: 31536000,
   token_type: 'bearer',
   user: demoUser,
 } as Session;
@@ -140,7 +140,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    console.log('AUTH USEFFECT MOUNTED', {isSupabaseConfigured: isSupabaseConfigured(), isDemoMode: isDemoMode()});
     if (!isSupabaseConfigured() || isDemoMode()) {
       setUser(demoUser);
       setSession(demoSession);
@@ -237,20 +236,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    if (!isSupabaseConfigured() || isDemoMode()) {
-      setUser(null);
-      setSession(null);
-      setProfile(null);
-      return { error: null };
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setAuthError(null);
+
+    if (isSupabaseConfigured()) {
+      const { error } = await supabase.auth.signOut();
+      if (error) setAuthError(error.message);
+      return { error };
     }
 
-    if (!isSupabaseConfigured()) {
-      return { error: new Error('Supabase environment variables are missing.') };
-    }
-
-    const { error } = await supabase.auth.signOut();
-    if (error) setAuthError(error.message);
-    return { error };
+    return { error: null };
   };
 
   const permissions = useMemo(() => {

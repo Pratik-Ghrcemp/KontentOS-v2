@@ -34,10 +34,21 @@ export function extractPeaksFromAudioBuffer(audioBuffer: AudioBuffer, numSamples
  */
 export function generateFallbackPeaks(numSamples = 60, seed = 42): number[] {
   const peaks: number[] = [];
+  const pausePeriod = Math.max(8, Math.round(numSamples / 6));
+  const pauseLength = Math.max(2, Math.round(pausePeriod * 0.25));
+
   for (let i = 0; i < numSamples; i++) {
+    // Intermittent silence pauses periodically across duration
+    const posInPeriod = i % pausePeriod;
+    const isPause = (posInPeriod < pauseLength && i > 2 && i < numSamples - 2);
+    if (isPause) {
+      peaks.push(0.005);
+      continue;
+    }
+
     const pseudoRandom = Math.abs(Math.sin((i + 1) * seed * 9999));
     const envelope = Math.sin((i / numSamples) * Math.PI);
-    const peak = Math.max(0.15, (0.3 + 0.7 * pseudoRandom) * envelope);
+    const peak = Math.max(0.15, (0.3 + 0.7 * pseudoRandom) * Math.max(0.3, envelope));
     peaks.push(Number(peak.toFixed(3)));
   }
   return peaks;

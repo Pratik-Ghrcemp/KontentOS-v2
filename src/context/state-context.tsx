@@ -193,6 +193,19 @@ export interface CreatorProfile {
   onboarding_completed?: boolean;
 }
 
+export interface StudioIdeaContext {
+  id?: string;
+  idea: string;
+  topic?: string;
+  hook?: string;
+  targetAudience?: string;
+  contentGoal?: string;
+  platform?: string;
+  suggestedScript?: string;
+  source: 'idea_studio' | 'manual';
+  createdAt: string;
+}
+
 export interface AppState {
   theme: 'light' | 'dark';
   geo: string;
@@ -200,6 +213,7 @@ export interface AppState {
   currentTab: string;
   isSidebarCollapsed: boolean;
   creatorProfile: CreatorProfile;
+  studioIdeaContext: StudioIdeaContext | null;
 }
 
 const initialDefaultState: AppState = {
@@ -208,6 +222,7 @@ const initialDefaultState: AppState = {
   geoSource: 'GPS & Timezone (Auto)',
   currentTab: 'dashboard',
   isSidebarCollapsed: false,
+  studioIdeaContext: null,
   creatorProfile: {
     name: 'Aman Sharma',
     handle: '@amanshades',
@@ -232,6 +247,7 @@ interface StateContextType {
   setTheme: (theme: 'light' | 'dark') => void;
   setGeo: (geoCode: string, source?: string) => void;
   setTab: (tabName: string) => void;
+  sendIdeaToStudio: (idea: Omit<StudioIdeaContext, 'createdAt'>) => void;
   toggleSidebar: () => void;
   updateProfile: (partialProfile: Partial<CreatorProfile>) => Promise<void>;
   requestGpsLocation: () => void;
@@ -273,29 +289,52 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function loadProfile() {
       if (!user) return;
-      if (isDemoMode() || !isSupabaseConfigured()) return;
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-      
-      if (data) {
+
+      if (user.id === 'admin-super-user') {
         setState(prev => ({
           ...prev,
-          theme: (data.theme as 'light'|'dark') || 'light',
+          theme: 'light',
           creatorProfile: {
             ...prev.creatorProfile,
-            name: data.full_name || prev.creatorProfile.name,
-            handle: data.handle || prev.creatorProfile.handle,
-            proNiche: data.niche || prev.creatorProfile.proNiche,
-            isPro: data.is_pro ?? prev.creatorProfile.isPro,
-            includeWatermark: data.watermark_enabled ?? prev.creatorProfile.includeWatermark,
-            onboarding_completed: data.onboarding_completed ?? false,
+            name: 'Pratik (Super Admin)',
+            handle: '@pratik_admin',
+            isPro: true,
+            includeWatermark: false,
+            onboarding_completed: true,
           },
-          currentTab: data.onboarding_completed ? 'dashboard' : 'onboarding',
+          currentTab: 'dashboard',
         }));
-        document.documentElement.setAttribute('data-theme', data.theme || 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
+        return;
+      }
+
+      if (isDemoMode() || !isSupabaseConfigured()) return;
+      try {
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (data) {
+          setState(prev => ({
+            ...prev,
+            theme: (data.theme as 'light'|'dark') || 'light',
+            creatorProfile: {
+              ...prev.creatorProfile,
+              name: data.full_name || prev.creatorProfile.name,
+              handle: data.handle || prev.creatorProfile.handle,
+              proNiche: data.niche || prev.creatorProfile.proNiche,
+              isPro: data.is_pro ?? prev.creatorProfile.isPro,
+              includeWatermark: data.watermark_enabled ?? prev.creatorProfile.includeWatermark,
+              onboarding_completed: data.onboarding_completed ?? false,
+            },
+            currentTab: data.onboarding_completed ? 'dashboard' : 'onboarding',
+          }));
+          document.documentElement.setAttribute('data-theme', data.theme || 'light');
+        }
+      } catch (err) {
+        console.warn('Could not load profile from Supabase:', err);
       }
     }
     loadProfile();
@@ -310,8 +349,12 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.setAttribute('data-theme', themeName);
     saveState(updated);
     
-    if (user) {
-      await supabase.from('profiles').upsert({ id: user.id, theme: themeName });
+    if (user && user.id !== 'admin-super-user' && isSupabaseConfigured() && !isDemoMode()) {
+      try {
+        await supabase.from('profiles').upsert({ id: user.id, theme: themeName });
+      } catch (e) {
+        console.warn('Error saving theme to Supabase:', e);
+      }
     }
   };
 
@@ -327,6 +370,19 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
       ...state,
       currentTab: tabName,
       isSidebarCollapsed: tabName === 'studio' ? true : state.isSidebarCollapsed
+    };
+    saveState(updated);
+  };
+
+  const sendIdeaToStudio = (idea: Omit<StudioIdeaContext, 'createdAt'>) => {
+    const updated = {
+      ...state,
+      currentTab: 'studio',
+      isSidebarCollapsed: true,
+      studioIdeaContext: {
+        ...idea,
+        createdAt: new Date().toISOString()
+      }
     };
     saveState(updated);
   };
@@ -352,20 +408,24 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
     };
     saveState(updated);
 
-    if (user) {
-      // Map CreatorProfile fields to Supabase columns
-      const { error } = await supabase.from('profiles').upsert({
-        id: user.id,
-        full_name: updatedProfile.name,
-        handle: updatedProfile.handle,
-        niche: updatedProfile.proNiche,
-        is_pro: updatedProfile.isPro,
-        watermark_enabled: updatedProfile.includeWatermark,
-        onboarding_completed: updatedProfile.onboarding_completed
-      });
+    if (user && user.id !== 'admin-super-user' && isSupabaseConfigured() && !isDemoMode()) {
+      try {
+        // Map CreatorProfile fields to Supabase columns
+        const { error } = await supabase.from('profiles').upsert({
+          id: user.id,
+          full_name: updatedProfile.name,
+          handle: updatedProfile.handle,
+          niche: updatedProfile.proNiche,
+          is_pro: updatedProfile.isPro,
+          watermark_enabled: updatedProfile.includeWatermark,
+          onboarding_completed: updatedProfile.onboarding_completed
+        });
 
-      if (error) {
-        throw error;
+        if (error) {
+          console.warn('Supabase upsert profile error:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase profile update failed:', err);
       }
     }
   };
@@ -395,6 +455,7 @@ export function StateProvider({ children }: { children: React.ReactNode }) {
       setTheme,
       setGeo,
       setTab,
+      sendIdeaToStudio,
       toggleSidebar,
       updateProfile,
       requestGpsLocation

@@ -1,32 +1,51 @@
 import { NextResponse } from 'next/server';
+import { getAiGatewayStatus } from '@/lib/ai/gateway';
 
 export async function GET() {
-  const isMock = process.env.AI_PROVIDER === 'mock';
-  const hasAzureKey = !!process.env.AZURE_OPENAI_API_KEY;
-  const hasAzureEndpoint = !!process.env.AZURE_OPENAI_ENDPOINT;
-  const hasOpenAIKey = !!process.env.OPENAI_API_KEY;
-  
-  const azureConfigured = hasAzureKey && hasAzureEndpoint;
-  const openaiConfigured = hasOpenAIKey;
-
-  let resolvedProvider = 'mock';
-  if (!isMock) {
-    if (azureConfigured) resolvedProvider = 'azure';
-    else if (openaiConfigured) resolvedProvider = 'openai';
-  }
-
-  const missingFields = [];
-  if (!isMock && !azureConfigured && !openaiConfigured) {
-    missingFields.push('OPENAI_API_KEY or AZURE_OPENAI_API_KEY');
-  }
+  const gateway = await getAiGatewayStatus();
 
   return NextResponse.json({
-    configured_provider: process.env.AI_PROVIDER || 'openai',
-    resolved_provider: resolvedProvider,
-    mock_fallback: resolvedProvider === 'mock',
-    model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-    azure_configured: azureConfigured,
-    openai_configured: openaiConfigured,
-    missing_fields: missingFields
+    configured_provider: process.env.AI_PROVIDER || 'auto',
+    resolved_provider: gateway.providers.find(p => p.available && p.provider !== 'mock')?.provider || 'mock',
+    mock_fallback: !gateway.providers.some(p => p.available && p.provider !== 'mock'),
+    model: gateway.providers.find(p => p.available && p.model)?.model || 'gemini-1.5-flash',
+    gateway
   });
+}
+
+import { getAuthedContext, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
+
+export async function POST(req: Request) {
+  const auth = await getAuthedContext(req);
+  if (!auth) {
+    return NextResponse.json(UNAUTHORIZED_BODY, { status: 401 });
+  }
+
+  try {
+    const body = await req.json();
+    const { apiKey, provider = 'gemini' } = body || {};
+
+    if (apiKey && typeof apiKey === 'string') {
+      const cleanKey = apiKey.trim();
+      if (provider === 'gemini') {
+        process.env.GEMINI_API_KEY = cleanKey;
+        process.env.GOOGLE_GEMINI_API_KEY = cleanKey;
+      } else if (provider === 'openai') {
+        process.env.OPENAI_API_KEY = cleanKey;
+      }
+    }
+
+    const gateway = await getAiGatewayStatus();
+    const resolved = gateway.providers.find(p => p.available && p.provider !== 'mock')?.provider || 'mock';
+
+    return NextResponse.json({
+      success: true,
+      configured_provider: provider,
+      resolved_provider: resolved,
+      mock_fallback: resolved === 'mock',
+      gateway
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err?.message || 'Failed to update API key' }, { status: 400 });
+  }
 }

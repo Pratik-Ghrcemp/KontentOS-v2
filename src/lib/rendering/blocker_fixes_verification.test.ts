@@ -22,7 +22,7 @@ async function runBlockerFixTests() {
   console.log('\n[Test 1] Verifying Shared Render Job Registry for Polling Route...');
   const testJobId = `job-test-${Date.now()}`;
   
-  setJob(testJobId, {
+  await setJob(testJobId, {
     id: testJobId,
     media_asset_id: 'test-asset',
     status: 'processing',
@@ -32,22 +32,22 @@ async function runBlockerFixTests() {
     updated_at: new Date().toISOString()
   });
 
-  const retrieved = getJob(testJobId);
-  assert(retrieved !== undefined && retrieved.id === testJobId, 'Blocker 1: Job stored in shared registry');
+  const retrieved = await getJob(testJobId);
+  assert(retrieved !== null && retrieved?.id === testJobId, 'Blocker 1: Job stored in shared registry');
   assert(retrieved?.progress === 25, 'Blocker 1: Initial progress matches 25%');
 
-  updateJob(testJobId, { progress: 80, status: 'processing' });
-  const updated = getJob(testJobId);
+  await updateJob(testJobId, { progress: 80, status: 'processing' });
+  const updated = await getJob(testJobId);
   assert(updated?.progress === 80, 'Blocker 1: Progress updated to 80%');
 
   const downloadUrl = `/api/render-jobs/download?path=test.mp4&filename=video.mp4`;
-  updateJob(testJobId, {
+  await updateJob(testJobId, {
     status: 'completed',
     progress: 100,
     result_json: { fileUrl: downloadUrl } as any
   });
 
-  const finalJob = getJob(testJobId);
+  const finalJob = await getJob(testJobId);
   assert(finalJob?.status === 'completed' && finalJob.result_json?.fileUrl === downloadUrl, 'Blocker 1: Completed status & downloadUrl retrievable via getJob(jobId)');
 
   // ------------------------------------------------------------------------

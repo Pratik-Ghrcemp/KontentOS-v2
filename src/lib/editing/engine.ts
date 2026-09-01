@@ -196,6 +196,104 @@ export function timelineReducer(state: EditState, action: EditAction): EditState
       };
     }
 
+    case 'APPLY_AI_SUGGESTIONS': {
+      const plan = action.payload;
+      if (!plan || plan.appliedProposalCount === 0) {
+        return state;
+      }
+
+      const lockedTrackIds = new Set(state.tracks.filter(t => t.locked).map(t => t.id));
+      let nextItems = [...state.items];
+
+      // 1. Delete items targeted for removal (skipping locked tracks)
+      if (plan.itemsToDelete && plan.itemsToDelete.length > 0) {
+        const toDeleteSet = new Set(plan.itemsToDelete);
+        nextItems = nextItems.filter(item => {
+          if (!toDeleteSet.has(item.id)) return true;
+          // Preserve item if on a locked track
+          return lockedTrackIds.has(item.trackId);
+        });
+      }
+
+      // 2. Update existing items (properties / keyframes / zoom scale)
+      if (plan.itemsToUpdate && plan.itemsToUpdate.length > 0) {
+        const updateMap = new Map(plan.itemsToUpdate.map(u => [u.id, u]));
+        nextItems = nextItems.map(item => {
+          if (lockedTrackIds.has(item.trackId)) return item;
+          const update = updateMap.get(item.id);
+          if (!update) return item;
+          return {
+            ...item,
+            properties: {
+              ...(item.properties || {}),
+              ...(update.properties || {})
+            },
+            keyframes: update.keyframes || item.keyframes
+          };
+        });
+      }
+
+      // 3. Add new items (e.g. headline text overlays)
+      if (plan.itemsToAdd && plan.itemsToAdd.length > 0) {
+        nextItems = [...nextItems, ...plan.itemsToAdd];
+      }
+
+      const newDuration = recalculateDuration(nextItems);
+      return {
+        ...state,
+        items: nextItems,
+        duration: newDuration
+      };
+    }
+
+    case 'APPLY_STORYBOARD': {
+      const plan = action.payload;
+      if (!plan || !plan.newItems || plan.newItems.length === 0) {
+        return state;
+      }
+
+      const nextItems = plan.clearExisting 
+        ? [...plan.newItems] 
+        : [...state.items, ...plan.newItems];
+
+      const newDuration = recalculateDuration(nextItems);
+      return {
+        ...state,
+        items: nextItems,
+        duration: Math.max(state.duration, newDuration, plan.totalDuration || 0)
+      };
+    }
+
+    case 'APPLY_AUDIO_ASSETS': {
+      const payload = action.payload;
+      if (!payload || !payload.newItems || payload.newItems.length === 0) {
+        return state;
+      }
+
+      const nextItems = [...state.items, ...payload.newItems];
+      const newDuration = recalculateDuration(nextItems);
+      return {
+        ...state,
+        items: nextItems,
+        duration: Math.max(state.duration, newDuration)
+      };
+    }
+
+    case 'APPLY_VISUAL_ASSETS': {
+      const payload = action.payload;
+      if (!payload || !payload.newItems || payload.newItems.length === 0) {
+        return state;
+      }
+
+      const nextItems = [...state.items, ...payload.newItems];
+      const newDuration = recalculateDuration(nextItems);
+      return {
+        ...state,
+        items: nextItems,
+        duration: Math.max(state.duration, newDuration)
+      };
+    }
+
     case 'ADD_MARKER': {
       const currentMarkers = state.markers || [];
       // Prevent duplicate markers at effectively the same timestamp (within 0.1s threshold)

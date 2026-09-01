@@ -1,32 +1,62 @@
 import { RenderComposition, RenderWorkerResult } from '../types';
 import { createFfmpegCommandPlan } from '../ffmpeg-command-planner';
-import { spawn } from 'child_process';
+import { spawn, spawnSync, ChildProcess } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 
 export function getFfmpegExecutablePath(): string {
-  if (process.env.LOCAL_FFMPEG_PATH) {
+  if (process.env.LOCAL_FFMPEG_PATH && fs.existsSync(process.env.LOCAL_FFMPEG_PATH)) {
     return process.env.LOCAL_FFMPEG_PATH;
   }
+
+  const projectRoot = process.cwd();
+  const isWin = process.platform === 'win32';
+  const exeName = isWin ? 'ffmpeg.exe' : 'ffmpeg';
+
+  const candidatePaths: string[] = [
+    // 1. Direct bin/ffmpeg executable
+    path.resolve(projectRoot, 'bin', 'ffmpeg', exeName),
+    // 2. Direct bin/whisper executable
+    path.resolve(projectRoot, 'bin', 'whisper', exeName),
+    // 3. Direct bin/ executable
+    path.resolve(projectRoot, 'bin', exeName),
+    // 4. Direct node_modules platform package path
+    path.resolve(projectRoot, 'node_modules', '@ffmpeg-installer', 'win32-x64', 'ffmpeg.exe'),
+    path.resolve(projectRoot, 'node_modules', '@ffmpeg-installer', 'linux-x64', 'ffmpeg'),
+    path.resolve(projectRoot, 'node_modules', '@ffmpeg-installer', 'darwin-x64', 'ffmpeg'),
+    // 5. Common Windows install locations
+    'C:\\ffmpeg\\bin\\ffmpeg.exe',
+    'C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe'
+  ];
+
+  for (const p of candidatePaths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+
+  // 6. Installer package resolution
   try {
     const installer = require('@ffmpeg-installer/ffmpeg');
     if (installer && installer.path && fs.existsSync(installer.path)) {
       return installer.path;
     }
-  } catch (e) {
-    // fallback
-  }
+  } catch (e) {}
+
+  // 7. System PATH fallback
   return 'ffmpeg';
 }
 
 export async function checkLocalFfmpegAvailable(): Promise<boolean> {
-  return new Promise((resolve) => {
+  try {
     const ffmpegPath = getFfmpegExecutablePath();
-    const proc = spawn(ffmpegPath, ['-version'], { stdio: 'pipe' });
-    proc.on('close', (code) => resolve(code === 0));
-    proc.on('error', () => resolve(false));
-  });
+    if (ffmpegPath !== 'ffmpeg' && !fs.existsSync(ffmpegPath)) return false;
+    const res = spawnSync(ffmpegPath, ['-version'], { timeout: 3000 });
+    return res.status === 0 && !res.error;
+  } catch (e) {
+    return false;
+  }
 }
 
 function parseFfmpegProgress(line: string, totalDurationSeconds: number): number | null {
@@ -45,7 +75,8 @@ function parseFfmpegProgress(line: string, totalDurationSeconds: number): number
 
 export async function runLocalFfmpegRender(
   composition: RenderComposition,
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  onProcessSpawn?: (proc: ChildProcess) => void
 ): Promise<RenderWorkerResult> {
   const isAvailable = await checkLocalFfmpegAvailable();
   if (!isAvailable) {
@@ -79,6 +110,9 @@ export async function runLocalFfmpegRender(
 
   return new Promise((resolve) => {
     const proc = spawn(ffmpegPath, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    if (typeof onProcessSpawn === 'function') {
+      onProcessSpawn(proc);
+    }
 
     proc.stderr?.on('data', (chunk: Buffer) => {
       const line = chunk.toString();
@@ -94,21 +128,25 @@ export async function runLocalFfmpegRender(
       logs.push(chunk.toString().trim());
     });
 
-    proc.on('close', (code) => {
+    proc.on('close', (code, signal) => {
       if (code === 0 && fs.existsSync(outputFilePath)) {
         const stat = fs.statSync(outputFilePath);
         resolve({
           success: true,
           fileUrl: `file://${outputFilePath}`,
+          outputPath: outputFilePath,
           sizeBytes: stat.size,
           durationSeconds: composition.timeline.duration,
           logs,
         });
       } else {
         const errorDetail = logs.slice(-5).join(' | ');
+        const wasKilled = signal === 'SIGTERM' || signal === 'SIGKILL' || proc.killed;
         resolve({
           success: false,
-          error: `FFmpeg exited with code ${code}. Details: ${errorDetail}`,
+          error: wasKilled
+            ? `Render process was cancelled (${signal || 'SIGTERM'})`
+            : `FFmpeg exited with code ${code}. Details: ${errorDetail}`,
           logs,
         });
       }
@@ -122,23 +160,4 @@ export async function runLocalFfmpegRender(
       });
     });
   });
-}
-
-/**
- * Skeleton: Upload the rendered output file to Supabase Storage (exports bucket).
- * This is the next step after a successful local render.
- */
-export async function uploadRenderToStorage(
-  localFilePath: string,
-  userId: string,
-  jobId: string
-): Promise<string | null> {
-  // Will be implemented when Supabase 'exports' bucket is configured.
-  // Steps:
-  // 1. Read file from localFilePath using fs.createReadStream
-  // 2. Upload to supabase.storage.from('exports').upload(`${userId}/${jobId}.mp4`, stream)
-  // 3. Create a signed URL and return it
-  // 4. Optionally delete the local temp file after successful upload
-  console.log(`[uploadRenderToStorage] Ready to upload: ${localFilePath} for user: ${userId}, job: ${jobId}`);
-  return null; // Will return the Supabase signed URL once implemented
 }

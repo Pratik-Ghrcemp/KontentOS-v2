@@ -1,16 +1,14 @@
 import { NextResponse } from 'next/server';
-import { generateJson } from '@/lib/ai/provider';
+import { generateStructured } from '@/lib/ai/gateway';
 import { HookSuggestionRequest } from '@/lib/ai/types';
-import { saveAiEvent } from '@/lib/data/ai-history-service';
 import { getAuthedUserId, UNAUTHORIZED_BODY } from '@/lib/auth/require-user';
-import { buildCreatorSystemPrompt } from '@/lib/ai/creator-dna';
 
 const SYSTEM_PROMPT = `You are a viral short-form content strategist with a proven track record on TikTok, Instagram Reels, and YouTube Shorts.
 Your task is to create irresistible video opening hooks that stop the scroll in the first 3 seconds.
 Rules:
 - Each hook must be under 12 words.
 - Use proven patterns: curiosity gap, bold claim, direct address, shocking stat, or storytelling opener.
-- Avoid clickbait that feels dishonest — keep hooks authentic and platform-native.
+- Avoid clickbait that feels dishonest - keep hooks authentic and platform-native.
 - Output ONLY valid JSON, no markdown, no explanation.
 JSON schema: { "hooks": ["string", "string", "string"] }`;
 
@@ -22,29 +20,31 @@ export async function POST(request: Request) {
 
   try {
     const body: HookSuggestionRequest = await request.json();
-
     const userPrompt = `Generate exactly 3 viral video opening hooks for the following:
 Topic: "${body.topic || 'productivity and AI tools'}"
 Target Audience: ${body.audience || 'content creators and entrepreneurs'}
 Platform: ${body.platform || 'TikTok / Instagram Reels'}
 Style: Short, punchy, scroll-stopping. Do not use hashtags in the hooks.`;
 
-    let data: any = null;
-    let isMock = true;
+    const result = await generateStructured<{ hooks: string[] }>({
+      capability: 'hook_analysis',
+      schemaName: 'hook_suggestions',
+      prompt: userPrompt,
+      systemPrompt: SYSTEM_PROMPT,
+      creatorProfile: body.creatorProfile,
+      userId,
+      persistEvent: true,
+      responsePreview: (data) => data?.hooks?.[0] || 'Hook suggestions'
+    });
 
-    try {
-      const activeSystemPrompt = buildCreatorSystemPrompt(SYSTEM_PROMPT, body.creatorProfile);
-      const result = await generateJson<{ hooks: string[] }>(userPrompt, activeSystemPrompt);
-      data = result.data;
-      isMock = result.isMock;
-    } catch (aiError: any) {
-      console.warn('AI hook generation failed, falling back to mock:', aiError?.message);
-    }
-
-    if (isMock || !data?.hooks) {
+    if (!result.data?.hooks) {
       return NextResponse.json({
         success: true,
         provider: 'mock',
+        degraded: true,
+        fallbackUsed: true,
+        reason: result.reason || result.error || 'No AI provider configured',
+        latencyMs: result.latencyMs,
         hooks: [
           'Nobody talks about this productivity hack.',
           'I saved 10 hours a week doing this one thing.',
@@ -53,14 +53,14 @@ Style: Short, punchy, scroll-stopping. Do not use hashtags in the hooks.`;
       });
     }
 
-    await saveAiEvent(
-      { task_type: 'hook_suggestion', preview: data.hooks[0] },
-      userId,
-      body,
-      data
-    ).catch(() => {});
-
-    return NextResponse.json({ success: true, provider: 'openai', hooks: data.hooks });
+    return NextResponse.json({
+      success: true,
+      provider: result.provider,
+      degraded: result.degraded,
+      fallbackUsed: result.fallbackUsed,
+      latencyMs: result.latencyMs,
+      hooks: result.data.hooks
+    });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }

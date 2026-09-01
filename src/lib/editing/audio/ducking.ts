@@ -20,14 +20,33 @@ export function calculateDuckingGain(
 ): number {
   if (primaryAudioClips.length === 0) return 1.0;
 
-  const isVoiceActive = primaryAudioClips.some(
-    clip => time >= clip.start && time <= clip.end
-  );
+  const duckedGain = Math.max(0.1, Math.min(1.0, dbToGain(config.duckingDb)));
+  const attackSec = Math.max(0.01, (config.attackMs || 200) / 1000);
+  const releaseSec = Math.max(0.01, (config.releaseMs || 300) / 1000);
 
-  if (!isVoiceActive) return 1.0;
+  let minGain = 1.0;
 
-  const duckedGain = dbToGain(config.duckingDb);
-  return Math.max(0.1, Math.min(1.0, duckedGain));
+  for (const clip of primaryAudioClips) {
+    // 1. Inside speech clip
+    if (time >= clip.start && time <= clip.end) {
+      if (time < clip.start + attackSec) {
+        // Smooth fade down during attack window
+        const progress = (time - clip.start) / attackSec;
+        const currentGain = 1.0 - progress * (1.0 - duckedGain);
+        minGain = Math.min(minGain, currentGain);
+      } else {
+        minGain = Math.min(minGain, duckedGain);
+      }
+    } 
+    // 2. In release recovery window after speech clip ends
+    else if (time > clip.end && time <= clip.end + releaseSec) {
+      const progress = (time - clip.end) / releaseSec;
+      const currentGain = duckedGain + progress * (1.0 - duckedGain);
+      minGain = Math.min(minGain, currentGain);
+    }
+  }
+
+  return Math.max(0.1, Math.min(1.0, minGain));
 }
 
 /**

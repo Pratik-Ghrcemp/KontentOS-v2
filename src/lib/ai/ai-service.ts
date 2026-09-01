@@ -51,12 +51,35 @@ export async function repurposeContent(request: ContentRepurposeRequest): Promis
   return res.json();
 }
 
-export async function transcribeMedia(file: Blob, language?: string, prompt?: string): Promise<{ success: boolean; provider: string; text: string; segments: { text: string; start_time: number; end_time: number }[] }> {
+export async function getWhisperInstallationStatusClient(): Promise<{
+  success: boolean;
+  isReady: boolean;
+  ffmpegInstalled: boolean;
+  ffmpegPath: string | null;
+  whisperBinaryInstalled: boolean;
+  whisperExecutable: string | null;
+  whisperModelInstalled: boolean;
+  whisperModelPath: string | null;
+  model: string;
+  error?: string;
+}> {
+  const res = await fetch('/api/ai/transcribe');
+  return res.json();
+}
+
+export async function transcribeMedia(
+  file: Blob, 
+  language?: string, 
+  prompt?: string,
+  duration?: number,
+  signal?: AbortSignal
+): Promise<{ success: boolean; provider: string; text: string; segments: { text: string; start_time: number; end_time: number }[]; error?: string }> {
   const { data: { session } } = await supabase.auth.getSession();
   const formData = new FormData();
   formData.append('file', file);
   if (language) formData.append('language', language);
   if (prompt) formData.append('prompt', prompt);
+  if (typeof duration === 'number') formData.append('duration', String(duration));
 
   const headers: Record<string, string> = {};
   if (session?.access_token) {
@@ -66,7 +89,8 @@ export async function transcribeMedia(file: Blob, language?: string, prompt?: st
   const res = await fetch('/api/ai/transcribe', {
     method: 'POST',
     headers,
-    body: formData
+    body: formData,
+    signal
   });
 
   return res.json();

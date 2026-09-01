@@ -17,6 +17,7 @@ export interface RenderPlatformPreset {
 }
 
 export interface RenderRequest {
+  projectId?: string;
   mediaAssetId: string;
   platformPresetId: string;
   quality: RenderQuality;
@@ -99,6 +100,7 @@ export interface RenderAudioLayer extends RenderLayer {
   sourceStart: number;
   sourceEnd: number;
   volume: number;
+  muted?: boolean;
   ducking: boolean;
   fadeInDuration?: number;
   fadeOutDuration?: number;
@@ -128,10 +130,13 @@ export interface RenderOverlayLayer extends RenderLayer {
   type: 'overlay';
   overlayType: 'sticker' | 'draw' | 'image';
   label?: string;
+  text?: string;
   svgPath?: string;
   imageUrl?: string;
   color?: string;
+  strokeColor?: string;
   strokeWidth?: number;
+  strokePoints?: Array<{ x: number; y: number }>;
 }
 
 export interface RenderTimeline {
@@ -162,6 +167,7 @@ export interface RenderComposition {
 export interface RenderWorkerResult {
   success: boolean;
   fileUrl?: string;
+  outputPath?: string;
   srtUrl?: string;
   sizeBytes?: number;
   durationSeconds?: number;
