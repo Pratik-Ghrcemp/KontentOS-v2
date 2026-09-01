@@ -73,6 +73,8 @@ export function Sidebar({ type }: { type: 'desktop' | 'mobile' }) {
               return (
                 <button
                   key={item.id}
+                  data-tab={item.id}
+                  data-testid={`sidebar-tab-${item.id}`}
                   onClick={() => setTab(item.id)}
                   title={isCollapsed ? item.label : undefined}
                   className={`btn ${isActive ? 'btn-primary' : 'btn-secondary'} nav-menu-btn`}
